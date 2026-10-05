@@ -8,9 +8,11 @@ The project includes a deterministic simulator, a three-process UDP transport, a
 
 ## Quick start
 
-Create an environment:
+Clone the repository and create an environment:
 
 ```sh
+git clone https://github.com/aswanth-07/paritylab.git
+cd paritylab
 python -m venv .venv
 ```
 
