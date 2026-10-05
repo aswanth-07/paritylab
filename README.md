@@ -4,6 +4,10 @@ ParityLab is a local testbed for packet recovery experiments. It compares Go-Bac
 
 The project includes a deterministic simulator, a three-process UDP transport, a browser interface, and reproducible studies. The core runs on Python 3.10 or newer with no third-party dependencies.
 
+The research manuscript, [Decoder risk and finite-transfer tradeoffs in adaptive packet parity](output/pdf/paritylab-paper.pdf), is an empirical study of the recorded experiments. It separates known-model decoder calibration, estimated protection targets, and useful throughput. It preserves cases where fewer retries accompany lower goodput and where matched-budget code rankings change under burst loss. The paper claims neither a new coding algorithm nor general superiority for adaptive parity.
+
+The [paper directory](paper/README.md) includes editable Markdown and standalone LaTeX, five figures, nine tables, a claim-to-evidence map, the literature search record, and an internal review. References are dated 2020-2026. Author declarations and a venue remain to be confirmed before submission.
+
 ![ParityLab interface showing network controls, packet replay, and measured protocol results](docs/demo.jpg)
 
 ## Quick start

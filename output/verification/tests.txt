@@ -78,6 +78,6 @@ test_loopback_binary_transfer_with_loss_and_partial_tail (test_udp.UDPTests) ...
 test_total_loss_exits_with_bounded_retries (test_udp.UDPTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 68 tests in 12.210s
+Ran 68 tests in 14.705s
 
 OK

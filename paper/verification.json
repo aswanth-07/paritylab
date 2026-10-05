@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "scope": "saved-data integrity, source provenance, manuscript reconstruction, selected prose numbers, citations, plots, PDF extraction and compiler diagnostics",
+  "measured_revision": "1ee75227af7288491722a42813203a136ed37948",
+  "counts": {
+    "baseline_transfers": 260,
+    "sensitivity_transfers": 370,
+    "socket_transfers": 36,
+    "congestion_runs": 70,
+    "congestion_flows": 140,
+    "calibration_blocks": 3060000,
+    "policy_blocks": 225000,
+    "codec_evaluations": 160000,
+    "paired_codec_masks": 80000,
+    "policy_training_histories": 75,
+    "calibration_wilson_misses": 5,
+    "active_markov_cases": 29,
+    "active_rectangles_miss": 1,
+    "contained_rectangle_underestimates": 0
+  },
+  "table_count": 9,
+  "figure_count": 5,
+  "reference_count": 10,
+  "pdf_pages": 24,
+  "pdf_text_characters": 64644,
+  "compile_check": "two-pass local compilation: no errors, overfull boxes, undefined citations or LaTeX warnings",
+  "selected_prose_statistics": {
+    "10/fixed/goodput_mbps": "1.247 +/- 0.279",
+    "10/fixed/retransmissions": "9.6 +/- 3.9",
+    "10/fixed/parity_overhead_ratio": "0.125 +/- 0.000",
+    "10/adaptive/goodput_mbps": "1.154 +/- 0.102",
+    "10/adaptive/retransmissions": "7.6 +/- 2.2",
+    "10/adaptive/parity_overhead_ratio": "0.344 +/- 0.178",
+    "20/fixed/goodput_mbps": "0.731 +/- 0.076",
+    "20/fixed/retransmissions": "23.6 +/- 5.9",
+    "20/fixed/parity_overhead_ratio": "0.125 +/- 0.000",
+    "20/adaptive/goodput_mbps": "1.038 +/- 0.323",
+    "20/adaptive/retransmissions": "11.0 +/- 3.1",
+    "20/adaptive/parity_overhead_ratio": "0.606 +/- 0.124"
+  },
+  "inputs_sha256": {
+    "scripts/audit_paper.py": "1eacb44b94fb6e06dead3263c4ca2840449517863399d12c9875d9740ce2d4c8",
+    "paper/manifest.json": "892f66bc5859c36f5073898dda4889ea15b1d64c4409c40a52803de7f5dbe47c",
+    "paper/references.bib": "b49bce6fe18f46706d5084cf0caf0e0065d375362a55a9b51e6b5b8ff808ed4a",
+    "output/pdf/paritylab-paper.pdf": "964eebe9f1ea6a822e222dd5965a022d36bfdab56497c3efd19aa45ce02cd2db"
+  },
+  "visual_review": "Rendering is available with --render; automated extraction does not certify visual layout.",
+  "submission_status": "author declarations, approval and venue requirements unconfirmed"
+}

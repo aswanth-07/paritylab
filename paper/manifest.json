@@ -1,0 +1,34 @@
+{
+  "analysis_kind": "retrospective descriptive reconstruction; no new experimental runs",
+  "python": "3.10.11",
+  "measured_revision": "1ee75227af7288491722a42813203a136ed37948",
+  "reference_checked_date": "2026-10-05",
+  "inputs_sha256": {
+    "output/calibration/manifest.json": "16cd3d115c7725ec1137cf2dd40bee96a9eb77245e9f54b94c8dc1323fa2f2e0",
+    "output/congestion/manifest.json": "63fe0b7e44ef99fa48ef9474875b5e0b5188395bd95f02b656059fa020eb521e",
+    "output/experiments/manifest.json": "039c93a72926cf3b56163dbd3946a681c5e531cbe147f86202e5a78cae3ee70c",
+    "output/socket-evaluation/manifest.json": "c8ab41b6125cd91d03a31211f9cc0871c281bd858f5c9275a5ae2acb2fc15a39",
+    "output/studies/equal-overhead/manifest.json": "614da64d522cfeca138d3f99e1f01013c157492835b9381089166df0d3d2e099",
+    "output/studies/sensitivity/manifest.json": "5e7f6e3dba4f1c7cac08ecb2e3fe3c1a914b5755054ec500cca65401ad86585e",
+    "scripts/build_paper.py": "c69907216164aabf5a6038f4808e0812cc6d4553f550269834ccfa345bd09b97",
+    "paper/manuscript-template.md": "80ee982f480c3def9a32916b2bcb7215ec474bccf53842ccdd314d1ae21ebc58",
+    "paper/references.json": "ddd896eea3de86b4478424320933b13376a8b4f585ecf6c11ad75999f20d76e2"
+  },
+  "outputs_sha256": {
+    "paper/analysis.json": "5fad00d6089c992eb43d92ea371b409e160088d4a925d2792f3e7a9fa0a626ff",
+    "paper/plot-data.json": "628ed94e56bc5dd525e8c7178b36febc64a42d75afc1deedffd080bf63d42289",
+    "paper/manuscript.md": "51d38a4f03ed349792ad43520410089982c15bc82e0fbf000677b07a0045fded",
+    "paper/main.tex": "770994dc013cf3c1b6b3655e3d77fe0475ca28f9424a40bc313604608cf8ecb7",
+    "paper/figures/calibration.png": "5123a769d1d34e140bc061c8ef4f703214a6b525cedf35679fadda74c75de18d",
+    "paper/figures/congestion.png": "f0a7899838e47eec3ebf6d2ecb222404e57d519ec424b596030e43186a4868ea",
+    "paper/figures/loss-sweep.png": "b815d9d5532fe8970b7351a70dda50e1c380de59cc6fb270ec06b0339b00726c",
+    "paper/figures/paired-codecs.png": "39f64aeb1e12814ca999246b29b472b612516fe719c499e77c041cccb890d904",
+    "paper/figures/risk-mismatch.png": "42f34f2a25944c0c1ddb2e04dd76697290a07499b0e83ca70e0209aac7fe1e4c",
+    "paper/figures/calibration.svg": "def99c8f404e50161ded5b7951e4e8139d40c40c75773c36f9f8ad4b34e6d932",
+    "paper/figures/congestion.svg": "d1846c1d6545a8bbfbdf40db36bc17b4a5672749c4811fd64389563fd372641d",
+    "paper/figures/loss-sweep.svg": "b58893e832b24781a6e860dc1366d91a37d5916db32094465afe967fa4b55b09",
+    "paper/figures/paired-codecs.svg": "6c1e1b1b4ac01763c751fdedc9a122b217de6e23ac3e9a8a24309496649c3bb8",
+    "paper/figures/risk-mismatch.svg": "8b94096a6866d46c4a6935ca70d0ec74190db0bb901e525c518fb23d2447c050"
+  },
+  "figure_processing": "All configured points; no clipped observations; sample SD across seeds on transport and paired-contrast plots; exact risk scatter is 153 case aggregates with n=20000 each. SVG and embedded LaTeX vectors use the same plot-data.json."
+}

@@ -1,0 +1,200 @@
+{
+  "baseline_transfers": 260,
+  "sensitivity_transfers": 370,
+  "socket_transfers": 36,
+  "congestion_runs": 70,
+  "congestion_flows": 140,
+  "calibration_blocks": 3060000,
+  "policy_blocks": 225000,
+  "codec_evaluations": 160000,
+  "paired_codec_masks": 80000,
+  "policy_training_histories": 75,
+  "calibration_max_error": 0.009145325088501133,
+  "calibration_wilson_misses": 5,
+  "simultaneous_bound99": 0.01606919046493979,
+  "wrong_iid_stationary_max_error": 0.18469238399999988,
+  "wrong_iid_all_starts_max_error": 0.6369539999999999,
+  "policy_counts": [
+    {
+      "model": "independent",
+      "policy": "legacy",
+      "cases": 30,
+      "under": 13,
+      "feasible": 27,
+      "violations": 2
+    },
+    {
+      "model": "independent",
+      "policy": "uncertainty",
+      "cases": 30,
+      "under": 0,
+      "feasible": 20,
+      "violations": 0
+    },
+    {
+      "model": "independent",
+      "policy": "burst",
+      "cases": 30,
+      "under": 0,
+      "feasible": 14,
+      "violations": 0
+    },
+    {
+      "model": "binary_markov",
+      "policy": "legacy",
+      "cases": 30,
+      "under": 28,
+      "feasible": 11,
+      "violations": 11
+    },
+    {
+      "model": "binary_markov",
+      "policy": "uncertainty",
+      "cases": 30,
+      "under": 20,
+      "feasible": 7,
+      "violations": 7
+    },
+    {
+      "model": "binary_markov",
+      "policy": "burst",
+      "cases": 30,
+      "under": 1,
+      "feasible": 1,
+      "violations": 1
+    },
+    {
+      "model": "fixed_runs",
+      "policy": "legacy",
+      "cases": 15,
+      "under": "N/A",
+      "feasible": 13,
+      "violations": 13
+    },
+    {
+      "model": "fixed_runs",
+      "policy": "uncertainty",
+      "cases": 15,
+      "under": "N/A",
+      "feasible": 12,
+      "violations": 12
+    },
+    {
+      "model": "fixed_runs",
+      "policy": "burst",
+      "cases": 15,
+      "under": "N/A",
+      "feasible": 1,
+      "violations": 1
+    }
+  ],
+  "paired_contrasts": [
+    {
+      "model": "bernoulli",
+      "loss": 0.01,
+      "differences_pp": [
+        0.0,
+        -0.1,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_pp": -0.02,
+      "sd_pp": 0.044721359549995794
+    },
+    {
+      "model": "bernoulli",
+      "loss": 0.05,
+      "differences_pp": [
+        -1.5,
+        -1.1,
+        -0.7,
+        -0.5,
+        -1.0
+      ],
+      "mean_pp": -0.96,
+      "sd_pp": 0.3847076812334269
+    },
+    {
+      "model": "bernoulli",
+      "loss": 0.1,
+      "differences_pp": [
+        -4.6,
+        -3.4,
+        -3.1,
+        -2.5,
+        -3.9
+      ],
+      "mean_pp": -3.5,
+      "sd_pp": 0.7968688725254612
+    },
+    {
+      "model": "bernoulli",
+      "loss": 0.2,
+      "differences_pp": [
+        -12.4,
+        -9.4,
+        -11.3,
+        -10.0,
+        -12.3
+      ],
+      "mean_pp": -11.08,
+      "sd_pp": 1.3479614237803692
+    },
+    {
+      "model": "gilbert-elliott",
+      "loss": 0.01,
+      "differences_pp": [
+        0.0,
+        0.1,
+        0.2,
+        0.0,
+        0.1
+      ],
+      "mean_pp": 0.08,
+      "sd_pp": 0.08366600265340757
+    },
+    {
+      "model": "gilbert-elliott",
+      "loss": 0.05,
+      "differences_pp": [
+        0.7,
+        0.3,
+        0.4,
+        0.1,
+        0.6
+      ],
+      "mean_pp": 0.42,
+      "sd_pp": 0.23874672772626643
+    },
+    {
+      "model": "gilbert-elliott",
+      "loss": 0.1,
+      "differences_pp": [
+        0.8,
+        0.6,
+        0.6,
+        0.7,
+        1.3
+      ],
+      "mean_pp": 0.8,
+      "sd_pp": 0.29154759474226505
+    },
+    {
+      "model": "gilbert-elliott",
+      "loss": 0.2,
+      "differences_pp": [
+        1.0,
+        1.2,
+        1.5,
+        1.1,
+        1.1
+      ],
+      "mean_pp": 1.18,
+      "sd_pp": 0.19235384061671343
+    }
+  ],
+  "active_markov_cases": 29,
+  "active_rectangles_miss": 1,
+  "contained_rectangle_underestimates": 0
+}
