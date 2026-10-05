@@ -1,0 +1,35 @@
+{
+  "recorded_at_utc": "2026-10-05T05:16:47.009108+00:00",
+  "python": "3.10.11",
+  "size_bytes": 65536,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "runs": 370,
+  "all_verified": true,
+  "payload_sha256": "bddb0b20d82ce70b45ab5eea8b995b5167b0cd0d5d576f742dbc193c9ec2aaa4",
+  "source_sha256": {
+    "src/paritylab/__init__.py": "9d968a9d1fb03a3b7053e6a689f46b5cb35cda2c84f46f4f318db7ef69d80516",
+    "src/paritylab/__main__.py": "11cf323249f4ba4e79c9fb7660c0979fc91a3822bc5362286376b69808b41195",
+    "src/paritylab/calibration.py": "ac2d7b5a7d9ce6ccd52942b1ea650f5e7450f5e01d20a36c9502c4c83dc185d7",
+    "src/paritylab/channel.py": "21a2ffbcb169fe39ac9d32650330f888409b83eff298592c3ba6a76356c7312b",
+    "src/paritylab/cli.py": "0defed4c5469d9412a80943c5710e03eb874ded8161c29bf728f4cdac7934d0f",
+    "src/paritylab/congestion.py": "ef497236d93170d6fe728850178238dbd7c4299c02ae32a20ce26c32e94c2c27",
+    "src/paritylab/controller.py": "856898cfab8f224fc3ee4c03b7a6d0eb72de6927d82dc144d2a34d8d076e243f",
+    "src/paritylab/evaluation.py": "ff053b8471db8249c3d830037ed1535f9c417c3aadf9362f3e6c4a2b8a3a97db",
+    "src/paritylab/experiments.py": "378dfe20cefed9708c9f47db732eae994251e1861e530626ce7c341b035a2aaa",
+    "src/paritylab/fec.py": "16e84175f736b6719ea3bedcc64d547c12dbdfa33de46d17bd48e3042d16f814",
+    "src/paritylab/server.py": "b35f748263186808a5e9513b78df610bfb867c41c11ded58dcc3298922881bf4",
+    "src/paritylab/simulation.py": "6b69082b8d0876659cddc3533e4c3473a40feb3b17204fef8792d41771bbdcbf",
+    "src/paritylab/socket_transport.py": "f4c8bd6b10f4b0f0c077e33615c2e2cd0643eaa7fc624bc547d66910a73eb296",
+    "src/paritylab/studies.py": "b8d7cd4947eea4a87d8b38c0426ef3c4441f55bdeb39af3d5c4d18d9b83a4f3e",
+    "src/paritylab/udp_demo.py": "a986da5cdc989c12fde31b0a7a96e778db3d46faca8fd934ebb535e95d3ba834",
+    "src/paritylab/wire.py": "7e3069e701b662fa6b63f0fd6e70ba4602f359cf21e22c6c2a751bd96d496603"
+  },
+  "method": "One parameter changes from independent 10%, 50ms, 5Mbps, window32, packet1024, fixed block8. Burst cases use the stated Markov mean run. Block-size sweep applies to fixed XOR only.",
+  "uncertainty": "Sample standard deviation across seeds; no confidence interval or universal ranking"
+}

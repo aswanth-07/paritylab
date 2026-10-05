@@ -1,0 +1,21 @@
+{
+  "created_utc": "2026-10-04T07:02:04.768704+00:00",
+  "passed": true,
+  "raw_rows_checked": 3060000,
+  "seed_groups_checked": 765,
+  "summary_cases_checked": 153,
+  "sampled_raw_byte_decoder_replays": 1530,
+  "source_hashes_match": {
+    "calibration.py": true,
+    "fec.py": true,
+    "controller.py": true
+  },
+  "artifact_hashes_match": {
+    "raw-trials.csv.gz": true,
+    "seed-counts.csv": true,
+    "summary.csv": true,
+    "policy-validation.csv": true,
+    "calibration.png": true
+  },
+  "scope": "Every raw loss mask and outcome checked for valid range, sequential trial IDs and exact published counts; first and last block per seed/group replayed through byte decoder."
+}

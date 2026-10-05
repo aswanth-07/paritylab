@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "packet-parity-lab"
+version = "1.0.0"
+description = "A local testbed for packet recovery and adaptive parity experiments"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.10"
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/aswanth-07/paritylab"
+Issues = "https://github.com/aswanth-07/paritylab/issues"
+
+[project.optional-dependencies]
+plots = ["matplotlib>=3.7,<4"]
+reports = ["reportlab>=4,<6", "pypdf>=6.19,<7", "pypdfium2>=4,<6"]
+
+[project.scripts]
+parity-lab = "paritylab.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+

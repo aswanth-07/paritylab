@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-05",
+  "browser": "Chromium-based in-app browser",
+  "viewports": [
+    {
+      "width": 1505,
+      "height": 1045
+    },
+    {
+      "width": 390,
+      "height": 844
+    },
+    {
+      "width": 1266,
+      "height": 713
+    }
+  ],
+  "checks": {
+    "four_verified_protocol_results": true,
+    "keyboard_protocol_tabs": true,
+    "playback": true,
+    "controller_block_seek": true,
+    "csv_matches_json": true,
+    "three_process_socket_transfer": true,
+    "received_socket_bytes": 32768,
+    "recorded_configuration_retained_after_control_changes": true,
+    "no_page_horizontal_overflow": true,
+    "no_console_warnings_or_errors": true
+  },
+  "source_sha256": {
+    "web/index.html": "327598eb6d8a9e25411f56c37a2850d089d7b69d55f7e86664c3a03e52de5b74",
+    "web/styles.css": "2453cace6727a2708bf3b37462c02765f9d46afe4faf59e81c123febb20e4a91",
+    "web/app.js": "a0c5c1869e773b5b3369a33706ab6011a11e0a57d178e38aabfde2b0926a0b63"
+  },
+  "screenshot": "docs/demo.jpg",
+  "scope": "Local browser interaction checks; no cross-browser certification. Download event waiting timed out, so saved downloads were checked directly."
+}

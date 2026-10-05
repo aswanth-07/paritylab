@@ -1,0 +1,2038 @@
+{
+  "config": {
+    "scheme": "fixed",
+    "packet_size": 512,
+    "window": 32,
+    "fixed_k": 8,
+    "seed": 2,
+    "channel": {
+      "loss": 0.15,
+      "delay_ms": 2,
+      "bandwidth_mbps": 5.0,
+      "ack_loss": 0.1,
+      "model": "bernoulli",
+      "phases": [],
+      "bad_to_good": 0.2,
+      "jitter_ms": 0.0,
+      "reorder_probability": 0.0,
+      "reorder_delay_ms": 0.0
+    },
+    "metadata_loss": null,
+    "duplicate_probability": 0.0,
+    "corruption_probability": 0.0,
+    "timeout_ms": null,
+    "max_seconds": 20,
+    "max_attempts": 150,
+    "controller_policy": "legacy"
+  },
+  "expected_sha256": "84e17dfa5754beda138115fd50a4756b294e655f5a1a94646b6c891c78a687ad",
+  "verified": true,
+  "bytes_delivered": 32768,
+  "sender": {
+    "scheme": "fixed",
+    "retransmissions": 12,
+    "data_transmissions": 76,
+    "parity_packets": 8,
+    "control_transmissions": 2,
+    "controller_trace": [],
+    "peak_outstanding": 32,
+    "metadata_retries": 0,
+    "feedback_reports": 0,
+    "pid": 28352,
+    "verified": true,
+    "sha256": "84e17dfa5754beda138115fd50a4756b294e655f5a1a94646b6c891c78a687ad",
+    "bytes_delivered": 32768,
+    "elapsed_s": 0.375,
+    "timeout_s": 0.1147616,
+    "address": [
+      "127.0.0.1",
+      56926
+    ]
+  },
+  "receiver": {
+    "verified": true,
+    "bytes_delivered": 32768,
+    "sha256": "84e17dfa5754beda138115fd50a4756b294e655f5a1a94646b6c891c78a687ad",
+    "fec_recovered": 4,
+    "invalid_datagrams": 0,
+    "packet_delays_ms": [
+      15.999999945051968,
+      15.999999945051968,
+      15.999999945051968,
+      15.999999945051968,
+      15.999999945051968,
+      15.999999945051968,
+      140.99999994505197,
+      140.99999994505197,
+      15.999999945051968,
+      15.999999945051968,
+      15.999999945051968,
+      30.999999959021807,
+      30.999999959021807,
+      30.999999959021807,
+      30.999999959021807,
+      30.999999959021807,
+      30.999999959021807,
+      30.999999959021807,
+      30.999999959021807,
+      30.999999959021807,
+      30.999999959021807,
+      47.0000000204891,
+      140.99999994505197,
+      140.99999994505197,
+      47.0000000204891,
+      47.0000000204891,
+      47.0000000204891,
+      47.0000000204891,
+      47.0000000204891,
+      47.0000000204891,
+      140.99999994505197,
+      140.99999994505197,
+      16.00000006146729,
+      16.00000006146729,
+      16.00000006146729,
+      16.00000006146729,
+      16.00000006146729,
+      16.00000006146729,
+      16.00000006146729,
+      16.00000006146729,
+      16.00000006146729,
+      16.00000006146729,
+      16.00000006146729,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      47.0000000204891,
+      47.0000000204891,
+      47.0000000204891,
+      47.0000000204891,
+      47.0000000204891,
+      47.0000000204891,
+      47.0000000204891,
+      47.0000000204891
+    ],
+    "application_delays_ms": [
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      140.99999994505197,
+      16.00000006146729,
+      16.00000006146729,
+      16.00000006146729,
+      16.00000006146729,
+      16.00000006146729,
+      16.00000006146729,
+      16.00000006146729,
+      16.00000006146729,
+      16.00000006146729,
+      16.00000006146729,
+      16.00000006146729,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      32.00000000651926,
+      47.0000000204891,
+      47.0000000204891,
+      47.0000000204891,
+      47.0000000204891,
+      47.0000000204891,
+      47.0000000204891,
+      47.0000000204891,
+      47.0000000204891
+    ],
+    "application_release_count": 64,
+    "pid": 30968,
+    "packet_timestamps": [
+      {
+        "sequence": 0,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.953,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 1,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.953,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 2,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.828,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 3,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.828,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 4,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.828,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 5,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.828,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 6,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.828,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 7,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.828,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 8,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.828,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 9,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.828,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 10,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.828,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 11,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.843,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 12,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.843,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 13,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.843,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 14,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.843,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 15,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.843,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 16,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.953,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 17,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.953,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 18,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.843,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 19,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.843,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 20,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.843,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 21,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.843,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 22,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.843,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 23,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.859,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 24,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.953,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 25,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.859,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 26,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.953,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 27,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.859,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 28,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.859,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 29,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.859,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 30,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.859,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 31,
+        "first_sent_s": 853051.812,
+        "received_s": 853051.859,
+        "application_release_s": 853051.953
+      },
+      {
+        "sequence": 32,
+        "first_sent_s": 853051.968,
+        "received_s": 853051.984,
+        "application_release_s": 853051.984
+      },
+      {
+        "sequence": 33,
+        "first_sent_s": 853051.968,
+        "received_s": 853051.984,
+        "application_release_s": 853051.984
+      },
+      {
+        "sequence": 34,
+        "first_sent_s": 853051.968,
+        "received_s": 853051.984,
+        "application_release_s": 853051.984
+      },
+      {
+        "sequence": 35,
+        "first_sent_s": 853051.968,
+        "received_s": 853051.984,
+        "application_release_s": 853051.984
+      },
+      {
+        "sequence": 36,
+        "first_sent_s": 853051.968,
+        "received_s": 853051.984,
+        "application_release_s": 853051.984
+      },
+      {
+        "sequence": 37,
+        "first_sent_s": 853051.968,
+        "received_s": 853051.984,
+        "application_release_s": 853051.984
+      },
+      {
+        "sequence": 38,
+        "first_sent_s": 853051.968,
+        "received_s": 853051.984,
+        "application_release_s": 853051.984
+      },
+      {
+        "sequence": 39,
+        "first_sent_s": 853051.968,
+        "received_s": 853051.984,
+        "application_release_s": 853051.984
+      },
+      {
+        "sequence": 40,
+        "first_sent_s": 853051.968,
+        "received_s": 853051.984,
+        "application_release_s": 853051.984
+      },
+      {
+        "sequence": 41,
+        "first_sent_s": 853051.968,
+        "received_s": 853051.984,
+        "application_release_s": 853051.984
+      },
+      {
+        "sequence": 42,
+        "first_sent_s": 853051.968,
+        "received_s": 853051.984,
+        "application_release_s": 853051.984
+      },
+      {
+        "sequence": 43,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.0,
+        "application_release_s": 853052.0
+      },
+      {
+        "sequence": 44,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.0,
+        "application_release_s": 853052.0
+      },
+      {
+        "sequence": 45,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.0,
+        "application_release_s": 853052.0
+      },
+      {
+        "sequence": 46,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.0,
+        "application_release_s": 853052.0
+      },
+      {
+        "sequence": 47,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.0,
+        "application_release_s": 853052.0
+      },
+      {
+        "sequence": 48,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.0,
+        "application_release_s": 853052.0
+      },
+      {
+        "sequence": 49,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.0,
+        "application_release_s": 853052.0
+      },
+      {
+        "sequence": 50,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.0,
+        "application_release_s": 853052.0
+      },
+      {
+        "sequence": 51,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.0,
+        "application_release_s": 853052.0
+      },
+      {
+        "sequence": 52,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.0,
+        "application_release_s": 853052.0
+      },
+      {
+        "sequence": 53,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.0,
+        "application_release_s": 853052.0
+      },
+      {
+        "sequence": 54,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.0,
+        "application_release_s": 853052.0
+      },
+      {
+        "sequence": 55,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.0,
+        "application_release_s": 853052.0
+      },
+      {
+        "sequence": 56,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.015,
+        "application_release_s": 853052.015
+      },
+      {
+        "sequence": 57,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.015,
+        "application_release_s": 853052.015
+      },
+      {
+        "sequence": 58,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.015,
+        "application_release_s": 853052.015
+      },
+      {
+        "sequence": 59,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.015,
+        "application_release_s": 853052.015
+      },
+      {
+        "sequence": 60,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.015,
+        "application_release_s": 853052.015
+      },
+      {
+        "sequence": 61,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.015,
+        "application_release_s": 853052.015
+      },
+      {
+        "sequence": 62,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.015,
+        "application_release_s": 853052.015
+      },
+      {
+        "sequence": 63,
+        "first_sent_s": 853051.968,
+        "received_s": 853052.015,
+        "application_release_s": 853052.015
+      }
+    ],
+    "address": [
+      "127.0.0.1",
+      56923
+    ]
+  },
+  "proxy": {
+    "forward_datagrams": 86,
+    "reverse_datagrams": 72,
+    "forward_wire_bytes": 60335,
+    "reverse_wire_bytes": 6251,
+    "dropped_forward": 7,
+    "dropped_reverse": 8,
+    "dropped_metadata": 0,
+    "duplicates": 0,
+    "corrupted": 0,
+    "events": [
+      {
+        "kind": "syn",
+        "reverse": false,
+        "bytes": 242,
+        "send_s": 0.1559999999590218,
+        "serialization_end_s": 0.1563871999590218,
+        "arrival_s": 0.1583871999590218,
+        "lost": false
+      },
+      {
+        "kind": "ready",
+        "reverse": true,
+        "bytes": 71,
+        "send_s": 0.17099999997299165,
+        "serialization_end_s": 0.17111359997299164,
+        "arrival_s": 0.17311359997299164,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 705,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.18812800003445893,
+        "arrival_s": 0.19012800003445893,
+        "lost": true
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 705,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.18925600003445892,
+        "arrival_s": 0.19125600003445892,
+        "lost": true
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 705,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.1903840000344589,
+        "arrival_s": 0.1923840000344589,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 705,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.1915120000344589,
+        "arrival_s": 0.1935120000344589,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 705,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.19264000003445889,
+        "arrival_s": 0.1946400000344589,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 705,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.19376800003445888,
+        "arrival_s": 0.19576800003445888,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 705,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.19489600003445887,
+        "arrival_s": 0.19689600003445887,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 705,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.19602400003445886,
+        "arrival_s": 0.19802400003445886,
+        "lost": false
+      },
+      {
+        "kind": "repair",
+        "reverse": false,
+        "bytes": 790,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.19728800003445884,
+        "arrival_s": 0.19928800003445885,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 705,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.19841600003445883,
+        "arrival_s": 0.20041600003445884,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 705,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.19954400003445882,
+        "arrival_s": 0.20154400003445883,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 706,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.20067360003445883,
+        "arrival_s": 0.20267360003445883,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 706,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.20180320003445884,
+        "arrival_s": 0.20380320003445884,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 706,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.20293280003445885,
+        "arrival_s": 0.20493280003445885,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 706,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.20406240003445886,
+        "arrival_s": 0.20606240003445886,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 706,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.20519200003445887,
+        "arrival_s": 0.20719200003445887,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 706,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.20632160003445887,
+        "arrival_s": 0.20832160003445888,
+        "lost": false
+      },
+      {
+        "kind": "repair",
+        "reverse": false,
+        "bytes": 790,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.20758560003445886,
+        "arrival_s": 0.20958560003445886,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.20871680003445886,
+        "arrival_s": 0.21071680003445886,
+        "lost": true
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.20984800003445886,
+        "arrival_s": 0.21184800003445886,
+        "lost": true
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.21097920003445886,
+        "arrival_s": 0.21297920003445886,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.21211040003445886,
+        "arrival_s": 0.21411040003445886,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.21324160003445886,
+        "arrival_s": 0.21524160003445886,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.21437280003445885,
+        "arrival_s": 0.21637280003445886,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.21550400003445885,
+        "arrival_s": 0.21750400003445886,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.21663520003445885,
+        "arrival_s": 0.21863520003445885,
+        "lost": false
+      },
+      {
+        "kind": "repair",
+        "reverse": false,
+        "bytes": 791,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.21790080003445886,
+        "arrival_s": 0.21990080003445886,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.21903200003445886,
+        "arrival_s": 0.22103200003445886,
+        "lost": true
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.22016320003445886,
+        "arrival_s": 0.22216320003445886,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.22129440003445885,
+        "arrival_s": 0.22329440003445886,
+        "lost": true
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.22242560003445885,
+        "arrival_s": 0.22442560003445886,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.22355680003445885,
+        "arrival_s": 0.22555680003445885,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.22468800003445885,
+        "arrival_s": 0.22668800003445885,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.22581920003445885,
+        "arrival_s": 0.22781920003445885,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.22695040003445885,
+        "arrival_s": 0.22895040003445885,
+        "lost": false
+      },
+      {
+        "kind": "repair",
+        "reverse": false,
+        "bytes": 791,
+        "send_s": 0.18700000003445894,
+        "serialization_end_s": 0.22821600003445885,
+        "arrival_s": 0.23021600003445886,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 85,
+        "send_s": 0.2029999999795109,
+        "serialization_end_s": 0.2031359999795109,
+        "arrival_s": 0.2051359999795109,
+        "lost": true
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 85,
+        "send_s": 0.2029999999795109,
+        "serialization_end_s": 0.2032719999795109,
+        "arrival_s": 0.2052719999795109,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 85,
+        "send_s": 0.2029999999795109,
+        "serialization_end_s": 0.2034079999795109,
+        "arrival_s": 0.2054079999795109,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 85,
+        "send_s": 0.2029999999795109,
+        "serialization_end_s": 0.2035439999795109,
+        "arrival_s": 0.2055439999795109,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 85,
+        "send_s": 0.2029999999795109,
+        "serialization_end_s": 0.2036799999795109,
+        "arrival_s": 0.2056799999795109,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 85,
+        "send_s": 0.2029999999795109,
+        "serialization_end_s": 0.2038159999795109,
+        "arrival_s": 0.2058159999795109,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 85,
+        "send_s": 0.2029999999795109,
+        "serialization_end_s": 0.20395199997951088,
+        "arrival_s": 0.20595199997951089,
+        "lost": true
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 85,
+        "send_s": 0.2029999999795109,
+        "serialization_end_s": 0.20408799997951088,
+        "arrival_s": 0.20608799997951088,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.2029999999795109,
+        "serialization_end_s": 0.20422559997951087,
+        "arrival_s": 0.20622559997951087,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.21799999999348074,
+        "serialization_end_s": 0.21813759999348073,
+        "arrival_s": 0.22013759999348073,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.21799999999348074,
+        "serialization_end_s": 0.21827519999348072,
+        "arrival_s": 0.22027519999348072,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.21799999999348074,
+        "serialization_end_s": 0.2184127999934807,
+        "arrival_s": 0.2204127999934807,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.21799999999348074,
+        "serialization_end_s": 0.2185503999934807,
+        "arrival_s": 0.2205503999934807,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.21799999999348074,
+        "serialization_end_s": 0.21868799999348068,
+        "arrival_s": 0.22068799999348068,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.21799999999348074,
+        "serialization_end_s": 0.21882559999348067,
+        "arrival_s": 0.22082559999348067,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.21799999999348074,
+        "serialization_end_s": 0.21896319999348066,
+        "arrival_s": 0.22096319999348066,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.21799999999348074,
+        "serialization_end_s": 0.21910079999348064,
+        "arrival_s": 0.22110079999348065,
+        "lost": true
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.21799999999348074,
+        "serialization_end_s": 0.21923839999348063,
+        "arrival_s": 0.22123839999348063,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.21799999999348074,
+        "serialization_end_s": 0.21937599999348062,
+        "arrival_s": 0.22137599999348062,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.23400000005494803,
+        "serialization_end_s": 0.23413760005494802,
+        "arrival_s": 0.23613760005494802,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.23400000005494803,
+        "serialization_end_s": 0.234275200054948,
+        "arrival_s": 0.236275200054948,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.23400000005494803,
+        "serialization_end_s": 0.234412800054948,
+        "arrival_s": 0.236412800054948,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.23400000005494803,
+        "serialization_end_s": 0.23455040005494798,
+        "arrival_s": 0.23655040005494798,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.23400000005494803,
+        "serialization_end_s": 0.23468800005494797,
+        "arrival_s": 0.23668800005494797,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.23400000005494803,
+        "serialization_end_s": 0.23482560005494796,
+        "arrival_s": 0.23682560005494796,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.23400000005494803,
+        "serialization_end_s": 0.23496320005494795,
+        "arrival_s": 0.23696320005494795,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 705,
+        "send_s": 0.31200000003445894,
+        "serialization_end_s": 0.31312800003445895,
+        "arrival_s": 0.31512800003445895,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 705,
+        "send_s": 0.31200000003445894,
+        "serialization_end_s": 0.31425600003445897,
+        "arrival_s": 0.316256000034459,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 705,
+        "send_s": 0.31200000003445894,
+        "serialization_end_s": 0.315384000034459,
+        "arrival_s": 0.317384000034459,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 705,
+        "send_s": 0.31200000003445894,
+        "serialization_end_s": 0.316512000034459,
+        "arrival_s": 0.318512000034459,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.31200000003445894,
+        "serialization_end_s": 0.317643200034459,
+        "arrival_s": 0.319643200034459,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.31200000003445894,
+        "serialization_end_s": 0.318774400034459,
+        "arrival_s": 0.320774400034459,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.31200000003445894,
+        "serialization_end_s": 0.319905600034459,
+        "arrival_s": 0.321905600034459,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.31200000003445894,
+        "serialization_end_s": 0.321036800034459,
+        "arrival_s": 0.323036800034459,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.31200000003445894,
+        "serialization_end_s": 0.322168000034459,
+        "arrival_s": 0.324168000034459,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 87,
+        "send_s": 0.3279999999795109,
+        "serialization_end_s": 0.3281391999795109,
+        "arrival_s": 0.3301391999795109,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 85,
+        "send_s": 0.3279999999795109,
+        "serialization_end_s": 0.32827519997951093,
+        "arrival_s": 0.33027519997951094,
+        "lost": true
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 85,
+        "send_s": 0.3279999999795109,
+        "serialization_end_s": 0.32841119997951096,
+        "arrival_s": 0.33041119997951096,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 85,
+        "send_s": 0.3279999999795109,
+        "serialization_end_s": 0.328547199979511,
+        "arrival_s": 0.330547199979511,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 89,
+        "send_s": 0.3279999999795109,
+        "serialization_end_s": 0.32868959997951097,
+        "arrival_s": 0.330689599979511,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.3279999999795109,
+        "serialization_end_s": 0.328827199979511,
+        "arrival_s": 0.330827199979511,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.3279999999795109,
+        "serialization_end_s": 0.328964799979511,
+        "arrival_s": 0.330964799979511,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 89,
+        "send_s": 0.3279999999795109,
+        "serialization_end_s": 0.329107199979511,
+        "arrival_s": 0.331107199979511,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.3279999999795109,
+        "serialization_end_s": 0.329244799979511,
+        "arrival_s": 0.331244799979511,
+        "lost": true
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.34413119999348074,
+        "arrival_s": 0.34613119999348074,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.34526239999348074,
+        "arrival_s": 0.34726239999348074,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.34639359999348074,
+        "arrival_s": 0.34839359999348074,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.34752479999348074,
+        "arrival_s": 0.34952479999348074,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.34865599999348074,
+        "arrival_s": 0.35065599999348074,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.34978719999348074,
+        "arrival_s": 0.35178719999348074,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.35091839999348073,
+        "arrival_s": 0.35291839999348074,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.35204959999348073,
+        "arrival_s": 0.35404959999348073,
+        "lost": false
+      },
+      {
+        "kind": "repair",
+        "reverse": false,
+        "bytes": 791,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.3533151999934807,
+        "arrival_s": 0.3553151999934807,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.3544463999934807,
+        "arrival_s": 0.3564463999934807,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.3555775999934807,
+        "arrival_s": 0.3575775999934807,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.3567087999934807,
+        "arrival_s": 0.3587087999934807,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.3578399999934807,
+        "arrival_s": 0.3598399999934807,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.3589711999934807,
+        "arrival_s": 0.3609711999934807,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.3601023999934807,
+        "arrival_s": 0.3621023999934807,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.3612335999934807,
+        "arrival_s": 0.3632335999934807,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.3623647999934807,
+        "arrival_s": 0.3643647999934807,
+        "lost": false
+      },
+      {
+        "kind": "repair",
+        "reverse": false,
+        "bytes": 791,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.3636303999934807,
+        "arrival_s": 0.3656303999934807,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.3647615999934807,
+        "arrival_s": 0.3667615999934807,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.3658927999934807,
+        "arrival_s": 0.3678927999934807,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.3670239999934807,
+        "arrival_s": 0.3690239999934807,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.3681551999934807,
+        "arrival_s": 0.3701551999934807,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.3692863999934807,
+        "arrival_s": 0.3712863999934807,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.3704175999934807,
+        "arrival_s": 0.3724175999934807,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.37154879999348067,
+        "arrival_s": 0.3735487999934807,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.37267999999348067,
+        "arrival_s": 0.3746799999934807,
+        "lost": false
+      },
+      {
+        "kind": "repair",
+        "reverse": false,
+        "bytes": 791,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.37394559999348065,
+        "arrival_s": 0.37594559999348065,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.37507679999348065,
+        "arrival_s": 0.37707679999348065,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.37620799999348065,
+        "arrival_s": 0.37820799999348065,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.37733919999348065,
+        "arrival_s": 0.37933919999348065,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.37847039999348064,
+        "arrival_s": 0.38047039999348065,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.37960159999348064,
+        "arrival_s": 0.38160159999348064,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.38073279999348064,
+        "arrival_s": 0.38273279999348064,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.38186399999348064,
+        "arrival_s": 0.38386399999348064,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.38299519999348064,
+        "arrival_s": 0.38499519999348064,
+        "lost": true
+      },
+      {
+        "kind": "repair",
+        "reverse": false,
+        "bytes": 791,
+        "send_s": 0.34299999999348074,
+        "serialization_end_s": 0.3842607999934806,
+        "arrival_s": 0.3862607999934806,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.35900000005494803,
+        "serialization_end_s": 0.35913760005494805,
+        "arrival_s": 0.36113760005494805,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.35900000005494803,
+        "serialization_end_s": 0.35927520005494806,
+        "arrival_s": 0.36127520005494806,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.35900000005494803,
+        "serialization_end_s": 0.3594128000549481,
+        "arrival_s": 0.3614128000549481,
+        "lost": true
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.35900000005494803,
+        "serialization_end_s": 0.3595504000549481,
+        "arrival_s": 0.3615504000549481,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.35900000005494803,
+        "serialization_end_s": 0.3596880000549481,
+        "arrival_s": 0.3616880000549481,
+        "lost": true
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.35900000005494803,
+        "serialization_end_s": 0.3598256000549481,
+        "arrival_s": 0.3618256000549481,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.35900000005494803,
+        "serialization_end_s": 0.35996320005494814,
+        "arrival_s": 0.36196320005494814,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.35900000005494803,
+        "serialization_end_s": 0.36010080005494816,
+        "arrival_s": 0.36210080005494816,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.35900000005494803,
+        "serialization_end_s": 0.36023840005494817,
+        "arrival_s": 0.3622384000549482,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.35900000005494803,
+        "serialization_end_s": 0.3603760000549482,
+        "arrival_s": 0.3623760000549482,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.35900000005494803,
+        "serialization_end_s": 0.3605136000549482,
+        "arrival_s": 0.3625136000549482,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.375,
+        "serialization_end_s": 0.3751376,
+        "arrival_s": 0.3771376,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.375,
+        "serialization_end_s": 0.37527520000000003,
+        "arrival_s": 0.37727520000000003,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.375,
+        "serialization_end_s": 0.37541280000000005,
+        "arrival_s": 0.37741280000000005,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.375,
+        "serialization_end_s": 0.37555040000000006,
+        "arrival_s": 0.37755040000000006,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.375,
+        "serialization_end_s": 0.3756880000000001,
+        "arrival_s": 0.3776880000000001,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.375,
+        "serialization_end_s": 0.3758256000000001,
+        "arrival_s": 0.3778256000000001,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.375,
+        "serialization_end_s": 0.3759632000000001,
+        "arrival_s": 0.3779632000000001,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.375,
+        "serialization_end_s": 0.3761008000000001,
+        "arrival_s": 0.3781008000000001,
+        "lost": true
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.375,
+        "serialization_end_s": 0.37623840000000014,
+        "arrival_s": 0.37823840000000014,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.375,
+        "serialization_end_s": 0.37637600000000015,
+        "arrival_s": 0.37837600000000016,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.375,
+        "serialization_end_s": 0.37651360000000017,
+        "arrival_s": 0.37851360000000017,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.375,
+        "serialization_end_s": 0.3766512000000002,
+        "arrival_s": 0.3786512000000002,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.375,
+        "serialization_end_s": 0.3767888000000002,
+        "arrival_s": 0.3787888000000002,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.39000000001396984,
+        "serialization_end_s": 0.39013760001396985,
+        "arrival_s": 0.39213760001396986,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.39000000001396984,
+        "serialization_end_s": 0.39027520001396987,
+        "arrival_s": 0.39227520001396987,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.39000000001396984,
+        "serialization_end_s": 0.3904128000139699,
+        "arrival_s": 0.3924128000139699,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.39000000001396984,
+        "serialization_end_s": 0.3905504000139699,
+        "arrival_s": 0.3925504000139699,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.39000000001396984,
+        "serialization_end_s": 0.3906880000139699,
+        "arrival_s": 0.3926880000139699,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.39000000001396984,
+        "serialization_end_s": 0.39082560001396993,
+        "arrival_s": 0.39282560001396993,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.39000000001396984,
+        "serialization_end_s": 0.39096320001396995,
+        "arrival_s": 0.39296320001396995,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.39000000001396984,
+        "serialization_end_s": 0.39110080001396996,
+        "arrival_s": 0.39310080001396996,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.46799999999348074,
+        "serialization_end_s": 0.46913119999348074,
+        "arrival_s": 0.47113119999348074,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.46799999999348074,
+        "serialization_end_s": 0.47026239999348074,
+        "arrival_s": 0.47226239999348074,
+        "lost": false
+      },
+      {
+        "kind": "data",
+        "reverse": false,
+        "bytes": 707,
+        "send_s": 0.46799999999348074,
+        "serialization_end_s": 0.47139359999348074,
+        "arrival_s": 0.47339359999348074,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.48400000005494803,
+        "serialization_end_s": 0.48413760005494805,
+        "arrival_s": 0.48613760005494805,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.48400000005494803,
+        "serialization_end_s": 0.48427520005494806,
+        "arrival_s": 0.48627520005494806,
+        "lost": false
+      },
+      {
+        "kind": "ack",
+        "reverse": true,
+        "bytes": 86,
+        "send_s": 0.48400000005494803,
+        "serialization_end_s": 0.4844128000549481,
+        "arrival_s": 0.4864128000549481,
+        "lost": false
+      },
+      {
+        "kind": "fin",
+        "reverse": false,
+        "bytes": 69,
+        "send_s": 0.5,
+        "serialization_end_s": 0.5001104,
+        "arrival_s": 0.5021104,
+        "lost": false
+      },
+      {
+        "kind": "finished",
+        "reverse": true,
+        "bytes": 164,
+        "send_s": 0.5150000000139698,
+        "serialization_end_s": 0.5152624000139698,
+        "arrival_s": 0.5172624000139698,
+        "lost": false
+      }
+    ],
+    "pid": 81304,
+    "elapsed_s": 0.5309999999590218,
+    "scope": "Actual CRC-protected UDP datagrams; all control, data and parity impaired; localhost only"
+  },
+  "processes": [
+    {
+      "role": "receiver",
+      "pid": 22424,
+      "exit_code": 0
+    },
+    {
+      "role": "proxy",
+      "pid": 82552,
+      "exit_code": 0
+    },
+    {
+      "role": "sender",
+      "pid": 78468,
+      "exit_code": 0
+    }
+  ]
+}

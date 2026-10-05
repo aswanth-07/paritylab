@@ -1,0 +1,47 @@
+{
+  "created_utc": "2026-10-05T05:18:08.035497+00:00",
+  "python": "3.10.11",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "trials_per_seed": 4000,
+  "cases": 153,
+  "decoder_trials": 3060000,
+  "seed_formula": "1000003 + case_index * 100003 + seed",
+  "byte_decoder_wrong_recoveries": 0,
+  "raw_format": "data bits first, then encode() repair order; little-endian bit positions",
+  "confidence_intervals": "two-sided 95% Wilson per condition, approximate binomial sampling intervals",
+  "simultaneous_check": "99% Hoeffding union bound across all registered conditions; blocks sampled independently",
+  "all_exact_predictions_within_simultaneous_bound99": true,
+  "predictions_outside_ci95": 5,
+  "maximum_exact_absolute_error": 0.009145325088501133,
+  "maximum_wrong_iid_burst_error": 0.6369539999999999,
+  "maximum_wrong_iid_stationary_burst_error": 0.18469238399999988,
+  "policy_validation_rows": 225,
+  "policy_test_trials": 225000,
+  "plots_generated": true,
+  "model_scope": "stationary independent losses or binary first-order Markov erasures; known case parameters; byte peeling decoder; block failure before retransmission",
+  "limits": [
+    "No confidence guarantee for changing or non-Markov loss",
+    "General hidden-state emissions and unequal data/parity loss probabilities are not modeled",
+    "Independent blocks validate a block model; this is not an end-to-end transport or congestion result",
+    "Transition Wilson intervals are approximate and evaluated empirically; parameter coverage is not guaranteed",
+    "The burst risk envelope is conservative only when its parameter rectangle contains the true Markov model"
+  ],
+  "source_sha256": {
+    "calibration.py": "ac2d7b5a7d9ce6ccd52942b1ea650f5e7450f5e01d20a36c9502c4c83dc185d7",
+    "fec.py": "16e84175f736b6719ea3bedcc64d547c12dbdfa33de46d17bd48e3042d16f814",
+    "controller.py": "856898cfab8f224fc3ee4c03b7a6d0eb72de6927d82dc144d2a34d8d076e243f"
+  },
+  "artifacts_sha256": {
+    "raw-trials.csv.gz": "f8e2b13a2ea1f198c198a749cdd2c1fb1dd10b141d7067544219c6f7696d6ce1",
+    "seed-counts.csv": "4f63e862dabb6c9e69c5fe6d74036c478130ccb733d063bf496ba5d2e58a0cf2",
+    "summary.csv": "f0a5cc1a9e2359ef9ca89af2d042f182fbe88035630d478989b77779c4f868fd",
+    "policy-validation.csv": "1e5c69560547a677dd0c3195fdf73ad98ee88dab3a75afa9b12e8f5815faa11f",
+    "calibration.png": "4c2cad91a4f87fe7a804b45e5b3f12d8c2519036e71ba2414d1944e364b531b4"
+  }
+}

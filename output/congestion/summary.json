@@ -1,0 +1,142 @@
+[
+  {
+    "condition": "aimd_equal",
+    "queue_packets": 8,
+    "seeds": 5,
+    "aggregate_goodput_mean": 1.7649049535696624,
+    "aggregate_goodput_std": 0.05458298753277084,
+    "jain_mean": 0.9611599437585745,
+    "jain_std": 0.054588286206379656,
+    "queue_drops_mean": 34.2
+  },
+  {
+    "condition": "aimd_equal",
+    "queue_packets": 32,
+    "seeds": 5,
+    "aggregate_goodput_mean": 1.734132237011051,
+    "aggregate_goodput_std": 0.06472767418930483,
+    "jain_mean": 0.9565761697422706,
+    "jain_std": 0.030961984004342812,
+    "queue_drops_mean": 48
+  },
+  {
+    "condition": "uncontrolled_equal",
+    "queue_packets": 8,
+    "seeds": 5,
+    "aggregate_goodput_mean": 1.3810142218506496,
+    "aggregate_goodput_std": 0.04897422074476163,
+    "jain_mean": 0.8145622994076998,
+    "jain_std": 0.10670883567140395,
+    "queue_drops_mean": 1768
+  },
+  {
+    "condition": "uncontrolled_equal",
+    "queue_packets": 32,
+    "seeds": 5,
+    "aggregate_goodput_mean": 1.6971765915070638,
+    "aggregate_goodput_std": 0.08932378778411297,
+    "jain_mean": 0.9282095787342034,
+    "jain_std": 0.11598158274293935,
+    "queue_drops_mean": 512.6
+  },
+  {
+    "condition": "aimd_vs_uncontrolled",
+    "queue_packets": 8,
+    "seeds": 5,
+    "aggregate_goodput_mean": 1.5490756681996942,
+    "aggregate_goodput_std": 0.177484634896289,
+    "jain_mean": 0.9592015013982881,
+    "jain_std": 0.049437561246241775,
+    "queue_drops_mean": 742.8
+  },
+  {
+    "condition": "aimd_vs_uncontrolled",
+    "queue_packets": 32,
+    "seeds": 5,
+    "aggregate_goodput_mean": 1.5862303916627858,
+    "aggregate_goodput_std": 0.14993145152763376,
+    "jain_mean": 0.7721613946935714,
+    "jain_std": 0.1759781551157485,
+    "queue_drops_mean": 141.6
+  },
+  {
+    "condition": "gbn_vs_sr",
+    "queue_packets": 8,
+    "seeds": 5,
+    "aggregate_goodput_mean": 1.1722654165247544,
+    "aggregate_goodput_std": 0.11946692465393399,
+    "jain_mean": 0.7873530231457271,
+    "jain_std": 0.07785222595612634,
+    "queue_drops_mean": 32.2
+  },
+  {
+    "condition": "gbn_vs_sr",
+    "queue_packets": 32,
+    "seeds": 5,
+    "aggregate_goodput_mean": 1.3479994073041015,
+    "aggregate_goodput_std": 0.18146515138925945,
+    "jain_mean": 0.9052210605566109,
+    "jain_std": 0.08076933896215242,
+    "queue_drops_mean": 48.2
+  },
+  {
+    "condition": "sr_vs_sr",
+    "queue_packets": 8,
+    "seeds": 5,
+    "aggregate_goodput_mean": 1.7649049535696624,
+    "aggregate_goodput_std": 0.05458298753277084,
+    "jain_mean": 0.9611599437585745,
+    "jain_std": 0.054588286206379656,
+    "queue_drops_mean": 34.2
+  },
+  {
+    "condition": "sr_vs_sr",
+    "queue_packets": 32,
+    "seeds": 5,
+    "aggregate_goodput_mean": 1.734132237011051,
+    "aggregate_goodput_std": 0.06472767418930483,
+    "jain_mean": 0.9565761697422706,
+    "jain_std": 0.030961984004342812,
+    "queue_drops_mean": 48
+  },
+  {
+    "condition": "fixed_vs_sr",
+    "queue_packets": 8,
+    "seeds": 5,
+    "aggregate_goodput_mean": 1.6622429626645603,
+    "aggregate_goodput_std": 0.03759416198971228,
+    "jain_mean": 0.9564107094378376,
+    "jain_std": 0.06150777418046909,
+    "queue_drops_mean": 34.4
+  },
+  {
+    "condition": "fixed_vs_sr",
+    "queue_packets": 32,
+    "seeds": 5,
+    "aggregate_goodput_mean": 1.7096263521998374,
+    "aggregate_goodput_std": 0.032688686894660375,
+    "jain_mean": 0.9597165000274336,
+    "jain_std": 0.013413092049424095,
+    "queue_drops_mean": 48.2
+  },
+  {
+    "condition": "adaptive_vs_sr",
+    "queue_packets": 8,
+    "seeds": 5,
+    "aggregate_goodput_mean": 1.5515803555997176,
+    "aggregate_goodput_std": 0.039878949632220426,
+    "jain_mean": 0.9519790045145946,
+    "jain_std": 0.05560285765015427,
+    "queue_drops_mean": 36.6
+  },
+  {
+    "condition": "adaptive_vs_sr",
+    "queue_packets": 32,
+    "seeds": 5,
+    "aggregate_goodput_mean": 1.6621074333074948,
+    "aggregate_goodput_std": 0.10529663264432945,
+    "jain_mean": 0.992621344307314,
+    "jain_std": 0.0051155133268564424,
+    "queue_drops_mean": 47
+  }
+]

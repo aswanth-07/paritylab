@@ -1,0 +1,66 @@
+{
+  "proposal-2020-2026.pdf": {
+    "pages": 3,
+    "sha256": "fe3d4c98a53680538e1ffca45fe489a0892dc41b255f4602478bec4f63415e10",
+    "nonblank_pages": true,
+    "required_reference_text": true,
+    "renders": [
+      {
+        "page": 1,
+        "sha256": "f797c1a2f854cea84970cfd8003d5e7f453b057ad690302cdb49fe673bf32a3a"
+      },
+      {
+        "page": 2,
+        "sha256": "9731c8a93ec866e571ff279648d6956c8c934005635b1c8aa7b98ad6ed88a682"
+      },
+      {
+        "page": 3,
+        "sha256": "573ca72670c5cc338f1b439edf9d1ec3de1741d6caffe83dd8c835bd392e1c90"
+      }
+    ]
+  },
+  "project-report.pdf": {
+    "pages": 9,
+    "sha256": "fc66c1ef83a21da97f87ba7ab0d0ac32da4568bc10d975e8b242e91e5cefad9b",
+    "nonblank_pages": true,
+    "required_reference_text": true,
+    "renders": [
+      {
+        "page": 1,
+        "sha256": "73704cfec10a1c7145f51bb78807f48f71b8e162fdf24c2dafaff1a51ce713c4"
+      },
+      {
+        "page": 2,
+        "sha256": "cdfe74919252b758211fdf88794a71db303be345e2da60d7a58d8d41107ba274"
+      },
+      {
+        "page": 3,
+        "sha256": "9bcc33677b30d26a26ccb5d17ce2c83632df976986d6647c9c0a5355f8b87c27"
+      },
+      {
+        "page": 4,
+        "sha256": "718c80db187883ebde11ebd74682fedd5576f753cd31f6fde10bf3ca41bb0622"
+      },
+      {
+        "page": 5,
+        "sha256": "f2aa068abeb0adae11fa1c2760e7ea7c2e0007f6444aad8144ea16228c79296e"
+      },
+      {
+        "page": 6,
+        "sha256": "e41b74a9b44a72c80dde93a2534c5b4b6c1f74e328400d69c4e8f73969b964a5"
+      },
+      {
+        "page": 7,
+        "sha256": "ae0003eb7108337b17662f9fb12b743035bd79dcd9a71abe1e0271bdb928be57"
+      },
+      {
+        "page": 8,
+        "sha256": "68cd216490021a342824982ee07a908113b4d2f3234e95aca028d1c9f0d5150b"
+      },
+      {
+        "page": 9,
+        "sha256": "14dd89a99eca7f64f74ac5e6a089d8e9516f378913826fa1b5c2b5b6312d74a5"
+      }
+    ]
+  }
+}

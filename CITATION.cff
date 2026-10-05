@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use ParityLab in an experiment or teaching material, cite this software. Cite the original papers separately when discussing their methods."
+title: "ParityLab: packet recovery experiments"
+type: software
+authors:
+  - family-names: "Raj"
+    given-names: "A Aswanth"
+version: 1.0.0
+license: MIT
+repository-code: "https://github.com/aswanth-07/paritylab"
+date-released: 2026-10-05
+keywords:
+  - packet recovery
+  - forward error correction
+  - automatic repeat request
+  - network simulation

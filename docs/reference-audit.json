@@ -1,0 +1,13 @@
+{
+  "verified_on": "2026-10-02",
+  "publication_range": [2020, 2026],
+  "sources": [
+    {"id": 1, "year": 2020, "url": "https://www.rfc-editor.org/rfc/rfc8681.html", "access": "full text", "use": "sliding-window FEC and block-latency context", "status": "standards-track RFC"},
+    {"id": 2, "year": 2022, "url": "https://pure.etsmtl.ca/en/publications/residual-packet-loss-rate-analysis-of-2-d-parity-forward-error-co/", "access": "institutional metadata/abstract and publisher excerpt", "use": "2D parity prior work and matrix-dimension dependence", "status": "journal article, March 2022; DOI includes 2021"},
+    {"id": 3, "year": 2022, "url": "https://arxiv.org/html/2208.07741v1", "access": "full text", "use": "application-tailored FEC and retransmission choices", "status": "author preprint"},
+    {"id": 4, "year": 2021, "url": "https://www.rfc-editor.org/rfc/rfc9002.html", "access": "full text", "use": "modern loss-detection context; does not define the textbook baselines", "status": "standards-track RFC"},
+    {"id": 5, "year": 2022, "url": "https://www.rfc-editor.org/rfc/rfc9265.html", "access": "full text", "use": "preserve raw loss signals and scope congestion limitations", "status": "informational IRTF RFC"},
+    {"id": 6, "year": 2024, "url": "https://www.ietf.org/archive/id/draft-dmoskvitin-quic-adaptive-fec-00.html", "access": "full text", "use": "loss-based redundancy and distinct recovered-packet feedback", "status": "version 00 expired 2024-11-07; not an adopted standard"},
+    {"id": 7, "year": 2026, "url": "https://arxiv.org/html/2607.14482v1", "access": "full text", "use": "current adaptive-FEC field-evaluation context", "status": "author preprint submitted 2026-07-16; proceedings metadata not independently verified"}
+  ]
+}

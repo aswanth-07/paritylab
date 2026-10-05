@@ -1,0 +1,9 @@
+# Source and result manifests fingerprint exact bytes, including line endings.
+* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+*.png binary
+*.jpg binary
+*.pdf binary
+*.ttf binary
+*.gz binary
+*.bin binary
