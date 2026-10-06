@@ -2,7 +2,8 @@
   "name": "paritylab-ui-checks",
   "private": true,
   "scripts": {
-    "lint": "eslint web/app.js && node scripts/check_css.mjs"
+    "lint": "eslint web/app.js web/replay.mjs && node scripts/check_css.mjs",
+    "test": "node --test tests/replay.test.mjs"
   },
   "devDependencies": {
     "eslint": "10.12.0",

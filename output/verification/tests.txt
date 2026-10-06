@@ -39,6 +39,9 @@ test_partial_grid_and_missing_parity (test_fec.CodecTests) ... ok
 test_partial_grid_risks_match_byte_decoder_including_lost_repairs (test_fec.CodecTests) ... ok
 test_risk_models_reject_invalid_parameters_and_absorbing_start_ambiguity (test_fec.CodecTests) ... ok
 test_xor_risk_includes_lost_parity (test_fec.CodecTests) ... ok
+test_archive_verifies_historical_bytes_and_keeps_current_false (test_provenance.MeasurementSourceTests) ... ok
+test_current_source_needs_no_archive (test_provenance.MeasurementSourceTests) ... ok
+test_unarchived_stale_source_is_rejected (test_provenance.MeasurementSourceTests) ... ok
 test_controller_trace_describes_transmitted_blocks (test_server.ServerTests) ... ok
 test_cross_origin_execution_is_rejected (test_server.ServerTests) ... ok
 test_full_socket_endpoint_checks_three_processes (test_server.ServerTests) ... ok
@@ -46,6 +49,7 @@ test_health_and_changing_scenario (test_server.ServerTests) ... ok
 test_invalid_and_nonfinite_settings_are_rejected (test_server.ServerTests) ... ok
 test_measured_comparison_and_replay_integrity (test_server.ServerTests) ... ok
 test_occupied_port_cannot_be_shared (test_server.ServerTests) ... ok
+test_replay_module_is_served_as_javascript (test_server.ServerTests) ... ok
 test_socket_settings_are_validated (test_server.ServerTests) ... ok
 test_udp_endpoint_checks_real_bytes (test_server.ServerTests) ... ok
 test_unknown_paths_and_traversal_are_not_served (test_server.ServerTests) ... ok
@@ -63,6 +67,7 @@ test_one_packet_window_and_partial_tail (test_simulation.SimulatorTests) ... ok
 test_opt_in_burst_policy_reports_model_and_raw_ordered_feedback (test_simulation.SimulatorTests) ... ok
 test_reliable_metadata_survives_erasure_reordering_and_ack_loss (test_simulation.SimulatorTests) ... ok
 test_reordering_releases_only_contiguous_application_data (test_simulation.SimulatorTests) ... ok
+test_replay_records_receiver_state_without_changing_measurements (test_simulation.SimulatorTests) ... ok
 test_selective_repeat_does_not_resend_unlost_packets (test_simulation.SimulatorTests) ... ok
 test_all_windowed_schemes_use_three_processes_and_verify_binary_tail (test_socket_transport.SocketTransportTests) ... ok
 test_closed_udp_peer_does_not_crash_receiving_socket (test_socket_transport.SocketTransportTests) ... ok
@@ -78,6 +83,6 @@ test_loopback_binary_transfer_with_loss_and_partial_tail (test_udp.UDPTests) ...
 test_total_loss_exits_with_bounded_retries (test_udp.UDPTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 68 tests in 14.705s
+Ran 73 tests in 13.161s
 
 OK

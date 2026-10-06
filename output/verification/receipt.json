@@ -1,5 +1,5 @@
 {
-  "recorded_at_utc": "2026-10-05T13:35:53.712116+00:00",
+  "recorded_at_utc": "2026-10-06T22:51:07.103375+00:00",
   "python": "3.10.11",
   "command": [
     "python",
@@ -24,8 +24,8 @@
     "src/paritylab/evaluation.py": "ff053b8471db8249c3d830037ed1535f9c417c3aadf9362f3e6c4a2b8a3a97db",
     "src/paritylab/experiments.py": "378dfe20cefed9708c9f47db732eae994251e1861e530626ce7c341b035a2aaa",
     "src/paritylab/fec.py": "16e84175f736b6719ea3bedcc64d547c12dbdfa33de46d17bd48e3042d16f814",
-    "src/paritylab/server.py": "b35f748263186808a5e9513b78df610bfb867c41c11ded58dcc3298922881bf4",
-    "src/paritylab/simulation.py": "6b69082b8d0876659cddc3533e4c3473a40feb3b17204fef8792d41771bbdcbf",
+    "src/paritylab/server.py": "f17a864fda21415dcfc0d225f584f05c861f436f7621a7af59ec0bf932383838",
+    "src/paritylab/simulation.py": "037e0d909e12554fa16208f385a87eac13babb7c126d34f392893034d4ea5b31",
     "src/paritylab/socket_transport.py": "f4c8bd6b10f4b0f0c077e33615c2e2cd0643eaa7fc624bc547d66910a73eb296",
     "src/paritylab/studies.py": "b8d7cd4947eea4a87d8b38c0426ef3c4441f55bdeb39af3d5c4d18d9b83a4f3e",
     "src/paritylab/udp_demo.py": "a986da5cdc989c12fde31b0a7a96e778db3d46faca8fd934ebb535e95d3ba834",
@@ -34,8 +34,9 @@
     "tests/test_controller.py": "16ae16f40c4518fbcb429d322e50c29634d7420671c38472691dcc01a89470c1",
     "tests/test_evaluation.py": "dd28c017e898661c52eb5254cbe26b09e8b32ba11434c2a1608a88ec686e38f0",
     "tests/test_fec.py": "02c9118211ebb8824f13ab5fd9d2b8e4cb322b80c98fe65ff803a5fdc28f69ea",
-    "tests/test_server.py": "370a6e8ab7af7c46d0db39393e72ad9a43d5fed78b7966d4f235a672eda1d73c",
-    "tests/test_simulation.py": "dac00266603ef6e7e78783a2875f7e75f19f788722611ce6b272327af374e1bb",
+    "tests/test_provenance.py": "dee412a7038dc9ff0438f0ac2108fd46e684abac8e686a0a9cdc96e33ecf5158",
+    "tests/test_server.py": "9012e257f25451a813d1c3e8d4ee4ed0caf9f4c6cc3867b8a4e00ef8aa24c45b",
+    "tests/test_simulation.py": "308229b8e3fa776d0c43ab6718589b4cc28a8b8af4527050fc2a86d09a607579",
     "tests/test_socket_transport.py": "38dbcc2fa3b80be490c9b7248784809ec439482e1c0989c489d310598a7ec164",
     "tests/test_studies.py": "7831fc32f13ec2ab7ef3f1ca525b976e7d7acf328a9bef67dc56bfa0434fb8e1",
     "tests/test_udp.py": "1380f5bf6f0323392cc4b0427d15c8e1e9c03c5332e354b883a367b2aa8f1a47"
@@ -43,34 +44,46 @@
   "measurements": {
     "experiments": {
       "records_checked": 260,
-      "source_current": true,
+      "source_current": false,
+      "source_verified": true,
+      "archived_revision": "1ee75227af7288491722a42813203a136ed37948",
       "passed": true
     },
     "studies/sensitivity": {
       "records_checked": 370,
-      "source_current": true,
+      "source_current": false,
+      "source_verified": true,
+      "archived_revision": "1ee75227af7288491722a42813203a136ed37948",
       "passed": true
     },
     "studies/equal-overhead": {
       "records_checked": 160000,
-      "source_current": true,
+      "source_current": false,
+      "source_verified": true,
+      "archived_revision": "1ee75227af7288491722a42813203a136ed37948",
       "passed": true
     },
     "congestion": {
       "records_checked": 70,
-      "source_current": true,
+      "source_current": false,
+      "source_verified": true,
+      "archived_revision": "1ee75227af7288491722a42813203a136ed37948",
       "passed": true
     },
     "socket-evaluation": {
       "records_checked": 36,
-      "source_current": true,
+      "source_current": false,
+      "source_verified": true,
+      "archived_revision": "1ee75227af7288491722a42813203a136ed37948",
       "passed": true
     },
     "calibration": {
       "records_checked": 3060000,
       "source_current": true,
+      "source_verified": true,
       "passed": true
     }
   },
-  "measurements_current": true
+  "measurements_verified": true,
+  "measurements_current": false
 }

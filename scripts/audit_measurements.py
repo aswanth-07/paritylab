@@ -4,6 +4,7 @@ import gzip
 import hashlib
 import json
 import io
+import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,15 +21,38 @@ def digest(path):
     return hashlib.sha256(artifact_bytes(path)).hexdigest()
 
 
-def audit():
+def source_status(recorded, root=ROOT, *, require_current=False):
+    """Verify measured bytes without mistaking historical runs for current runs."""
+    paths = {file if file.startswith("src/") else "src/paritylab/" + file: expected
+             for file, expected in recorded.items()}
+    current = all((root / file).is_file() and hashlib.sha256((root / file).read_bytes()).hexdigest() == expected
+                  for file, expected in paths.items())
+    if current:
+        return {"source_current": True, "source_verified": True}
+    if require_current:
+        raise ValueError("Recorded measurements do not match current source; reproduce them")
+    directory = root / "output/measured-source"
+    index = directory / "index.json"
+    if index.is_file():
+        for item in json.loads(index.read_text(encoding="utf-8"))["archives"]:
+            if Path(item["file"]).name != item["file"]:
+                raise ValueError("Measured source archive must be a local filename")
+            archive_path = directory / item["file"]
+            if hashlib.sha256(archive_path.read_bytes()).hexdigest() != item["sha256"]:
+                raise ValueError("Measured source archive hash mismatch")
+            with zipfile.ZipFile(archive_path) as archive:
+                if all(file in archive.namelist() and hashlib.sha256(archive.read(file)).hexdigest() == expected
+                       for file, expected in paths.items()):
+                    return {"source_current": False, "source_verified": True, "archived_revision": item["revision"]}
+    raise ValueError("Recorded source differs from the checkout and has no matching verified archive")
+
+
+def audit(*, require_current=False):
     results = {}
     for name in ("experiments", "studies/sensitivity", "studies/equal-overhead", "congestion", "socket-evaluation", "calibration"):
         directory = ROOT / "output" / name
         manifest = json.loads((directory / "manifest.json").read_text())
-        for file, expected in manifest["source_sha256"].items():
-            path = ROOT / file if file.startswith("src/") else ROOT / "src/paritylab" / file
-            if digest(path) != expected:
-                raise ValueError(f"Stale source for {name}: {file}; reproduce this measurement")
+        sources = source_status(manifest["source_sha256"], require_current=require_current)
         for file, expected in manifest.get("artifacts_sha256", {}).items():
             if digest(directory / file) != expected:
                 raise ValueError(f"Changed measurement artifact: {name}/{file}")
@@ -80,9 +104,12 @@ def audit():
                     expected = hashlib.sha256(sample_data(row["bytes_delivered"])).hexdigest()
                     if not row["completed"] or row["sha256"] != expected or row["application_sha256"] != expected:
                         raise ValueError(f"Transfer byte audit failed: {name}")
-        results[name] = {"records_checked": count, "source_current": True, "passed": True}
+        results[name] = {"records_checked": count, **sources, "passed": True}
     return results
 
 
 if __name__ == "__main__":
-    print(json.dumps(audit(), indent=2))
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--require-current", action="store_true", help="Reject verified historical sources; require new measurements")
+    print(json.dumps(audit(require_current=parser.parse_args().require_current), indent=2))

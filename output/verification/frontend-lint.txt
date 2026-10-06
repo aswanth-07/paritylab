@@ -1,0 +1,5 @@
+
+> lint
+> eslint web/app.js web/replay.mjs && node scripts/check_css.mjs
+
+CSS parsed without errors or warnings.

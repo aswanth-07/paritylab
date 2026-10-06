@@ -80,6 +80,7 @@ class Result:
     packet_delays_ms: list[float]
     controller_trace: list[dict]
     transmissions: list[dict] = field(default_factory=list)
+    receiver_events: list[dict] = field(default_factory=list)
     application_bytes_delivered: int = 0
     application_sha256: str = ""
     application_completion_time_s: float = 0.0
@@ -113,6 +114,7 @@ def simulate(data: bytes, config: SimulationConfig | None = None, *, capture_tra
     acked, delivered = set(), {}
     first_sent, delivery_time, latest, block_for = {}, {}, {}, {}
     application_time = {}
+    receiver_events = []
     application_base = 0
     blocks = {}
     originals_lost = set()
@@ -151,10 +153,15 @@ def simulate(data: bytes, config: SimulationConfig | None = None, *, capture_tra
         if sequence not in delivered:
             delivered[sequence] = payload
             delivery_time[sequence] = now
+            if capture_transmissions:
+                receiver_events.append({"kind": "receive", "time_s": now, "sequence": sequence,
+                                        "via": "parity" if fec else "data"})
             if fec and latest[sequence][0] == 1:
                 fec_indices.add(sequence)
             while application_base in delivered:
                 application_time[application_base] = now
+                if capture_transmissions:
+                    receiver_events.append({"kind": "release", "time_s": now, "sequence": application_base})
                 application_base += 1
 
     def send_metadata(block_id):
@@ -368,6 +375,7 @@ def simulate(data: bytes, config: SimulationConfig | None = None, *, capture_tra
                   original_data_losses=len(originals_lost), fec_recovered=len(fec_indices),
                   fec_recovery_ratio=len(fec_indices) / len(originals_lost) if originals_lost else 0.0,
                   packet_delays_ms=delays, controller_trace=trace, transmissions=transmissions,
+                  receiver_events=receiver_events,
                   application_bytes_delivered=len(application_output), application_sha256=hashlib.sha256(application_output).hexdigest(),
                   application_completion_time_s=max(application_time.values(), default=0.0),
                   application_mean_delay_ms=sum(application_delays) / len(application_delays) if application_delays else 0.0,

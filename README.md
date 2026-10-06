@@ -43,11 +43,15 @@ Open [http://127.0.0.1:8770](http://127.0.0.1:8770). Keep the terminal open; Ctr
 
 ## Run a comparison
 
-Choose the loss model, packet loss, delay, bandwidth, and file size, then select **Run comparison**. Each protocol gets one seeded trial. The table reports useful throughput, receiver completion time, retransmissions, parity overhead, and byte integrity.
+Choose a preset or set the loss model, packet loss, delay, bandwidth, and file size, then select **Run comparison**. Choose **1 seed** for a single run per protocol or **5 seeds** for five sequential seeds. The five-seed table reports each metric as mean ± sample standard deviation and checks all 20 transfers. It does not perform a significance test.
 
-Select a protocol tab and play or scrub its recorded transmissions. The adaptive protection panel shows the loss estimate, selected mode, predicted failure risk, and whether the model target was feasible. Downloads retain the recorded settings even after you change the controls.
+Select a protocol tab and play or scrub its recorded transmissions. Data and retries, parity, and acknowledgments have separate lanes. **Next loss**, **Next retry**, and **Next repair** seek to recorded events. Select a receiver packet to inspect its attempts, acceptance, and application release. The packet map distinguishes a received packet from bytes available in order.
 
-The **UDP transfer** panel sends a separate 32 KiB file through sender, impairment proxy, and receiver processes. It verifies the actual received file and records all three process IDs. This uses operating-system sockets and wall time; the replay uses simulated time.
+Switch to **Delivery** to compare all four application-delivery curves for the replay seed. Selecting another replay seed changes the recording and controller decisions; the comparison table still summarizes the full seed group. **Present** hides the introduction and lower explanatory panels so the experiment can lead a presentation.
+
+The adaptive decisions panel shows the loss estimate, selected mode, predicted failure risk, and whether the model target was feasible. Select a decision to seek to that block. Recent runs retain the last five completed groups for the current page session. **Copy settings link** saves the completed group's settings, seed count, and selected protocol in a URL that reruns them on the same local server. Downloads also retain recorded settings after you change the controls: CSV includes every trial; JSON includes transmissions, receiver events, and controller decisions.
+
+The **Real UDP transfer** panel sends a separate 32 KiB file through sender, impairment proxy, and receiver processes. It verifies the actual received file and records all three process IDs. This uses operating-system sockets and wall time; the replay uses simulated time. A completed receipt keeps its original settings and remains available if the next transfer fails.
 
 See the [presentation walkthrough](docs/ui-demo.md) for clean, burst, and changing-loss examples.
 
@@ -138,9 +142,19 @@ python scripts/build_release.py
 
 Omit `--calibration` to reuse the recorded calibration while rerunning the transport studies. The full calibration runs millions of trials. On Windows, `.\scripts\ready.ps1 -Calibration` performs the complete sequence; `.\scripts\ready.ps1` verifies the saved studies and rebuilds the reports and package.
 
-Every study has a manifest with settings, seed rules, and source/artifact SHA-256 fingerprints. `scripts/verify.py` checks the tests, reference years, raw record counts, received bytes, and measurement provenance. It rejects results whose measured source has changed. `scripts/build_release.py` builds a source archive and wheel, installs the wheel in a fresh environment, runs the suite, and checks socket transfers and offline assets outside the checkout.
+Every study has a manifest with settings, seed rules, and source/artifact SHA-256 fingerprints. `scripts/verify.py` checks the tests, reference years, raw record counts, received bytes, and measurement provenance. The recorded paper studies use an earlier measured revision, preserved in `output/measured-source/` with a checksum index. The audit verifies every recorded source hash against the current checkout or that immutable archive, and reports `source_current: false` for historical matches. A verified archive does not make old studies measurements of the current source.
 
-For the recorded plotting/report environment, install `requirements-reproduction.txt` on Python 3.10. The core has no dependency lock because it uses only the standard library. Optional UI source checks use Node.js 22.13 or newer: run `npm ci` and `npm run lint`. Node.js is not needed to run the demo.
+Require measurements of the current checkout with:
+
+```sh
+python scripts/audit_measurements.py --require-current
+```
+
+That command rejects the historical studies until you reproduce them. Normal verification still checks their archived source and every saved artifact; missing or changed source bytes fail. `scripts/build_release.py` builds a source archive and wheel, installs the wheel in a fresh environment, runs the suite, and checks socket transfers and offline assets outside the checkout.
+
+Use `python scripts/verify.py --no-write` to run the same checks without rewriting the verification receipt or test transcript.
+
+For the recorded plotting/report environment, install `requirements-reproduction.txt` on Python 3.10. The core has no dependency lock because it uses only the standard library. Optional UI source checks use Node.js 22.13 or newer: run `npm ci`, `npm run lint`, and `npm test`. Frontend tests check replay state, event seeking, sample deviation, and CSV contents. Node.js is not needed to run the demo.
 
 The large congestion JSON and equal-budget CSV are stored as lossless `.gz` files. Their manifests hash the original uncompressed bytes, and the audit reads either form. Reproduction writes raw local copies and refreshes the compressed copies. Git preserves file bytes, including line endings, so a checkout retains the recorded source hashes. Release archives and local browser-review files are generated locally rather than committed.
 
@@ -171,7 +185,7 @@ Adaptive FEC, XOR repair, row/column parity, and hybrid FEC/ARQ are established 
 - The UDP protocol binds to loopback and lacks peer authentication, encryption, and an Internet congestion controller. CRC and SHA-256 checks detect accidental errors; they do not authenticate a sender.
 - The shared AIMD evaluator is a teaching model. Its fairness and timing results do not establish TCP/QUIC compatibility or Internet performance.
 - Virtual-time results and socket wall-clock results have different timing boundaries. Operating-system scheduling changes real socket arrival order and timings.
-- The UI reports one seeded run per protocol. Use the experiment suite for multi-seed comparisons.
+- The UI supports one or five seeds per protocol. These small interactive samples are separate from the registered experiment suite and do not establish a general performance ranking.
 
 ## Documentation and references
 

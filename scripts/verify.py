@@ -1,5 +1,6 @@
 """Run correctness checks and save a machine-readable verification receipt."""
 import hashlib
+import argparse
 import json
 import os
 import platform
@@ -12,15 +13,17 @@ from audit_measurements import audit
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def main():
+def main(*, write_receipt=True):
     output = ROOT / "output/verification"
-    output.mkdir(parents=True, exist_ok=True)
+    if write_receipt:
+        output.mkdir(parents=True, exist_ok=True)
     env = os.environ.copy()
     env["PYTHONPATH"] = str(ROOT / "src")
     run = subprocess.run([sys.executable, "-m", "unittest", "discover", "-s", "tests", "-v"], cwd=ROOT,
                          env=env, text=True, capture_output=True)
     transcript = run.stdout + run.stderr
-    (output / "tests.txt").write_text(transcript, encoding="utf-8")
+    if write_receipt:
+        (output / "tests.txt").write_text(transcript, encoding="utf-8")
     reference_audit = json.loads((ROOT / "docs/reference-audit.json").read_text(encoding="utf-8"))
     reference_check = all(2020 <= item["year"] <= 2026 for item in reference_audit["sources"]) and len(reference_audit["sources"]) == 7
     experiment_path = ROOT / "output/experiments/runs.json"
@@ -39,16 +42,21 @@ def main():
                "experiment_integrity": experiment_check, "source_sha256": fingerprints}
     try:
         receipt["measurements"] = audit()
-        receipt["measurements_current"] = True
+        receipt["measurements_verified"] = True
+        receipt["measurements_current"] = all(row["source_current"] for row in receipt["measurements"].values())
     except (ValueError, KeyError, OSError) as error:
         receipt["measurements_current"] = False
+        receipt["measurements_verified"] = False
         receipt["measurement_error"] = str(error)
-    (output / "receipt.json").write_text(json.dumps(receipt, indent=2), encoding="utf-8")
+    if write_receipt:
+        (output / "receipt.json").write_text(json.dumps(receipt, indent=2), encoding="utf-8")
     print(transcript, end="")
     print(f"Reference year check: {reference_check}; experiment integrity: {experiment_check}")
-    print(f"Measurement provenance: {receipt['measurements_current']}")
-    return 0 if run.returncode == 0 and reference_check and experiment_check is not False and receipt["measurements_current"] else 1
+    print(f"Measurement provenance verified: {receipt['measurements_verified']}; current source: {receipt['measurements_current']}")
+    return 0 if run.returncode == 0 and reference_check and experiment_check is not False and receipt["measurements_verified"] else 1
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--no-write", action="store_true", help="Run all checks without rewriting verification receipts")
+    sys.exit(main(write_receipt=not parser.parse_args().no_write))

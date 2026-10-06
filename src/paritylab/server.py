@@ -114,7 +114,8 @@ class DemoHandler(BaseHTTPRequestHandler):
             self.respond(200, {"ok": True, "engine": "Python event-driven emulator", "schemes": list(SCHEMES)})
             return
         allowed = {"/": (WEB_ROOT / "index.html"), "/index.html": WEB_ROOT / "index.html",
-                   "/app.js": WEB_ROOT / "app.js", "/styles.css": WEB_ROOT / "styles.css",
+                   "/app.js": WEB_ROOT / "app.js", "/replay.mjs": WEB_ROOT / "replay.mjs",
+                   "/styles.css": WEB_ROOT / "styles.css",
                    "/proposal.pdf": PDF_ROOT / "proposal-2020-2026.pdf",
                    "/report.pdf": PDF_ROOT / "project-report.pdf"}
         target = allowed.get(path)

@@ -35,6 +35,18 @@ class ServerTests(unittest.TestCase):
             data = [event for event in row["transmissions"] if event["kind"] == "data"]
             self.assertEqual(len(data), row["data_transmissions"])
             self.assertTrue(all(e["arrival_s"] >= e["start_s"] for e in row["transmissions"]))
+            received = [event for event in row["receiver_events"] if event["kind"] == "receive"]
+            released = [event for event in row["receiver_events"] if event["kind"] == "release"]
+            self.assertEqual(len(received), 8)
+            self.assertEqual([event["sequence"] for event in released], list(range(8)))
+
+    def test_replay_module_is_served_as_javascript(self):
+        with closing(HTTPConnection("127.0.0.1", self.server.server_port, timeout=10)) as connection:
+            connection.request("GET", "/replay.mjs")
+            response = connection.getresponse()
+            self.assertEqual(response.status, 200)
+            self.assertIn("javascript", response.getheader("Content-Type"))
+            self.assertIn(b"prepareReplay", response.read())
 
     def test_invalid_and_nonfinite_settings_are_rejected(self):
         for body in ({"file_kib": 500}, {"window": 0}, {"seed": True}, {"scenario": "invalid"}, {"delay_ms": float("nan")}):

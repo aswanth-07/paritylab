@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Rework the local demo with plain labels, separate transmission lanes, packet inspection, event jumps, and in-order delivery curves.
+- Add five-seed comparisons, session run history, recorded-settings links, and presentation mode.
+- Record receiver acceptance and application release for replay without changing transport measurements.
+- Preserve measured source for saved studies in a checksum-verified archive and distinguish historical verification from current-source measurements.
+- Check replay reconstruction, statistical summaries, CSV exports, and historical-source integrity in the test suites.
+
 ## 1.0.0 — 2026-10-05
 
 - Implement Go-Back-N, Selective Repeat, fixed XOR, and adaptive parity over binary payloads.

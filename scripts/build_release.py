@@ -84,7 +84,7 @@ def main():
                         raise RuntimeError("Installed server failed to start") from error
                     time.sleep(.05)
             assets = {}
-            for path in ("/", "/app.js", "/styles.css", "/assets/fonts/Atkinson-Regular.ttf", "/assets/fonts/Atkinson-Bold.ttf", "/proposal.pdf", "/report.pdf"):
+            for path in ("/", "/app.js", "/replay.mjs", "/styles.css", "/assets/fonts/Atkinson-Regular.ttf", "/assets/fonts/Atkinson-Bold.ttf", "/proposal.pdf", "/report.pdf"):
                 with urllib.request.urlopen(f"http://127.0.0.1:{port}{path}", timeout=2) as response:
                     wire = response.read()
                     if not wire or response.status != 200:

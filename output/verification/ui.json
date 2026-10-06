@@ -1,37 +1,68 @@
 {
-  "date": "2026-10-05",
+  "date": "2026-10-07",
   "browser": "Chromium-based in-app browser",
   "viewports": [
     {
-      "width": 1505,
-      "height": 1045
+      "width": 1440,
+      "height": 1000
     },
     {
       "width": 390,
       "height": 844
     },
     {
-      "width": 1266,
-      "height": 713
+      "width": 432,
+      "height": 668
     }
   ],
   "checks": {
     "four_verified_protocol_results": true,
+    "five_seeds_twenty_verified_transfers": true,
+    "all_four_presets": true,
+    "shared_settings_reload": true,
+    "changed_settings_identified": true,
+    "session_run_restoration": true,
+    "replay_seed_switch": true,
     "keyboard_protocol_tabs": true,
-    "playback": true,
+    "packet_map_single_tab_stop": true,
+    "packet_map_arrows_home_end_and_tab_exit": true,
+    "play_pause_restart_and_scrub": true,
+    "recorded_loss_retry_and_repair_seeking": true,
+    "receiver_acceptance_and_in_order_release": true,
     "controller_block_seek": true,
-    "csv_matches_json": true,
+    "delivery_view": true,
+    "presentation_mode": true,
+    "csv_content_unit_tests": true,
+    "csv_and_json_export_actions": true,
     "three_process_socket_transfer": true,
     "received_socket_bytes": 32768,
-    "recorded_configuration_retained_after_control_changes": true,
     "no_page_horizontal_overflow": true,
-    "no_console_warnings_or_errors": true
+    "no_console_warnings_or_errors": true,
+    "shared_settings_same_document_and_queued_during_run": true
   },
-  "source_sha256": {
-    "web/index.html": "327598eb6d8a9e25411f56c37a2850d089d7b69d55f7e86664c3a03e52de5b74",
-    "web/styles.css": "2453cace6727a2708bf3b37462c02765f9d46afe4faf59e81c123febb20e4a91",
-    "web/app.js": "a0c5c1869e773b5b3369a33706ab6011a11e0a57d178e38aabfde2b0926a0b63"
+  "socket_receipt": {
+    "protocol": "adaptive",
+    "seed": 7,
+    "bytes": 32768,
+    "sender_wall_time_s": 0.797,
+    "retries": 8,
+    "parity_packets": 23,
+    "in_order_releases": 64,
+    "process_ids": [
+      66128,
+      77124,
+      61280
+    ],
+    "received_sha256": "84e17dfa5754beda138115fd50a4756b294e655f5a1a94646b6c891c78a687ad"
   },
   "screenshot": "docs/demo.jpg",
-  "scope": "Local browser interaction checks; no cross-browser certification. Download event waiting timed out, so saved downloads were checked directly."
+  "scope": "Local browser interaction checks and frontend content tests; no cross-browser certification. Clipboard action reported success but the browser tool could not read back the copied text. Shared-settings reload was checked independently. Blob export actions reported success; completed browser download-file receipts are unavailable, and CSV contents were verified through tests.",
+  "source_sha256": {
+    "web/index.html": "366c10b578bc9438a6862d3ff85f60343c8e63347a137fe5d1cfc94060ffbeed",
+    "web/styles.css": "b840e7d534c67b14f722314966cb6ba765d2cc3ec4f3b641a06c59fd6a8ca293",
+    "web/app.js": "db09ffd6497e89042a37bf549d14f2e3aa7186c5b1a486af8c1019e2949d38f1",
+    "web/replay.mjs": "9e3c2c5c83a33a009d2953100a49e016d2bfa653aaaed3d8484f671bb1d1e17e",
+    "src/paritylab/server.py": "f17a864fda21415dcfc0d225f584f05c861f436f7621a7af59ec0bf932383838",
+    "src/paritylab/simulation.py": "037e0d909e12554fa16208f385a87eac13babb7c126d34f392893034d4ea5b31"
+  }
 }

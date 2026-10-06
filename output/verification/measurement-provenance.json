@@ -1,0 +1,43 @@
+{
+  "experiments": {
+    "records_checked": 260,
+    "source_current": false,
+    "source_verified": true,
+    "archived_revision": "1ee75227af7288491722a42813203a136ed37948",
+    "passed": true
+  },
+  "studies/sensitivity": {
+    "records_checked": 370,
+    "source_current": false,
+    "source_verified": true,
+    "archived_revision": "1ee75227af7288491722a42813203a136ed37948",
+    "passed": true
+  },
+  "studies/equal-overhead": {
+    "records_checked": 160000,
+    "source_current": false,
+    "source_verified": true,
+    "archived_revision": "1ee75227af7288491722a42813203a136ed37948",
+    "passed": true
+  },
+  "congestion": {
+    "records_checked": 70,
+    "source_current": false,
+    "source_verified": true,
+    "archived_revision": "1ee75227af7288491722a42813203a136ed37948",
+    "passed": true
+  },
+  "socket-evaluation": {
+    "records_checked": 36,
+    "source_current": false,
+    "source_verified": true,
+    "archived_revision": "1ee75227af7288491722a42813203a136ed37948",
+    "passed": true
+  },
+  "calibration": {
+    "records_checked": 3060000,
+    "source_current": true,
+    "source_verified": true,
+    "passed": true
+  }
+}

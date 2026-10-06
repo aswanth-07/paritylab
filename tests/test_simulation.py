@@ -7,6 +7,26 @@ from paritylab.simulation import SCHEMES, SimulationConfig, simulate
 
 
 class SimulatorTests(unittest.TestCase):
+    def test_replay_records_receiver_state_without_changing_measurements(self):
+        data = sample_data(17321)
+        for scheme in SCHEMES:
+            with self.subTest(scheme=scheme):
+                config = SimulationConfig(scheme=scheme, seed=7, channel=ChannelConfig(loss=.2, ack_loss=.1))
+                plain = simulate(data, config).to_dict()
+                captured = simulate(data, config, capture_transmissions=True).to_dict()
+                events = captured.pop("receiver_events")
+                captured.pop("transmissions")
+                self.assertEqual(plain.pop("receiver_events"), [])
+                plain.pop("transmissions")
+                self.assertEqual(captured, plain)
+                received = [event for event in events if event["kind"] == "receive"]
+                released = [event for event in events if event["kind"] == "release"]
+                self.assertEqual(len(received), 17)
+                self.assertEqual([event["sequence"] for event in released], list(range(17)))
+                self.assertEqual(max(event["time_s"] for event in received), plain["completion_time_s"])
+                self.assertEqual(max(event["time_s"] for event in released), plain["application_completion_time_s"])
+                self.assertTrue(all(left["time_s"] <= right["time_s"] for left, right in zip(events, events[1:])))
+
     def test_all_schemes_preserve_bytes_across_loss_models(self):
         data = sample_data(17293)
         for model in ("bernoulli", "gilbert-elliott"):

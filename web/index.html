@@ -4,122 +4,70 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#eeeade">
-  <title>ParityLab — packet recovery experiments</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23bc471e'/%3E%3Cpath d='M10 23V9h7a4 4 0 0 1 0 8h-7' fill='none' stroke='white' stroke-width='3'/%3E%3C/svg%3E">
+  <title>ParityLab — packet recovery</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23b83f16'/%3E%3Cpath d='M10 23V9h7a4 4 0 0 1 0 8h-7' fill='none' stroke='white' stroke-width='3'/%3E%3C/svg%3E">
   <link rel="preload" href="/assets/fonts/Atkinson-Bold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="/styles.css">
-  <script defer src="/app.js"></script>
+  <script type="module" src="/app.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#experiment">Skip to experiment</a>
   <header class="site-header">
-    <a class="brand" href="/" aria-label="ParityLab home">ParityLab</a>
-    <a class="proposal-link" href="/report.pdf" target="_blank" rel="noopener">Report <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></a>
+    <a class="brand" href="/" aria-label="ParityLab home"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M5 23V5h9a5 5 0 0 1 0 10H5"/></svg>ParityLab</a>
+    <nav aria-label="Project"><a href="/report.pdf" target="_blank" rel="noopener">Report <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></a><button type="button" class="secondary compact" id="present" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5m6 0h5v5M4 15v5h5m6 0h5v-5"/></svg><span>Present</span></button></nav>
   </header>
   <main>
-    <div class="intro"><h1>Compare packet recovery</h1><p>Run four protocols under packet loss. Compare retries, parity overhead, and delivery time.</p></div>
+    <div class="intro"><div><h1>Packet recovery</h1><p>Compare four protocols under the same channel settings.</p></div><span class="local-label">Local simulation · byte-verified results</span></div>
     <div class="experiment" id="experiment">
-      <aside class="setup">
-        <h2>Network conditions</h2>
+      <aside class="setup" aria-labelledby="setup-title">
+        <h2 id="setup-title">Channel settings</h2>
         <form id="settings">
-          <div class="field model-field">
-            <label for="scenario">Loss model</label>
-            <select id="scenario" name="scenario"><option value="random">Independent (random)</option><option value="burst">Burst loss</option><option value="changing">Changing loss</option></select>
-          </div>
-          <div class="field slider-field">
-            <div class="field-label"><label for="loss">Packet loss</label><output id="loss-value" for="loss">10%</output></div>
-            <input id="loss" name="loss_percent" type="range" min="0" max="30" step="1" value="10">
-            <div class="range-ends" aria-hidden="true"><span>0%</span><span>30%</span></div>
-          </div>
-          <div class="field slider-field">
-            <div class="field-label"><label for="delay">One-way delay</label><output id="delay-value" for="delay">50 ms</output></div>
-            <input id="delay" name="delay_ms" type="range" min="0" max="200" step="5" value="50">
-            <div class="range-ends" aria-hidden="true"><span>0 ms</span><span>200 ms</span></div>
-          </div>
-          <div class="field slider-field">
-            <div class="field-label"><label for="bandwidth">Bandwidth</label><output id="bandwidth-value" for="bandwidth">5 Mbps</output></div>
-            <input id="bandwidth" name="bandwidth_mbps" type="range" min="0.25" max="20" step="0.25" value="5">
-            <div class="range-ends" aria-hidden="true"><span>0.25 Mbps</span><span>20 Mbps</span></div>
-          </div>
-          <div class="field file-field">
-            <label for="file-size">File size</label>
-            <select id="file-size" name="file_kib"><option value="8">8 KiB</option><option value="32">32 KiB</option><option value="64" selected>64 KiB</option><option value="128">128 KiB</option><option value="256">256 KiB</option></select>
-          </div>
+          <fieldset class="presets"><legend>Load a scenario</legend><div><button type="button" data-preset="clean">Clean link</button><button type="button" data-preset="random" aria-pressed="true">Random loss</button><button type="button" data-preset="burst">Burst loss</button><button type="button" data-preset="changing">Changing loss</button></div></fieldset>
+          <div class="field"><label for="scenario">Loss model</label><select id="scenario"><option value="random">Independent</option><option value="burst">Burst</option><option value="changing">Changing</option></select><p id="scenario-help" class="field-help">Each forward transmission has an independent chance of loss.</p></div>
+          <div class="field"><div class="field-label"><label for="loss">Packet loss</label><output id="loss-value" for="loss">10%</output></div><input id="loss" type="range" min="0" max="30" step="1" value="10"><div class="range-ends" aria-hidden="true"><span>0%</span><span>30%</span></div></div>
+          <div class="field"><div class="field-label"><label for="delay">One-way delay</label><output id="delay-value" for="delay">50 ms</output></div><input id="delay" type="range" min="0" max="200" step="5" value="50"><div class="range-ends" aria-hidden="true"><span>0 ms</span><span>200 ms</span></div></div>
+          <div class="field"><div class="field-label"><label for="bandwidth">Bandwidth</label><output id="bandwidth-value" for="bandwidth">5 Mbps</output></div><input id="bandwidth" type="range" min="0.25" max="20" step="0.25" value="5"><div class="range-ends" aria-hidden="true"><span>0.25 Mbps</span><span>20 Mbps</span></div></div>
+          <div class="field-pair"><div class="field"><label for="file-size">File size</label><select id="file-size"><option value="8">8 KiB</option><option value="32">32 KiB</option><option value="64" selected>64 KiB</option><option value="128">128 KiB</option><option value="256">256 KiB</option></select></div><div class="field"><label for="trial-count">Compare</label><select id="trial-count"><option value="1">1 seed</option><option value="5">5 seeds</option></select></div></div>
+          <details class="advanced"><summary>More settings</summary><div class="advanced-fields"><div class="field"><label for="window">Window (packets)</label><input id="window" type="number" min="1" max="128" step="1" value="32" required></div><div class="field"><label for="seed">Starting seed</label><input id="seed" type="number" min="0" max="999995" step="1" value="7" required></div><div class="field"><label for="ack-loss">ACK loss (%)</label><input id="ack-loss" type="number" min="0" max="20" step="1" value="0" required></div></div></details>
           <button class="primary run-button" id="run" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="filled" d="m8 5 11 7-11 7Z"/></svg><span>Run comparison</span></button>
           <p id="run-status" class="form-status" role="status" aria-live="polite"></p>
-          <div class="presets" aria-label="Presentation presets"><span>Try a scenario</span><div><button type="button" data-preset="clean">Clean</button><button type="button" data-preset="burst">Bursts</button><button type="button" data-preset="changing">Changing</button></div></div>
-          <details class="advanced"><summary>Advanced settings</summary><div class="advanced-fields">
-            <div class="field"><label for="window">Window (packets)</label><input id="window" type="number" min="1" max="128" step="1" value="32" required></div>
-            <div class="field"><label for="seed">Random seed</label><input id="seed" type="number" min="0" max="999999" step="1" value="7" required></div>
-            <div class="field"><label for="ack-loss">ACK loss (%)</label><input id="ack-loss" type="number" min="0" max="20" step="1" value="0" required></div>
-          </div></details>
+          <progress id="run-progress" max="5" value="0" hidden aria-label="Completed seeds"></progress>
         </form>
+        <div class="session-tools"><label for="run-history">Recent runs</label><select id="run-history" disabled><option>No completed runs</option></select><button type="button" class="text-button" id="copy-link" disabled>Copy settings link <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 14 4-4m-6 6-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0m2 1 1-1a4 4 0 0 1 6 6l-4 4a4 4 0 0 1-6 0"/></svg></button><input id="share-url" readonly aria-label="Settings link" hidden><p id="share-status" role="status" class="field-help"></p></div>
       </aside>
       <div class="evidence">
         <section class="journey" aria-labelledby="journey-title">
-          <div class="journey-heading"><h2 id="journey-title">Packet replay</h2><ul class="legend" aria-label="Packet legend"><li><span class="mark data"></span>Data</li><li><svg class="mark lost" viewBox="0 0 20 20" aria-hidden="true"><path d="m3 3 14 14M17 3 3 17"/></svg>Lost</li><li><span class="mark parity"></span>Parity</li><li><span class="mark ack"></span>ACK</li></ul></div>
-          <div class="protocol-tabs" role="tablist" aria-label="Choose a scheme to replay">
-            <button type="button" id="tab-gbn" role="tab" aria-selected="true" aria-controls="journey-panel" data-scheme="gbn">Go-Back-N</button>
-            <button type="button" id="tab-sr" role="tab" aria-selected="false" aria-controls="journey-panel" tabindex="-1" data-scheme="sr">Selective Repeat</button>
-            <button type="button" id="tab-fixed" role="tab" aria-selected="false" aria-controls="journey-panel" tabindex="-1" data-scheme="fixed">Fixed XOR</button>
-            <button type="button" id="tab-adaptive" role="tab" aria-selected="false" aria-controls="journey-panel" tabindex="-1" data-scheme="adaptive">Adaptive FEC</button>
-          </div>
+          <div class="journey-heading"><h2 id="journey-title">Packet replay</h2><div class="stage-actions"><label class="sr-only" for="replay-seed">Replay seed</label><select id="replay-seed" disabled><option>Seed 7</option></select><div class="view-switch" role="group" aria-label="Replay view"><button type="button" id="view-packets" aria-pressed="true">Packets</button><button type="button" id="view-delivery" aria-pressed="false">Delivery</button></div></div></div>
+          <div class="protocol-tabs" role="tablist" aria-label="Protocol to replay"><button type="button" id="tab-gbn" role="tab" aria-selected="true" aria-controls="journey-panel" data-scheme="gbn">Go-Back-N</button><button type="button" id="tab-sr" role="tab" aria-selected="false" aria-controls="journey-panel" tabindex="-1" data-scheme="sr">Selective Repeat</button><button type="button" id="tab-fixed" role="tab" aria-selected="false" aria-controls="journey-panel" tabindex="-1" data-scheme="fixed">Fixed XOR</button><button type="button" id="tab-adaptive" role="tab" aria-selected="false" aria-controls="journey-panel" tabindex="-1" data-scheme="adaptive">Adaptive parity</button></div>
           <div id="journey-panel" role="tabpanel" aria-labelledby="tab-gbn">
-            <canvas id="packet-canvas" role="img" aria-label="Packet replay. The comparison is loading."></canvas>
-            <div class="playback">
-              <button type="button" id="play" class="play-button" aria-label="Play packet replay" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path class="filled" d="m8 5 11 7-11 7Z"/></svg></button>
-              <output class="time-readout" id="time-readout" aria-live="off">0.00 s / —</output>
-              <label class="sr-only" for="scrubber">Replay time</label><input type="range" id="scrubber" min="0" max="1000" step="1" value="0" disabled>
-              <output class="end-time" id="end-time">—</output>
-            </div>
+            <p id="scheme-explanation" class="scheme-explanation">Go-Back-N discards out-of-order packets and retries its outstanding window.</p>
+            <div class="replay-visual" id="packet-view"><canvas id="packet-canvas" role="img" aria-label="Loading recorded transmissions."></canvas></div>
+            <div class="replay-visual" id="delivery-view" hidden><ul class="chart-legend" id="chart-legend" aria-label="Delivery curves"></ul><svg id="delivery-chart" viewBox="0 0 900 220" role="img" aria-label="Useful bytes released in order over time"></svg><p class="chart-note">In-order application delivery · replay seed only · select a point to seek</p></div>
+            <div class="replay-counters" id="replay-counters"><span><strong id="count-sent">0</strong> sent</span><span><strong id="count-lost">0</strong> lost</span><span><strong id="count-retry">0</strong> retries</span><span><strong id="count-repair">0</strong> repaired</span><span class="delivery-count"><strong id="count-delivered">0 / 64</strong> received</span></div>
+            <div class="playback"><button type="button" id="play" class="play-button" aria-label="Play packet replay" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path class="filled" d="m8 5 11 7-11 7Z"/></svg></button><button type="button" id="restart" class="icon-button" aria-label="Restart replay" title="Restart replay" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 0 5m0-11v6h6"/></svg></button><output class="time-readout" id="time-readout">0.000 s</output><label class="sr-only" for="scrubber">Replay time</label><input type="range" id="scrubber" min="0" max="10000" step="1" value="0" disabled><output id="end-time">—</output><label class="sr-only" for="speed">Playback speed</label><select id="speed"><option value="0.1">0.1×</option><option value="0.25" selected>0.25×</option><option value="1">1×</option><option value="4">4×</option></select></div>
+            <div class="event-tools"><span id="replay-state">Loading</span><div><button type="button" id="next-loss" disabled>Next loss</button><button type="button" id="next-retry" disabled>Next retry</button><button type="button" id="next-repair" disabled>Next repair</button></div></div>
+            <div class="receiver-heading"><h3>Receiver packets</h3><span id="release-status">0 KiB available in order</span></div>
+            <div class="packet-map" id="packet-map" role="group" aria-label="Inspect a receiver packet" aria-describedby="packet-navigation"></div>
+            <div class="packet-key"><span><i class="packet-swatch waiting"></i>Waiting</span><span><i class="packet-swatch flight"></i>In flight</span><span><i class="packet-swatch retry"></i>Retry in flight</span><span><i class="packet-swatch lost"></i>Lost</span><span><i class="packet-swatch discarded"></i>Discarded out of order</span><span><i class="packet-swatch received"></i>Received</span><span><i class="packet-swatch repaired"></i>Repaired</span><span>Outline = selected packet</span></div>
+            <p id="packet-navigation" class="sr-only">Arrow keys move between packets. Home and End select the first and last packet.</p>
+            <div class="packet-inspector" id="packet-inspector"><div class="inspector-heading"><h3 id="packet-title">Select a packet</h3><span id="packet-status">Select a recorded event to seek.</span></div><div id="packet-attempts"></div></div>
+            <details class="replay-help"><summary>About this replay</summary><p>Timings, losses, and receiver state are recorded by the simulator. Positions on the link are illustrative. A received packet may wait for earlier packets before the application can read it. Space plays or pauses when focus is outside a control; R restarts and L seeks the next loss.</p></details>
           </div>
         </section>
-        <section class="comparison" aria-label="Measured comparison">
-          <div class="table-scroll" tabindex="0" role="region" aria-label="Comparison table; scroll horizontally on a small screen">
-            <table id="results-table"><caption class="sr-only">Measured results from one seeded trial per scheme. Useful throughput excludes redundant bytes.</caption>
-              <thead><tr><th scope="col">Measured results</th><th scope="col" data-column="gbn" class="selected-column">Go-Back-N</th><th scope="col" data-column="sr">Selective Repeat</th><th scope="col" data-column="fixed">Fixed XOR</th><th scope="col" data-column="adaptive">Adaptive FEC</th></tr></thead>
-              <tbody id="results-body"><tr><th scope="row">Goodput (Mbps)</th><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><th scope="row">Completion (s)</th><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><th scope="row">Retries</th><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><th scope="row">Added parity</th><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><th scope="row">Byte check</th><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody>
-            </table>
-          </div>
-          <p class="scroll-hint">Scroll sideways to compare all four schemes.</p>
-        </section>
-        <div class="trial-notes"><p id="trial-config">Loading the first seeded trial…</p><p>Goodput counts useful bytes. Completion ends when the receiver has the file; replay continues until the sender has its ACKs. Bars compare values within each row.</p></div>
+        <section class="comparison" aria-labelledby="comparison-title"><div class="comparison-heading"><h2 id="comparison-title">Comparison</h2><span id="sample-note">One seeded run per protocol</span></div><div class="table-scroll" tabindex="0" role="region" aria-label="Protocol results; scroll horizontally if needed"><table id="results-table"><caption class="sr-only" id="results-caption">Results from one seeded run per protocol</caption><thead><tr><th scope="col">Metric</th><th scope="col" data-column="gbn" class="selected-column">Go-Back-N</th><th scope="col" data-column="sr">Selective Repeat</th><th scope="col" data-column="fixed">Fixed XOR</th><th scope="col" data-column="adaptive">Adaptive parity</th></tr></thead><tbody id="results-body"><tr><th scope="row">Goodput <small>Mbps · higher is better</small></th><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><th scope="row">Completion <small>s · lower is better</small></th><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><th scope="row">Retries</th><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><th scope="row">Parity packets</th><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><th scope="row">File integrity</th><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody></table></div><p id="comparison-summary" class="comparison-summary">Running the initial comparison.</p><p class="scroll-hint">Scroll to see all four protocols.</p></section>
+        <p id="trial-config" class="trial-config">Loading channel settings…</p>
+        <details class="measurement-notes"><summary>How to read these results</summary><p>Goodput counts useful file bytes. Completion is when the receiver has the file; replay continues until the sender has its ACKs. Bars are scaled within each row. Each protocol uses the same settings and seed, but consumes random draws in a different order. Five-seed results show mean ± sample standard deviation, not a confidence interval or a significance test.</p></details>
       </div>
     </div>
     <div class="lab-details">
-      <section class="replay-notes" aria-labelledby="replay-notes-title">
-        <div><h2 id="replay-notes-title">Replay details</h2><p>Recorded transmissions in virtual time. Packet positions and the brief loss marks are illustrative; the drop outcomes and timestamps come from the emulator.</p></div>
-        <div class="replay-tools"><label for="speed">Playback speed</label><select id="speed"><option value="0.25">0.25×</option><option value="1" selected>1×</option><option value="4">4×</option></select><button type="button" id="restart" class="secondary" disabled>Restart replay</button></div>
-        <p id="replay-stats" class="replay-stats">Waiting for the comparison.</p>
-        <p id="scheme-explanation"></p>
-      </section>
       <div class="analysis-grid">
-        <section class="controller" aria-labelledby="controller-title">
-          <h2 id="controller-title">Adaptive protection</h2>
-          <p>Adaptive FEC chooses the least redundancy predicted to keep block failure at or below 1%. If no candidate meets that target, it selects the lowest predicted risk.</p>
-          <label for="controller-block">Inspect a decision and replay its block</label><select id="controller-block" disabled><option>No recorded decisions yet</option></select>
-          <dl class="decision-readout"><div><dt>Protection</dt><dd id="protection-mode">—</dd></div><div><dt>Estimated loss</dt><dd id="estimated-loss">—</dd></div><div><dt>Predicted block failure</dt><dd id="predicted-risk">—</dd></div><div><dt>1% model target</dt><dd id="target-met">—</dd></div></dl>
-          <p class="model-note">The risk model assumes independent data and parity erasures. It is a model target, not a guarantee under bursts or uncertain loss estimates.</p>
-          <details class="trace-details"><summary id="trace-summary">Full controller trace</summary><div class="trace-scroll" tabindex="0" role="region" aria-label="Adaptive controller decisions"><table class="trace-table"><caption class="sr-only">Adaptive decisions for the recorded trial</caption><thead><tr><th scope="col">Time (s)</th><th scope="col">Mode</th><th scope="col">Loss estimate</th><th scope="col">Failure risk</th></tr></thead><tbody id="trace-body"></tbody></table></div></details>
-        </section>
-        <section class="udp-check" aria-labelledby="udp-title">
-          <h2 id="udp-title">UDP transfer</h2>
-          <p>Transfer 32 KiB through separate sender, impairment proxy, and receiver processes. Use the network controls above and verify the actual received bytes.</p>
-          <label for="socket-scheme">Transfer protocol</label><select id="socket-scheme"><option value="gbn">Go-Back-N</option><option value="sr">Selective Repeat</option><option value="fixed">Fixed XOR</option><option value="adaptive" selected>Adaptive FEC</option></select>
-          <p id="udp-config" class="test-spec">32 KiB · adaptive · window 32</p>
-          <button type="button" id="udp-run" class="secondary">Run socket transfer <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></button>
-          <p id="udp-status" class="form-status" role="status" aria-live="polite"></p>
-          <p id="socket-recorded" class="test-spec" hidden></p>
-          <p id="socket-stale" class="model-note" hidden>Settings changed. The result below is the last completed socket trial; run another transfer to apply the new settings.</p>
-          <dl id="udp-result" class="socket-readout" hidden></dl>
-          <button type="button" id="socket-export" class="secondary" hidden>Download transfer JSON</button>
-          <p class="model-note">Sliding windows and all control, data, parity, and ACK messages pass through the proxy. This separate 32 KiB trial uses 512-byte packets and a 25-second transfer budget. Wall time includes process scheduling; it is not directly comparable with virtual time.</p>
-        </section>
+        <section class="controller" aria-labelledby="controller-title"><h2 id="controller-title">Adaptive decisions</h2><p>The controller chooses a block layout using its loss estimate. Select a decision to seek the replay.</p><label for="controller-block">Block decision</label><select id="controller-block" disabled><option>No decisions recorded</option></select><dl class="decision-readout"><div><dt>Protection</dt><dd id="protection-mode">—</dd></div><div><dt>Estimated loss</dt><dd id="estimated-loss">—</dd></div><div><dt>Predicted block failure</dt><dd id="predicted-risk">—</dd></div><div><dt>1% model target</dt><dd id="target-met">—</dd></div></dl><p class="model-note">This policy assumes independent erasures. Its estimate can be wrong under burst or changing loss. A feasible prediction does not guarantee the target.</p><details class="trace-details"><summary id="trace-summary">All decisions</summary><div class="trace-scroll" tabindex="0" role="region" aria-label="Recorded controller decisions"><table class="trace-table"><caption class="sr-only">Adaptive controller decisions for the replay seed</caption><thead><tr><th scope="col">Time (s)</th><th scope="col">Layout</th><th scope="col">Loss estimate</th><th scope="col">Failure risk</th></tr></thead><tbody id="trace-body"></tbody></table></div></details></section>
+        <section class="udp-check" aria-labelledby="udp-title"><h2 id="udp-title">Real UDP transfer</h2><p>Send a separate 32 KiB file through sender, proxy, and receiver processes on this computer.</p><label for="socket-scheme">Transfer protocol</label><select id="socket-scheme"><option value="gbn">Go-Back-N</option><option value="sr">Selective Repeat</option><option value="fixed">Fixed XOR</option><option value="adaptive" selected>Adaptive parity</option></select><p id="udp-config" class="test-spec"></p><button type="button" id="udp-run" class="secondary">Run UDP transfer <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></button><p id="udp-status" class="form-status" role="status" aria-live="polite"></p><p id="socket-recorded" class="test-spec" hidden></p><p id="socket-stale" class="model-note" hidden>Settings changed. This receipt belongs to the previous transfer.</p><dl id="udp-result" class="socket-readout" hidden></dl><button type="button" id="socket-export" class="secondary" hidden>Download transfer JSON</button><details class="socket-notes"><summary>Transfer details</summary><p class="model-note">512-byte packets, sliding windows, and a 25-second transfer budget. The proxy applies impairments to control messages, data, parity, and ACKs. Wall time includes process scheduling and is separate from simulated time.</p></details></section>
       </div>
-      <section class="export-section" aria-labelledby="export-title"><div><h2 id="export-title">Export results</h2><p>Download the comparison table or full replay and controller trace. Each comparison is one seeded trial per protocol; the experiment suite reports averages across seeds.</p></div><div class="export-actions"><button class="secondary" id="export-csv" type="button" disabled>Download CSV</button><button class="secondary" id="export-json" type="button" disabled>Download full JSON</button></div><div class="digest"><span>Expected file SHA-256</span><code id="expected-digest">Waiting for a verified run.</code></div><p id="export-status" role="status" aria-live="polite"></p></section>
-      <footer class="lab-footer"><span>ParityLab · Packet recovery experiments</span><a href="/report.pdf" target="_blank" rel="noopener">Experiment report</a><a href="/proposal.pdf" target="_blank" rel="noopener">Proposal and references (2020–2026)</a></footer>
+      <section class="export-section" aria-labelledby="export-title"><div><h2 id="export-title">Save the results</h2><p>CSV contains every measured trial. JSON includes packet events and controller decisions.</p></div><div class="export-actions"><button class="secondary" id="export-csv" type="button" disabled>Download CSV</button><button class="secondary" id="export-json" type="button" disabled>Download JSON</button></div><details class="digest"><summary>File SHA-256</summary><code id="expected-digest">Waiting for a completed run.</code></details><p id="export-status" role="status" aria-live="polite"></p></section>
+      <footer class="lab-footer"><span>ParityLab · Local packet recovery testbed</span><div><a href="https://github.com/aswanth-07/paritylab" target="_blank" rel="noopener">Source code</a><a href="/report.pdf" target="_blank" rel="noopener">Report</a><a href="/proposal.pdf" target="_blank" rel="noopener">Proposal</a></div></footer>
     </div>
   </main>
-  <noscript><p class="noscript">JavaScript is needed to run the comparison and replay. You can also run <code>python -m paritylab simulate --scheme all</code> from the project folder.</p></noscript>
+  <noscript><p class="noscript">Enable JavaScript for the interactive demo, or run <code>python -m paritylab simulate --scheme all</code> in the project folder.</p></noscript>
 </body>
 </html>
