@@ -1,5 +1,5 @@
 {
-  "recorded_at_utc": "2026-10-06T22:51:07.103375+00:00",
+  "recorded_at_utc": "2026-10-07T04:17:56.504155+00:00",
   "python": "3.10.11",
   "command": [
     "python",
@@ -24,7 +24,7 @@
     "src/paritylab/evaluation.py": "ff053b8471db8249c3d830037ed1535f9c417c3aadf9362f3e6c4a2b8a3a97db",
     "src/paritylab/experiments.py": "378dfe20cefed9708c9f47db732eae994251e1861e530626ce7c341b035a2aaa",
     "src/paritylab/fec.py": "16e84175f736b6719ea3bedcc64d547c12dbdfa33de46d17bd48e3042d16f814",
-    "src/paritylab/server.py": "f17a864fda21415dcfc0d225f584f05c861f436f7621a7af59ec0bf932383838",
+    "src/paritylab/server.py": "216c38e45b70ca97e2750ef74e6c2f2af664a95bb61587116cb4279473e5a19b",
     "src/paritylab/simulation.py": "037e0d909e12554fa16208f385a87eac13babb7c126d34f392893034d4ea5b31",
     "src/paritylab/socket_transport.py": "f4c8bd6b10f4b0f0c077e33615c2e2cd0643eaa7fc624bc547d66910a73eb296",
     "src/paritylab/studies.py": "b8d7cd4947eea4a87d8b38c0426ef3c4441f55bdeb39af3d5c4d18d9b83a4f3e",
@@ -34,10 +34,10 @@
     "tests/test_controller.py": "16ae16f40c4518fbcb429d322e50c29634d7420671c38472691dcc01a89470c1",
     "tests/test_evaluation.py": "dd28c017e898661c52eb5254cbe26b09e8b32ba11434c2a1608a88ec686e38f0",
     "tests/test_fec.py": "02c9118211ebb8824f13ab5fd9d2b8e4cb322b80c98fe65ff803a5fdc28f69ea",
-    "tests/test_provenance.py": "dee412a7038dc9ff0438f0ac2108fd46e684abac8e686a0a9cdc96e33ecf5158",
-    "tests/test_server.py": "9012e257f25451a813d1c3e8d4ee4ed0caf9f4c6cc3867b8a4e00ef8aa24c45b",
+    "tests/test_provenance.py": "43c2f4051a1852ada8fcb9e13229ff318adf6b4f9f5db51cb048e72da3b99661",
+    "tests/test_server.py": "ac50ce75fe1edcac09180eb3ac17c393e32b14d3d27d639ff618400e9ea95e46",
     "tests/test_simulation.py": "308229b8e3fa776d0c43ab6718589b4cc28a8b8af4527050fc2a86d09a607579",
-    "tests/test_socket_transport.py": "38dbcc2fa3b80be490c9b7248784809ec439482e1c0989c489d310598a7ec164",
+    "tests/test_socket_transport.py": "3d02573bbcdd8628d16e27484ad6c46fd84bf68df72b03b3a8a57ee3e6d02d14",
     "tests/test_studies.py": "7831fc32f13ec2ab7ef3f1ca525b976e7d7acf328a9bef67dc56bfa0434fb8e1",
     "tests/test_udp.py": "1380f5bf6f0323392cc4b0427d15c8e1e9c03c5332e354b883a367b2aa8f1a47"
   },

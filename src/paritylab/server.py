@@ -126,9 +126,13 @@ class DemoHandler(BaseHTTPRequestHandler):
         if target is None or not target.is_file():
             self.respond(404, {"error": "That page or file is not available."})
             return
-        content_type = mimetypes.guess_type(target.name)[0] or "application/octet-stream"
-        if target.suffix in {".html", ".js", ".css"}:
-            content_type += "; charset=utf-8"
+        # Host MIME registries can classify ES modules as plain text.
+        content_type = {".html": "text/html; charset=utf-8",
+                        ".js": "text/javascript; charset=utf-8",
+                        ".mjs": "text/javascript; charset=utf-8",
+                        ".css": "text/css; charset=utf-8"}.get(target.suffix)
+        if content_type is None:
+            content_type = mimetypes.guess_type(target.name)[0] or "application/octet-stream"
         self.respond(200, target.read_bytes(), content_type)
 
     def do_POST(self):

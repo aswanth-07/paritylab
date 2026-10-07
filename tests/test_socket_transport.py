@@ -92,7 +92,10 @@ class SocketTransportTests(unittest.TestCase):
 
     def test_one_packet_window_and_zero_loss(self):
         for scheme in ("gbn", "sr", "fixed", "adaptive"):
-            received, row = socket_transfer(b"\x00\xfftail", SocketConfig(scheme=scheme, window=1,
-                channel=ChannelConfig(loss=0, delay_ms=0), max_seconds=5))
-            self.assertEqual(received, b"\x00\xfftail")
-            self.assertEqual(row["sender"]["retransmissions"], 0)
+            with self.subTest(scheme=scheme):
+                # This checks clean-link protocol behavior, not host scheduling latency.
+                received, row = socket_transfer(b"\x00\xfftail", SocketConfig(scheme=scheme, window=1,
+                    channel=ChannelConfig(loss=0, delay_ms=0), timeout_ms=500, max_seconds=5))
+                self.assertEqual(received, b"\x00\xfftail")
+                self.assertEqual(row["sender"]["retransmissions"], 0)
+                self.assertEqual(row["sender"]["peak_outstanding"], 1)

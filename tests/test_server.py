@@ -3,6 +3,7 @@ import threading
 import unittest
 from contextlib import closing
 from http.client import HTTPConnection
+from unittest.mock import patch
 
 from paritylab.server import DemoHandler, DemoServer, run_comparison
 
@@ -41,12 +42,25 @@ class ServerTests(unittest.TestCase):
             self.assertEqual([event["sequence"] for event in released], list(range(8)))
 
     def test_replay_module_is_served_as_javascript(self):
-        with closing(HTTPConnection("127.0.0.1", self.server.server_port, timeout=10)) as connection:
+        with patch("paritylab.server.mimetypes.guess_type", return_value=("text/plain", None)), \
+             closing(HTTPConnection("127.0.0.1", self.server.server_port, timeout=10)) as connection:
             connection.request("GET", "/replay.mjs")
             response = connection.getresponse()
             self.assertEqual(response.status, 200)
-            self.assertIn("javascript", response.getheader("Content-Type"))
+            self.assertEqual(response.getheader("Content-Type"), "text/javascript; charset=utf-8")
             self.assertIn(b"prepareReplay", response.read())
+
+    def test_ui_asset_types_ignore_host_mime_registry(self):
+        for path, expected in (("/", "text/html"), ("/app.js", "text/javascript"), ("/styles.css", "text/css")):
+            with self.subTest(path=path), \
+                 patch("paritylab.server.mimetypes.guess_type", return_value=("application/octet-stream", None)), \
+                 closing(HTTPConnection("127.0.0.1", self.server.server_port, timeout=10)) as connection:
+                connection.request("GET", path)
+                response = connection.getresponse()
+                self.assertEqual(response.status, 200)
+                self.assertEqual(response.getheader("Content-Type"), expected + "; charset=utf-8")
+                self.assertEqual(response.getheader("X-Content-Type-Options"), "nosniff")
+                self.assertTrue(response.read())
 
     def test_invalid_and_nonfinite_settings_are_rejected(self):
         for body in ({"file_kib": 500}, {"window": 0}, {"seed": True}, {"scenario": "invalid"}, {"delay_ms": float("nan")}):

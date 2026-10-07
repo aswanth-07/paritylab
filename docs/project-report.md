@@ -8,7 +8,9 @@ Local experimental evaluation, October 2026
 
 The project implements Go-Back-N, Selective Repeat, fixed XOR parity, and adaptive parity over actual byte payloads. It includes a deterministic event-driven emulator, a three-process localhost UDP transport, a responsive presentation interface with recorded replay, and reproducible raw experiments. The bibliography contains seven sources published within 2020-2026.
 
-The current suite passes 68 tests. Saved evidence covers 260 baseline transfers, 370 one-factor sensitivity transfers, 70 shared-bottleneck runs (140 flow transfers), 36 three-process socket transfers, 160,000 equal-overhead codec trials, 3,060,000 calibration decoder trials, and 225,000 estimated-policy trials. Completed transport outputs are checked against the input bytes and digest. These counts describe separate experiments, not one pooled sample.
+The current suite passes 78 tests. Saved evidence covers 260 baseline transfers, 370 one-factor sensitivity transfers, 70 shared-bottleneck runs (140 flow transfers), 36 three-process socket transfers, 160,000 equal-overhead codec trials, 3,060,000 calibration decoder trials, and 225,000 estimated-policy trials. Completed transport outputs are checked against the input bytes and digest. These counts describe separate experiments, not one pooled sample.
+
+The current correctness tests cover this release. Some saved studies describe an earlier measured revision preserved in output/measured-source/. Verification checks the archived source bytes and each recorded artifact. These historical measurements are not new measurements of this release.
 
 Adaptive parity reduces recovery work in some tested conditions and costs bandwidth in others. The legacy independent-loss controller does not consistently improve goodput under bursts. The 1% block-failure target is conditional on the fitted loss model; it is not an unconditional delivery or Internet performance guarantee.
 
@@ -108,7 +110,7 @@ The congestion evaluator is a teaching model with ACK-clocked growth and timeout
 | Multi-seed loss / burst / changing studies and plots | experiments.py | 260 runs; summary.csv; CDF and timeline |
 | Sensitivity and matched parity budgets | studies.py | 370 transfers; 160,000 paired decoder trials |
 | Shared capacity and congestion behavior | congestion.py, evaluation.py | 70 runs; queue bounds and common-interval fairness |
-| Interactive lab presentation | web/, server.py | output/ui/verification.json; browser exports |
+| Interactive lab presentation | web/, server.py | output/verification/ui.json; frontend tests; recorded exports |
 | Reproducible installation and offline assets | setup.py; scripts/ready.ps1 | output/release/verification.json; checksums.json |
 | Reviewed 2020-2026 bibliography | docs/proposal.md; references.bib | docs/reference-audit.json; reference year check |
 
@@ -116,7 +118,7 @@ The congestion evaluator is a teaching model with ACK-clocked growth and timeout
 
 Install Python 3.10 or newer. From the source bundle, run python -m pip install -e . and python -m paritylab demo, then open http://127.0.0.1:8770. The wheel includes the same UI, local fonts, proposal, and report. No frontend build, account, or online asset is needed after installation. The UI socket button selects any of the four protocols and downloads its actual receipt. Emulator replay stays paused until requested.
 
-On Windows, .\scripts\ready.ps1 checks the saved evidence, runs the current suite, rebuilds PDFs, and makes a verified release. Add -Reproduce to rerun baseline, sensitivity, paired-codec, congestion, and socket experiments. Add -Calibration to regenerate the full calibration too. Equivalent portable Python commands are in README.md. Source changes cause the measurement audit to reject stale fingerprints; regenerate the relevant measurements rather than relabeling old hashes.
+On Windows, .\scripts\ready.ps1 checks the saved evidence, runs the current suite, rebuilds PDFs, and makes a verified release. Add -Reproduce to rerun baseline, sensitivity, paired-codec, congestion, and socket experiments. Add -Calibration to regenerate the full calibration too. Equivalent portable Python commands are in README.md. The measurement audit accepts current source bytes or a checksum-verified archive of the measured revision and reports which was used. Use python scripts/audit_measurements.py --require-current to require fresh measurements of the checkout; historical matches fail that check. Regenerate the relevant measurements rather than relabeling old hashes.
 
 The source bundle contains raw records, scripts, tests, figures, PDFs, bibliography, and the offline UI. The release verification installs the wheel in a fresh environment, runs the full suite from outside the checkout, fetches UI assets and both PDFs, and transfers binary bytes using every socket scheme. A checksum manifest accompanies the ZIP and wheel. Timings on a different machine will differ, especially for sockets.
 

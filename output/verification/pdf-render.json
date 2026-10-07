@@ -20,46 +20,50 @@
     ]
   },
   "project-report.pdf": {
-    "pages": 9,
-    "sha256": "fc66c1ef83a21da97f87ba7ab0d0ac32da4568bc10d975e8b242e91e5cefad9b",
+    "pages": 10,
+    "sha256": "8bcaa3b9c54b7f099cf21de85928d9a0dcf205bb9481c2f9e46579588dd1eb26",
     "nonblank_pages": true,
     "required_reference_text": true,
     "renders": [
       {
         "page": 1,
-        "sha256": "73704cfec10a1c7145f51bb78807f48f71b8e162fdf24c2dafaff1a51ce713c4"
+        "sha256": "c9c92127d0b661e74150c5fa2082fe8dad9d27d23a4c06d1dc949943bac17a1c"
       },
       {
         "page": 2,
-        "sha256": "cdfe74919252b758211fdf88794a71db303be345e2da60d7a58d8d41107ba274"
+        "sha256": "d34dc99a7676beda308971f8e7325627322751ee80cadfc40e0c885006becc12"
       },
       {
         "page": 3,
-        "sha256": "9bcc33677b30d26a26ccb5d17ce2c83632df976986d6647c9c0a5355f8b87c27"
+        "sha256": "6e2444d2e1d8d2d5083c408502a341c84b7e2ef9f8435bc0070c63359a9d6b27"
       },
       {
         "page": 4,
-        "sha256": "718c80db187883ebde11ebd74682fedd5576f753cd31f6fde10bf3ca41bb0622"
+        "sha256": "3f0b352e0eb7752a05b8ec9f4ab5b93f58cb7f058f28d7d753b1d9439689973d"
       },
       {
         "page": 5,
-        "sha256": "f2aa068abeb0adae11fa1c2760e7ea7c2e0007f6444aad8144ea16228c79296e"
+        "sha256": "dafbfacc2e3cb585665733bb203d28c2e8616bc7b6e79a41568c9d19b73bc85b"
       },
       {
         "page": 6,
-        "sha256": "e41b74a9b44a72c80dde93a2534c5b4b6c1f74e328400d69c4e8f73969b964a5"
+        "sha256": "7cfa56dca67917649107aa54ed3637a019e59b4699326954b15ca2a607299a55"
       },
       {
         "page": 7,
-        "sha256": "ae0003eb7108337b17662f9fb12b743035bd79dcd9a71abe1e0271bdb928be57"
+        "sha256": "1f3bbd031bb3a5eeaaf15e4b53aa729871d1276d1eda3fad7f2703f423e5c06e"
       },
       {
         "page": 8,
-        "sha256": "68cd216490021a342824982ee07a908113b4d2f3234e95aca028d1c9f0d5150b"
+        "sha256": "873aa39eba4cbd2f9291b945d75981f1718a8e053e4a91f86ab79c722a586d51"
       },
       {
         "page": 9,
-        "sha256": "14dd89a99eca7f64f74ac5e6a089d8e9516f378913826fa1b5c2b5b6312d74a5"
+        "sha256": "3ad214e9d82477bb0e957b7ba15d5d0c291da20e7c85fedd33f2905d200e26bf"
+      },
+      {
+        "page": 10,
+        "sha256": "3983afd07792dd477f7035d025d119bd9ea423822fa97a98d0c5b7a291b41593"
       }
     ]
   }
