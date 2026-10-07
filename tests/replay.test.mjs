@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {prepareReplay, packetAt, countsAt, nextMoment, meanSD, comparisonCSV} from '../web/replay.mjs';
+import {prepareReplay, packetAt, countsAt, nextMoment, meanSD, comparisonCSV, adaptiveComparison} from '../web/replay.mjs';
 
 const result = {
   transmissions: [
@@ -78,4 +78,25 @@ test('CSV preserves every seed and the recorded configuration', () => {
   assert.equal(csv[1].split(',')[1], '7');
   assert.equal(csv[20].split(',')[1], '11');
   assert.ok(csv.slice(1).every(line => line.includes(',burst,15,')));
+});
+
+test('before-after compares seed means and retains negative results', () => {
+  const trials = [1, 2].map(value => ({results: [{scheme: 'adaptive', integrity_verified: true,
+    goodput_mbps: value, completion_time_s: 4}], legacy_result: {integrity_verified: true,
+    goodput_mbps: value * 2, completion_time_s: 2}}));
+  const change = adaptiveComparison(trials);
+  assert.equal(change.goodputChange, -.5);
+  assert.equal(change.completionChange, 1);
+  trials[0].legacy_result.integrity_verified = false;
+  assert.equal(adaptiveComparison(trials).goodputChange, null);
+});
+
+test('CSV includes original-controller comparison and recorded policy', () => {
+  const trial = {config: {scenario: 'random', controller_policy: 'cost'},
+    results: [{scheme: 'adaptive', seed: 7, controller_policy: 'cost'}],
+    legacy_result: {scheme: 'adaptive', seed: 7, controller_policy: 'legacy'}};
+  const lines = comparisonCSV([trial]).trim().split('\r\n');
+  assert.equal(lines.length, 3);
+  assert.ok(lines[0].includes('controller_policy'));
+  assert.ok(lines[2].startsWith('adaptive-legacy,7,'));
 });

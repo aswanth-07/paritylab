@@ -26,6 +26,17 @@ test_partial_block_choice_prediction_uses_actual_size (test_controller.Controlle
 test_raw_feedback_validation (test_controller.ControllerTests) ... ok
 test_reproducible_decoder_calibration_independent_and_conditional_burst (test_controller.ControllerTests) ... ok
 test_uncertainty_policy_is_more_cautious_with_short_clean_history (test_controller.ControllerTests) ... ok
+test_altered_metrics_are_rejected_even_when_artifact_hash_is_refreshed (test_controller_provenance.ControllerProvenanceTests) ... ok
+test_missing_final_trials_are_rejected (test_controller_provenance.ControllerProvenanceTests) ... ok
+test_saved_final_comparison_recomputes_from_raw_records (test_controller_provenance.ControllerProvenanceTests) ... ok
+test_clean_link_adds_no_parity_or_retries (test_cost_recovery.CostRecoveryTests) ... ok
+test_cost_decision_changes_with_serialization_and_timeout (test_cost_recovery.CostRecoveryTests) ... ok
+test_cost_preserves_partial_bytes_with_impaired_metadata_and_ack_path (test_cost_recovery.CostRecoveryTests) ... ok
+test_cost_requires_valid_network_context (test_cost_recovery.CostRecoveryTests) ... ok
+test_lost_feedback_falls_back_to_bounded_timeout_failure (test_cost_recovery.CostRecoveryTests) ... ok
+test_real_cost_transport_verifies_bytes_under_duplicates_and_reordering (test_cost_recovery.CostRecoveryTests) ... ok
+test_receiver_status_triggers_retry_before_timer (test_cost_recovery.CostRecoveryTests) ... ok
+test_short_feedback_has_less_influence_than_a_full_batch (test_cost_recovery.CostRecoveryTests) ... ok
 test_registered_competing_flow_experiments_share_capacity_and_verify_both_files (test_evaluation.EvaluationTests) ... ok
 test_controller_reports_infeasibility_and_returns_to_clean_mode (test_fec.CodecTests) ... ok
 test_controller_selects_minimum_feasible_overhead (test_fec.CodecTests) ... ok
@@ -47,6 +58,7 @@ test_report_labels_archived_measurements_without_claiming_new_runs (test_provena
 test_test_receipt_must_cover_current_source (test_provenance.ReportEvidenceTests) ... ok
 test_verified_historical_measurements_accept_current_tests (test_provenance.ReportEvidenceTests) ... ok
 test_controller_trace_describes_transmitted_blocks (test_server.ServerTests) ... ok
+test_cost_api_preserves_original_comparator_and_policy_setting (test_server.ServerTests) ... ok
 test_cross_origin_execution_is_rejected (test_server.ServerTests) ... ok
 test_full_socket_endpoint_checks_three_processes (test_server.ServerTests) ... ok
 test_health_and_changing_scenario (test_server.ServerTests) ... ok
@@ -88,6 +100,6 @@ test_loopback_binary_transfer_with_loss_and_partial_tail (test_udp.UDPTests) ...
 test_total_loss_exits_with_bounded_retries (test_udp.UDPTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 78 tests in 12.880s
+Ran 90 tests in 15.537s
 
 OK

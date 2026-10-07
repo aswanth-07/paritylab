@@ -86,11 +86,13 @@ def build_parser():
     run.add_argument("--reorder-delay-ms", type=float, default=0)
     run.add_argument("--metadata-mode", choices=("idealized", "reliable"), default="idealized")
     run.add_argument("--metadata-loss", type=float)
-    run.add_argument("--controller-policy", choices=("legacy", "uncertainty", "burst"), default="legacy")
+    run.add_argument("--controller-policy", choices=("legacy", "uncertainty", "burst", "cost"), default="legacy")
+    run.add_argument("--recovery-feedback", action="store_true", help="Use receiver block status for early retries (adaptive only)")
     transport.add_argument("--jitter-ms", type=float, default=0)
     transport.add_argument("--reorder-probability", type=float, default=0)
     transport.add_argument("--reorder-delay-ms", type=float, default=0)
-    transport.add_argument("--controller-policy", choices=("legacy", "uncertainty", "burst"), default="legacy")
+    transport.add_argument("--controller-policy", choices=("legacy", "uncertainty", "burst", "cost"), default="legacy")
+    transport.add_argument("--recovery-feedback", action="store_true", help="Use receiver block status for early retries (adaptive only)")
     return parser
 
 
@@ -135,7 +137,8 @@ def main():
                         metadata_loss=args.metadata_loss, max_seconds=args.max_seconds, max_attempts=args.max_attempts,
                         duplicate_probability=args.duplicate_probability, corruption_probability=args.corruption_probability)
                 from dataclasses import replace
-                config = replace(config, controller_policy=args.controller_policy)
+                config = replace(config, controller_policy=args.controller_policy,
+                                 recovery_feedback=args.recovery_feedback and scheme == "adaptive")
                 _, row = socket_transfer(data, config, args.output / f"{scheme}-received.bin")
                 rows.append(row)
                 print(f"{scheme}: verified {row['bytes_delivered']} bytes, {row['sender']['retransmissions']} retries, "
@@ -155,7 +158,8 @@ def main():
                                     reorder_delay_ms=args.reorder_delay_ms)
             rows = [simulate(data, SimulationConfig(scheme=scheme, seed=args.seed, channel=channel,
                     window=args.window, packet_size=args.packet_size, fixed_k=args.fixed_k, timeout_ms=args.timeout_ms,
-                    metadata_mode=args.metadata_mode, metadata_loss=args.metadata_loss, controller_policy=args.controller_policy)).to_dict()
+                    metadata_mode=args.metadata_mode, metadata_loss=args.metadata_loss, controller_policy=args.controller_policy,
+                    recovery_feedback=args.recovery_feedback and scheme == "adaptive")).to_dict()
                     for scheme in (SCHEMES if args.scheme == "all" else (args.scheme,))]
             print(f"{'Scheme':10} {'Complete':9} {'Goodput Mbps':>12} {'Time s':>10} {'Resends':>9} {'Parity':>9}")
             for row in rows:

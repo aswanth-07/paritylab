@@ -7,7 +7,7 @@ from typing import Iterable
 from .fec import (Protection, equations, failure_probability, markov_failure_probability,
                   markov_failure_upper_bound)
 
-POLICIES = ("legacy", "uncertainty", "burst")
+POLICIES = ("legacy", "uncertainty", "burst", "cost")
 
 
 def wilson_interval(successes: int, total: int, confidence: float = 0.95) -> tuple[float, float]:
@@ -43,11 +43,16 @@ class Choice:
     transition_samples: int = 0
     good_to_bad: float | None = None
     bad_to_good: float | None = None
+    objective: str = "block failure target"
+    estimated_cost_per_packet_s: float | None = None
+    unprotected_cost_per_packet_s: float | None = None
+    candidate_costs: tuple[dict, ...] = ()
 
 
 class AdaptiveController:
     def __init__(self, window: int = 32, alpha: float = 0.25, target: float = 0.01, *,
-                 policy: str = "legacy", confidence: float = 0.95, history_size: int = 512):
+                 policy: str = "legacy", confidence: float = 0.95, history_size: int = 512,
+                 packet_serial_s: float | None = None, retry_wait_s: float | None = None):
         if (not isinstance(window, int) or isinstance(window, bool) or window < 1
                 or not math.isfinite(alpha) or not 0 < alpha <= 1
                 or not math.isfinite(target) or not 0 < target < 1
@@ -56,6 +61,10 @@ class AdaptiveController:
             raise ValueError("Invalid controller window, smoothing factor, target, policy, or history")
         self.alpha, self.target, self.estimate = alpha, target, 0.0
         self.policy, self.confidence, self.history_size = policy, confidence, history_size
+        if policy == "cost" and any(value is None or not math.isfinite(value) or value <= 0
+                                     for value in (packet_serial_s, retry_wait_s)):
+            raise ValueError("Cost policy requires positive finite serialization and retry times")
+        self.packet_serial_s, self.retry_wait_s = packet_serial_s, retry_wait_s
         self.candidates = [Protection("none", min(16, window))]
         self.candidates += [Protection("xor", k) for k in (16, 8, 4, 2) if k <= window]
         self.candidates += [Protection("grid", r * c, r, c) for r, c in ((3, 3), (2, 3), (2, 2)) if r * c <= window]
@@ -69,7 +78,10 @@ class AdaptiveController:
                 or isinstance(lost, bool) or isinstance(transmitted, bool)
                 or not 0 <= lost <= transmitted or transmitted < 1):
             raise ValueError("Feedback must contain valid original transmission counts")
-        self.estimate = (1 - self.alpha) * self.estimate + self.alpha * lost / transmitted
+        # Sixteen symbols retain the incumbent update weight. Short reports
+        # carry proportionally less evidence; long reports carry more.
+        weight = 1 - (1 - self.alpha) ** (transmitted / 16) if self.policy == "cost" else self.alpha
+        self.estimate = (1 - weight) * self.estimate + weight * lost / transmitted
         self._batches.append((lost, transmitted))
         self._lost += lost
         self._samples += transmitted
@@ -127,6 +139,24 @@ class AdaptiveController:
         if size is not None and (not isinstance(size, int) or isinstance(size, bool) or size < 1):
             raise ValueError("Remaining block size must be a positive integer")
         candidates = [(p, min(size, p.k) if size is not None else p.k) for p in self.candidates]
+        if self.policy == "cost":
+            rows = []
+            for protection, actual in candidates:
+                parity = len(equations(protection, actual))
+                risk = failure_probability(protection, self.estimate, size=actual)
+                # One timeout per unresolved block is a cost proxy, not a
+                # prediction of transfer duration or a reliability guarantee.
+                cost = ((actual + parity) * self.packet_serial_s + risk * self.retry_wait_s) / actual
+                rows.append((cost, parity / actual, -actual, protection, risk))
+            cost, _, _, protection, risk = min(rows, key=lambda row: row[:3])
+            return Choice(protection, risk, risk <= self.target, self.estimate,
+                          risk_model="independent transfer cost", loss_lower=self.estimate,
+                          loss_upper=self.estimate, observed_symbols=self._samples,
+                          estimated_failure=risk, objective="serialization plus residual timeout cost",
+                          assumptions="independent identical erasures; one timeout per unresolved block; cost proxy, not a duration prediction",
+                          estimated_cost_per_packet_s=cost, unprotected_cost_per_packet_s=rows[0][0],
+                          candidate_costs=tuple({"mode": row[3].label, "cost_per_packet_s": row[0],
+                                                 "predicted_failure": row[4]} for row in rows))
         lower, upper = self.loss_interval()
         mean = self._lost / self._samples if self._samples else 0.0
         statistics = self.burst_statistics()

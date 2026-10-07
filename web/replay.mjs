@@ -82,7 +82,23 @@ export function summarize(trials, scheme, metric) {
 }
 
 export function comparisonCSV(trials) {
-  const keys = ['scheme', 'seed', 'completed', 'integrity_verified', 'goodput_mbps', 'completion_time_s', 'sender_completion_time_s', 'retransmissions', 'parity_packets', 'fec_recovered', 'parity_overhead_ratio', 'sha256'];
+  const keys = ['scheme', 'seed', 'completed', 'integrity_verified', 'goodput_mbps', 'completion_time_s', 'sender_completion_time_s', 'retransmissions', 'parity_packets', 'fec_recovered', 'parity_overhead_ratio', 'sha256', 'controller_policy', 'feedback_retries'];
   const configKeys = ['scenario', 'loss_percent', 'delay_ms', 'bandwidth_mbps', 'file_kib', 'window', 'ack_loss_percent'];
-  return [...keys, ...configKeys].join(',') + '\r\n' + trials.flatMap(trial => trial.results.map(result => [...keys.map(key => result[key]), ...configKeys.map(key => trial.config[key])].join(','))).join('\r\n') + '\r\n';
+  return [...keys, ...configKeys].join(',') + '\r\n' + trials.flatMap(trial => {
+    const rows = trial.legacy_result && trial.config.controller_policy === 'cost'
+      ? [...trial.results, {...trial.legacy_result, scheme: 'adaptive-legacy'}] : trial.results;
+    return rows.map(result => [...keys.map(key => result[key]), ...configKeys.map(key => trial.config[key])].join(','));
+  }).join('\r\n') + '\r\n';
+}
+
+export function adaptiveComparison(trials) {
+  const updated = trials.map(trial => trial.results.find(result => result.scheme === 'adaptive'));
+  const originals = trials.map(trial => trial.legacy_result);
+  const valid = updated.every(row => row?.integrity_verified) && originals.every(row => row?.integrity_verified);
+  const current = meanSD(updated.map(row => row.goodput_mbps));
+  const baseline = meanSD(originals.map(row => row?.goodput_mbps || 0));
+  const updatedTime = meanSD(updated.map(row => row.completion_time_s)).mean;
+  const originalTime = meanSD(originals.map(row => row?.completion_time_s || 0)).mean;
+  return {valid, current, baseline, goodputChange: valid && baseline.mean > 0 ? current.mean / baseline.mean - 1 : null,
+    completionChange: valid && originalTime > 0 ? updatedTime / originalTime - 1 : null};
 }

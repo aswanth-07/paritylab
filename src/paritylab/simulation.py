@@ -4,7 +4,7 @@ import math
 from dataclasses import asdict, dataclass, field
 
 from .channel import Channel, ChannelConfig
-from .controller import AdaptiveController
+from .controller import AdaptiveController, POLICIES
 from .fec import Protection, Repair, encode, recover
 
 SCHEMES = ("gbn", "sr", "fixed", "adaptive")
@@ -26,6 +26,7 @@ class SimulationConfig:
     metadata_mode: str = "idealized"
     metadata_loss: float | None = None
     controller_policy: str = "legacy"
+    recovery_feedback: bool = False
 
     def __post_init__(self):
         positive_integers = (self.packet_size, self.window, self.fixed_k, self.max_events)
@@ -38,8 +39,10 @@ class SimulationConfig:
             raise ValueError("Metadata mode must be idealized or reliable")
         if self.metadata_loss is not None and (not math.isfinite(self.metadata_loss) or not 0 <= self.metadata_loss <= 1):
             raise ValueError("Metadata loss must be finite and in [0, 1]")
-        if self.controller_policy not in {"legacy", "uncertainty", "burst"}:
+        if self.controller_policy not in POLICIES:
             raise ValueError("Invalid controller policy")
+        if not isinstance(self.recovery_feedback, bool) or (self.recovery_feedback and self.scheme != "adaptive"):
+            raise ValueError("Recovery feedback requires an adaptive transfer and a boolean setting")
 
 
 @dataclass
@@ -92,6 +95,7 @@ class Result:
     metadata_transmissions: int = 0
     metadata_retransmissions: int = 0
     metadata_acks: int = 0
+    feedback_retries: int = 0
 
     def to_dict(self):
         return asdict(self)
@@ -106,7 +110,6 @@ def simulate(data: bytes, config: SimulationConfig | None = None, *, capture_tra
     packets = [data[i:i + width].ljust(width, b"\0") for i in range(0, len(data), width)]
     count = len(packets)
     channel = Channel(config.channel, config.seed)
-    controller = AdaptiveController(config.window) if config.controller_policy == "legacy" else AdaptiveController(config.window, policy=config.controller_policy)
     queue = []
     counter = 0
     now = 0.0
@@ -127,9 +130,12 @@ def simulate(data: bytes, config: SimulationConfig | None = None, *, capture_tra
     metadata_attempts, pending_arrivals = {}, {}
     pending_reports = set()
     metadata_stats = {"metadata_transmissions": 0, "metadata_retransmissions": 0, "metadata_acks": 0}
+    feedback_retries = 0
     serial = (width + HEADER_BYTES) * 8 / (config.channel.bandwidth_mbps * 1_000_000)
     impairment_bound = (config.channel.jitter_ms + config.channel.reorder_delay_ms) / 1000
     timeout = config.timeout_ms / 1000 if config.timeout_ms is not None else max(0.02, 2 * config.channel.delay_ms / 1000 + 2 * impairment_bound + serial * (config.window + 16) + 0.005)
+    controller = AdaptiveController(config.window, policy=config.controller_policy,
+                                    packet_serial_s=serial, retry_wait_s=timeout)
 
     def schedule(time, kind, payload):
         nonlocal counter
@@ -185,9 +191,14 @@ def simulate(data: bytes, config: SimulationConfig | None = None, *, capture_tra
         total = block.size + len(encode(block.packets, block.protection))
         stats["ack_packets"] += 1
         stats["reverse_wire_bytes"] += ACK_BYTES
-        arrival, dropped, _ = channel.transmit(now, ACK_BYTES, reverse=True)
+        arrival, dropped, end = channel.transmit(now, ACK_BYTES, reverse=True)
+        received = tuple(block.start + index for index in block.known)
+        if capture_transmissions and config.recovery_feedback:
+            transmissions.append({"kind": "feedback", "start_s": end - ACK_BYTES * 8 / (config.channel.bandwidth_mbps * 1_000_000),
+                                  "arrival_s": arrival, "lost": dropped, "block_start": block_id,
+                                  "sequences": list(received)})
         if not dropped:
-            schedule(arrival, "feedback", (lost, block.size, total, tuple(block.first_outcomes)))
+            schedule(arrival, "feedback", (lost, block.size, total, tuple(block.first_outcomes), block_id, received))
 
     def send_data(sequence):
         previous = latest.get(sequence)
@@ -329,13 +340,25 @@ def simulate(data: bytes, config: SimulationConfig | None = None, *, capture_tra
                 else:
                     feedback(payload)
         elif kind == "feedback":
-            lost, original_count, _, first_outcomes = payload
+            lost, original_count, _, first_outcomes, block_id, received = payload
             if config.controller_policy == "legacy":
                 controller.observe(lost, original_count)
             else:
                 # A first-pass block is contiguous on the forward serializer.
                 # Do not infer transitions across omitted retransmissions/metadata.
                 controller.observe_sequence(first_outcomes, contiguous=False)
+            if config.recovery_feedback:
+                # Receiver status permits one early retry of each missing
+                # original. Lost reports/retries still fall back to the timer.
+                acked.update(received)
+                block = blocks[block_id]
+                for sequence in range(block.start, block.start + block.size):
+                    if sequence not in acked and latest[sequence][0] == 1:
+                        send_data(sequence)
+                        feedback_retries += 1
+                while base in acked:
+                    base += 1
+                fill_window()
         elif kind == "ack":
             if config.scheme == "gbn":
                 acked.update(range(max(payload) + 1))
@@ -381,4 +404,4 @@ def simulate(data: bytes, config: SimulationConfig | None = None, *, capture_tra
                   application_mean_delay_ms=sum(application_delays) / len(application_delays) if application_delays else 0.0,
                   application_p95_delay_ms=percentile(application_delays), application_packet_delays_ms=application_delays,
                   head_of_line_mean_ms=sum(head_of_line) / len(head_of_line) if head_of_line else 0.0,
-                  head_of_line_p95_ms=percentile(head_of_line), **metadata_stats)
+                  head_of_line_p95_ms=percentile(head_of_line), feedback_retries=feedback_retries, **metadata_stats)

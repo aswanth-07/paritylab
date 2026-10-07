@@ -6,51 +6,63 @@ TAP version 13
 # Subtest: a received packet can be blocked from application release
 ok 1 - a received packet can be blocked from application release
   ---
-  duration_ms: 1.0589
+  duration_ms: 1.4617
   type: 'test'
   ...
 # Subtest: seeking backward removes later repairs and retries
 ok 2 - seeking backward removes later repairs and retries
   ---
-  duration_ms: 0.8572
+  duration_ms: 0.1301
   type: 'test'
   ...
 # Subtest: a successful GBN arrival does not imply receiver acceptance
 ok 3 - a successful GBN arrival does not imply receiver acceptance
   ---
-  duration_ms: 0.2903
+  duration_ms: 0.1729
   type: 'test'
   ...
 # Subtest: event seeking is strict and does not silently wrap
 ok 4 - event seeking is strict and does not silently wrap
   ---
-  duration_ms: 0.176
+  duration_ms: 0.1068
   type: 'test'
   ...
 # Subtest: sample deviation uses independent trials, and single trials have no spread
 ok 5 - sample deviation uses independent trials, and single trials have no spread
   ---
-  duration_ms: 0.5251
+  duration_ms: 0.3539
   type: 'test'
   ...
 # Subtest: event jumps exclude redundant arrivals beyond sender completion
 ok 6 - event jumps exclude redundant arrivals beyond sender completion
   ---
-  duration_ms: 0.1335
+  duration_ms: 0.0933
   type: 'test'
   ...
 # Subtest: CSV preserves every seed and the recorded configuration
 ok 7 - CSV preserves every seed and the recorded configuration
   ---
-  duration_ms: 0.3966
+  duration_ms: 0.3159
   type: 'test'
   ...
-1..7
-# tests 7
+# Subtest: before-after compares seed means and retains negative results
+ok 8 - before-after compares seed means and retains negative results
+  ---
+  duration_ms: 0.1746
+  type: 'test'
+  ...
+# Subtest: CSV includes original-controller comparison and recorded policy
+ok 9 - CSV includes original-controller comparison and recorded policy
+  ---
+  duration_ms: 0.2043
+  type: 'test'
+  ...
+1..9
+# tests 9
 # suites 0
-# pass 7
+# pass 9
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 79.9837
+# duration_ms 67.2464

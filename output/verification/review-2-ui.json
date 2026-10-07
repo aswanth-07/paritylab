@@ -1,0 +1,23 @@
+{
+  "recorded_at_utc": "2026-10-07T17:51:05.925473+00:00",
+  "url": "http://127.0.0.1:8771/",
+  "controller_policy": "cost",
+  "checks": {
+    "five_seed_comparison": "25 transfers verified, including separate original-adaptive comparator",
+    "event_jumps_and_delivery": "Recorded event seeking and application-delivery view inspected",
+    "study_selection": "Slow-link row reruns seeds 100\u2013104; saved table retains all 20 seeds",
+    "udp_transfer": "32768 bytes verified; downloaded receipt retained with complete channel settings",
+    "mobile": "432 CSS pixels; document width 417; full-width method selector confirmed after reload",
+    "desktop": "1360 CSS-pixel test viewport; comparison and settled UDP capture inspected",
+    "console": "No warnings or errors in inspected browser log",
+    "viewport_restored": true
+  },
+  "screenshots_sha256": {
+    "docs/review-2-screenshots/comparison.jpg": "b2f706006178928667d8980b4dc792659e9f2f666694adf4b025807e2e46f095",
+    "docs/review-2-screenshots/mobile.jpg": "0d40070b6bbd59ab60921e6279488b090b093cfacd1e91087e48b58539a20556",
+    "docs/review-2-screenshots/slow-link.jpg": "c26937f7ac974a6312eaf226080bebcda9dc622871dae2496097d2dd5e0a6889",
+    "docs/review-2-screenshots/udp-receipt.jpg": "3f05a8cb07c5ba22ae62be21501a8745ea6f2abcec165b4d795f183aa6229b19"
+  },
+  "udp_receipt_sha256": "9ba505c0d7efc36cac472eb00bf2bac19fbde6f1af1a23fc8b1823173640769b",
+  "scope": "Manual browser verification of the updated controller interface; simulation improvements come from the separately audited study"
+}

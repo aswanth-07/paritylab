@@ -1,0 +1,94 @@
+{
+  "recorded_at_utc": "2026-10-07T17:12:48.006676+00:00",
+  "split": "development",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "runs": 360,
+  "payload_sha256": "bddb0b20d82ce70b45ab5eea8b995b5167b0cd0d5d576f742dbc193c9ec2aaa4",
+  "size_bytes": 65536,
+  "all_verified": true,
+  "source_sha256": {
+    "src/paritylab/controller.py": "2f22091c7dfa3d70de1baf05358c2ffade9a41a85df839d3084ba20f87613b4e",
+    "src/paritylab/fec.py": "16e84175f736b6719ea3bedcc64d547c12dbdfa33de46d17bd48e3042d16f814",
+    "src/paritylab/simulation.py": "65a58ecd7c329f2a958ac3e98f904fae5aca677e78b5cab172487ab4c3b131dc",
+    "src/paritylab/channel.py": "21a2ffbcb169fe39ac9d32650330f888409b83eff298592c3ba6a76356c7312b",
+    "src/paritylab/experiments.py": "378dfe20cefed9708c9f47db732eae994251e1861e530626ce7c341b035a2aaa",
+    "scripts/compare_controllers.py": "88bb969d5325564608842a164938b71412f1c97cc8fd90e8f16769806a23fd9e",
+    "docs/controller-cost-contract.md": "5cd789d8e86990bb9a66a437a6f8c65eb89f8de04f0e2f974310b6492c1e4821"
+  },
+  "comparisons": [
+    {
+      "condition": "clean",
+      "goodput_ratio_to_legacy": 1.0,
+      "goodput_ratio_to_fixed": 1.082538204949189
+    },
+    {
+      "condition": "random-2",
+      "goodput_ratio_to_legacy": 1.1191672539298112,
+      "goodput_ratio_to_fixed": 0.8825926746626188
+    },
+    {
+      "condition": "random-5",
+      "goodput_ratio_to_legacy": 1.252448621645214,
+      "goodput_ratio_to_fixed": 1.0295476430376482
+    },
+    {
+      "condition": "random-10",
+      "goodput_ratio_to_legacy": 1.2685009740260105,
+      "goodput_ratio_to_fixed": 1.0291643221761573
+    },
+    {
+      "condition": "random-20",
+      "goodput_ratio_to_legacy": 1.3822796457001252,
+      "goodput_ratio_to_fixed": 1.1115426683397376
+    },
+    {
+      "condition": "slow-link",
+      "goodput_ratio_to_legacy": 1.4938040241677109,
+      "goodput_ratio_to_fixed": 1.266736975961166
+    },
+    {
+      "condition": "fast-link",
+      "goodput_ratio_to_legacy": 1.1779225199514083,
+      "goodput_ratio_to_fixed": 0.9714311352088795
+    },
+    {
+      "condition": "short-delay",
+      "goodput_ratio_to_legacy": 1.478802118112984,
+      "goodput_ratio_to_fixed": 1.269178469681064
+    },
+    {
+      "condition": "long-delay",
+      "goodput_ratio_to_legacy": 1.179490856288093,
+      "goodput_ratio_to_fixed": 0.9743811783263809
+    },
+    {
+      "condition": "burst",
+      "goodput_ratio_to_legacy": 1.0974735605622064,
+      "goodput_ratio_to_fixed": 1.169985314876477
+    },
+    {
+      "condition": "changing",
+      "goodput_ratio_to_legacy": 1.0,
+      "goodput_ratio_to_fixed": 1.082538204949189
+    },
+    {
+      "condition": "ack-loss",
+      "goodput_ratio_to_legacy": 1.5176569466922736,
+      "goodput_ratio_to_fixed": 1.296448561271383
+    }
+  ],
+  "geometric_goodput_ratio_to_legacy_nonclean": 1.2586946646625654,
+  "adoption_threshold_met": true,
+  "uncertainty": "Sample SD over seeds; no significance test; same seeds are not identical erasure masks.",
+  "artifacts_sha256": {
+    "runs.json.gz": "fc669202521932cc2e705da0d32d3ead6cb0aa3f9ba58c59107a27c692e87ab5",
+    "summary.csv": "4a621ebe6ab11595db897baacf5998b4becc3c1ef2fc172ac687acf5abb921f4",
+    "summary.json": "ed2b3a67af44b8f01067d81bc85bcacfb62c5d65a487a121d7a1efb29c335823"
+  }
+}

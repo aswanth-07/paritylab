@@ -41,6 +41,18 @@ class ServerTests(unittest.TestCase):
             self.assertEqual(len(received), 8)
             self.assertEqual([event["sequence"] for event in released], list(range(8)))
 
+    def test_cost_api_preserves_original_comparator_and_policy_setting(self):
+        result = run_comparison({"file_kib": 8, "controller_policy": "cost", "loss_percent": 20})
+        self.assertEqual(result["config"]["controller_policy"], "cost")
+        self.assertTrue(result["legacy_result"]["integrity_verified"])
+        self.assertEqual(result["legacy_result"]["sha256"], result["expected_sha256"])
+        updated = result["results"][-1]
+        self.assertEqual(updated["controller_policy"], "cost")
+        self.assertTrue(any(event["kind"] == "feedback" for event in updated["transmissions"]))
+        self.assertIn("estimated_cost_per_packet_s", updated["controller_trace"][0])
+        legacy = run_comparison({"file_kib": 8, "controller_policy": "legacy", "loss_percent": 20})
+        self.assertEqual(legacy["results"][-1]["goodput_mbps"], legacy["legacy_result"]["goodput_mbps"])
+
     def test_replay_module_is_served_as_javascript(self):
         with patch("paritylab.server.mimetypes.guess_type", return_value=("text/plain", None)), \
              closing(HTTPConnection("127.0.0.1", self.server.server_port, timeout=10)) as connection:
@@ -63,7 +75,7 @@ class ServerTests(unittest.TestCase):
                 self.assertTrue(response.read())
 
     def test_invalid_and_nonfinite_settings_are_rejected(self):
-        for body in ({"file_kib": 500}, {"window": 0}, {"seed": True}, {"scenario": "invalid"}, {"delay_ms": float("nan")}):
+        for body in ({"file_kib": 500}, {"window": 0}, {"seed": True}, {"scenario": "invalid"}, {"controller_policy": "invalid"}, {"controller_policy": []}, {"delay_ms": float("nan")}):
             with self.subTest(body=body):
                 status, result = self.request("POST", "/api/simulate", body)
                 self.assertEqual(status, 400)

@@ -20,7 +20,7 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 from .channel import Channel, ChannelConfig
-from .controller import AdaptiveController
+from .controller import AdaptiveController, POLICIES
 from .fec import Protection, Repair, encode, recover
 from .simulation import SCHEMES
 from .wire import integer, pack, unpack
@@ -41,6 +41,7 @@ class SocketConfig:
     max_seconds: float = 20.0
     max_attempts: int = 150
     controller_policy: str = "legacy"
+    recovery_feedback: bool = False
 
     def __post_init__(self):
         if any(isinstance(value, bool) or not isinstance(value, int) for value in
@@ -57,8 +58,10 @@ class SocketConfig:
             raise ValueError("Socket runtime must be finite and in (0,300] seconds")
         if self.timeout_ms is not None and (not math.isfinite(self.timeout_ms) or self.timeout_ms <= 0):
             raise ValueError("Timeout must be finite and positive")
-        if self.controller_policy not in {"legacy", "uncertainty", "burst"}:
+        if self.controller_policy not in POLICIES:
             raise ValueError("Invalid controller policy")
+        if not isinstance(self.recovery_feedback, bool) or (self.recovery_feedback and self.scheme != "adaptive"):
+            raise ValueError("Recovery feedback requires an adaptive transfer and a boolean setting")
 
 
 def _write(path, value):
@@ -129,7 +132,10 @@ def receiver_worker(output: Path, ready: Path, receipt: Path, stop: Path, max_se
                     block = blocks[block_id]
                     pattern = [i in raw_seen.get(block_id, set()) for i in range(block["size"])]
                     respond({"kind": "feedback", "block": block_id, "lost": pattern.count(False),
-                             "transmitted": len(pattern), "arrivals": pattern})
+                             "transmitted": len(pattern), "arrivals": pattern,
+                             "received": [i in block["known"] for i in range(block["size"])],
+                             "repair_arrivals": [repair.members in block["repairs"] for repair in
+                                                 encode([bytes(manifest["packet_size"])] * block["size"], block["descriptor"][1])]})
                     del reports[block_id]
             if not select.select([sock], [], [], 0.002)[0]:
                 continue
@@ -317,12 +323,16 @@ def sender_worker(data: bytes, config: SocketConfig, proxy_address, receipt: Pat
     extra_ms = getattr(config.channel, "jitter_ms", 0) + getattr(config.channel, "reorder_delay_ms", 0)
     timeout = config.timeout_ms / 1000 if config.timeout_ms else max(0.04, 2 * (config.channel.delay_ms + extra_ms) / 1000 +
               (width + 800) * 8 * (config.window + 16) / (config.channel.bandwidth_mbps * 1e6) + 0.01)
-    controller = AdaptiveController(config.window) if config.controller_policy == "legacy" else AdaptiveController(config.window, policy=config.controller_policy)
+    # JSON descriptors vary in size; use the same conservative wire-size
+    # allowance as the transport timer. Simulator costs use its binary header.
+    controller = AdaptiveController(config.window, policy=config.controller_policy,
+                                    packet_serial_s=(width + 800) * 8 / (config.channel.bandwidth_mbps * 1e6),
+                                    retry_wait_s=timeout)
     manifest = {"length": len(data), "packet_size": width, "count": count, "scheme": config.scheme,
                 "sha256": hashlib.sha256(data).hexdigest(), "report_grace_ms": extra_ms + 10}
     stats = {"scheme": config.scheme, "retransmissions": 0, "data_transmissions": 0, "parity_packets": 0,
              "control_transmissions": 0, "controller_trace": [], "peak_outstanding": 0,
-             "metadata_retries": 0, "feedback_reports": 0, "pid": os.getpid()}
+             "metadata_retries": 0, "feedback_reports": 0, "feedback_retries": 0, "pid": os.getpid()}
     with _socket() as sock:
         destination = tuple(proxy_address)
 
@@ -399,6 +409,8 @@ def sender_worker(data: bytes, config: SocketConfig, proxy_address, receipt: Pat
                           "predicted_failure": choice.predicted_failure, "target_met": choice.target_met,
                           "risk_model": choice.risk_model, "loss_lower": choice.loss_lower,
                           "loss_upper": choice.loss_upper, "observed_symbols": choice.observed_symbols,
+                          "objective": choice.objective, "estimated_cost_per_packet_s": choice.estimated_cost_per_packet_s,
+                          "unprotected_cost_per_packet_s": choice.unprotected_cost_per_packet_s,
                           "assumptions": choice.assumptions})
                 for sequence in range(start, start + size):
                     block_for[sequence] = start
@@ -440,13 +452,31 @@ def sender_worker(data: bytes, config: SocketConfig, proxy_address, receipt: Pat
                         lost = message.get("lost")
                         if isinstance(lost, int) and 0 <= lost <= size and message.get("transmitted") == size:
                             pattern = message.get("arrivals")
-                            if config.controller_policy != "legacy" and isinstance(pattern, list) and len(pattern) == size:
+                            if config.controller_policy == "cost" and isinstance(pattern, list) and len(pattern) == size and all(isinstance(v, bool) for v in pattern):
+                                repairs = message.get("repair_arrivals", [])
+                                expected = len(encode([bytes(width)] * size, Protection(**blocks[block_id]["protection"])))
+                                if not isinstance(repairs, list) or len(repairs) != expected or any(not isinstance(v, bool) for v in repairs):
+                                    continue
+                                controller.observe_sequence([not value for value in pattern + repairs], contiguous=False)
+                            elif config.controller_policy != "legacy" and isinstance(pattern, list) and len(pattern) == size:
                                 controller.observe_sequence([not value for value in pattern])
                             else:
                                 controller.observe(lost, size)
                             observed.add(block_id)
                             pending_reports.pop(block_id, None)
                             stats["feedback_reports"] += 1
+                            status = message.get("received")
+                            if config.recovery_feedback and isinstance(status, list) and len(status) == size and all(isinstance(v, bool) for v in status):
+                                for index, received in enumerate(status):
+                                    sequence = block_id + index
+                                    if received:
+                                        acknowledged.add(sequence)
+                                    elif sequence not in acknowledged and attempts[sequence] == 1:
+                                        send_data(sequence)
+                                        stats["feedback_retries"] += 1
+                                while base in acknowledged:
+                                    base += 1
+                                fill()
             now = time.monotonic()
             if config.scheme == "gbn":
                 if base < next_sequence and now - latest[base] >= timeout:

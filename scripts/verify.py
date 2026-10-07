@@ -9,6 +9,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from audit_measurements import audit
+from audit_controller_comparison import audit as audit_controllers
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -44,6 +45,8 @@ def main(*, write_receipt=True):
         receipt["measurements"] = audit()
         receipt["measurements_verified"] = True
         receipt["measurements_current"] = all(row["source_current"] for row in receipt["measurements"].values())
+        if (ROOT / "output/studies/controller-cost/held-out/manifest.json").exists():
+            receipt["controller_comparison"] = audit_controllers()
     except (ValueError, KeyError, OSError) as error:
         receipt["measurements_current"] = False
         receipt["measurements_verified"] = False

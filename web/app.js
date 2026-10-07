@@ -1,4 +1,4 @@
-import {prepareReplay, packetAt, countsAt, nextMoment, summarize, comparisonCSV} from './replay.mjs';
+import {prepareReplay, packetAt, countsAt, nextMoment, summarize, comparisonCSV, adaptiveComparison} from './replay.mjs';
 
 const $ = selector => document.querySelector(selector);
 const schemes = ['gbn', 'sr', 'fixed', 'adaptive'];
@@ -20,7 +20,7 @@ const replay = () => state.replays[state.scheme];
 const duration = () => Math.max(.001, row()?.sender_completion_time_s || .001);
 const setText = (selector, text) => { const element = $(selector); if (element.textContent !== text) element.textContent = text; };
 const statusNames = {waiting: 'Not sent yet', flight: 'In flight', retry: 'Retry in flight', lost: 'Lost', discarded: 'Arrived out of order; discarded', received: 'Received', repaired: 'Recovered by parity'};
-const fieldIDs = {scenario: 'scenario', loss_percent: 'loss', delay_ms: 'delay', bandwidth_mbps: 'bandwidth', file_kib: 'file-size', window: 'window', seed: 'seed', ack_loss_percent: 'ack-loss'};
+const fieldIDs = {scenario: 'scenario', loss_percent: 'loss', delay_ms: 'delay', bandwidth_mbps: 'bandwidth', file_kib: 'file-size', window: 'window', seed: 'seed', ack_loss_percent: 'ack-loss', controller_policy: 'controller-policy'};
 
 async function request(path, config) {
   const abort = new AbortController(), timer = setTimeout(() => abort.abort(), 40000);
@@ -28,6 +28,7 @@ async function request(path, config) {
     const response = await fetch(path, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(config), signal: abort.signal});
     const result = await response.json();
     if (!response.ok) throw new Error(result.error || 'The run failed. Try again.');
+    if (path === '/api/simulate' && !result.legacy_result) throw new Error('This server is running the previous version. Restart python -m paritylab demo and reload.');
     return result;
   } catch (error) {
     if (error.name === 'AbortError') throw new Error('No response after 40 seconds. Check the local server and try a smaller file.');
@@ -36,11 +37,11 @@ async function request(path, config) {
   } finally { clearTimeout(timer); }
 }
 function settings() {
-  return Object.fromEntries(Object.entries(fieldIDs).map(([key, id]) => [key, key === 'scenario' ? $(`#${id}`).value : Number($(`#${id}`).value)]));
+  return Object.fromEntries(Object.entries(fieldIDs).map(([key, id]) => [key, ['scenario', 'controller_policy'].includes(key) ? $(`#${id}`).value : Number($(`#${id}`).value)]));
 }
 function sameConfig(a, b) { return Object.keys(fieldIDs).every(key => a[key] === b[key]); }
 function setControls(config) {
-  for (const [key, id] of Object.entries(fieldIDs)) $(`#${id}`).value = String(config[key]);
+  for (const [key, id] of Object.entries(fieldIDs)) $(`#${id}`).value = String(config[key] ?? (key === 'controller_policy' ? 'cost' : ''));
   rangeLabels();
 }
 function socketSettings() {
@@ -52,11 +53,12 @@ function recordedSocketSettings(config) {
   return {scenario: channel.phases.length ? 'changing' : channel.model === 'gilbert-elliott' ? 'burst' : 'random',
     loss_percent: (channel.phases.length ? channel.phases[0][1] : channel.loss) * 100,
     delay_ms: channel.delay_ms, bandwidth_mbps: channel.bandwidth_mbps, window: config.window,
-    seed: config.seed, ack_loss_percent: channel.ack_loss * 100, scheme: config.scheme};
+    seed: config.seed, ack_loss_percent: channel.ack_loss * 100, scheme: config.scheme,
+    controller_policy: config.controller_policy};
 }
 function socketSummary(config) {
   const model = {random: 'independent', burst: 'burst', changing: 'changing'}[config.scenario];
-  return `32 KiB · ${names[config.scheme]} · ${model} loss ${format(config.loss_percent, 0)}% · ${config.delay_ms} ms · ${config.bandwidth_mbps} Mbps · window ${config.window} · ACK loss ${config.ack_loss_percent}% · seed ${config.seed}`;
+  return `32 KiB · ${names[config.scheme]}${config.scheme === 'adaptive' ? config.controller_policy === 'cost' ? ' (updated)' : ' (original)' : ''} · ${model} loss ${format(config.loss_percent, 0)}% · ${config.delay_ms} ms · ${config.bandwidth_mbps} Mbps · window ${config.window} · ACK loss ${config.ack_loss_percent}% · seed ${config.seed}`;
 }
 function rangeLabels() {
   setText('#loss-value', `${$('#loss').value}%`);
@@ -67,7 +69,7 @@ function rangeLabels() {
   setText('#scenario-help', help[$('#scenario').value]); setText('#udp-config', `Next transfer: ${socketSummary(socketSettings())}`);
   if (state.udp) {
     const recorded = recordedSocketSettings(state.udp.config), next = socketSettings();
-    $('#socket-stale').hidden = Object.keys(recorded).every(key => Math.abs(recorded[key] - next[key]) < 1e-9 || recorded[key] === next[key]);
+    $('#socket-stale').hidden = Object.keys(recorded).filter(key => key !== 'controller_policy' || recorded.scheme === 'adaptive').every(key => Math.abs(recorded[key] - next[key]) < 1e-9 || recorded[key] === next[key]);
   }
   for (const button of document.querySelectorAll('[data-preset]')) button.setAttribute('aria-pressed', 'false');
   $('#copy-link').disabled = !state.group;
@@ -91,12 +93,12 @@ async function compare(event) {
   $('#run-progress').value = 0; $('#run-progress').max = count; $('#run').querySelector('span').textContent = 'Running…';
   try {
     for (let index = 0; index < count; index++) {
-      setText('#run-status', count === 1 ? 'Running four protocols…' : `Running seed ${config.seed + index} · ${index} of ${count} finished`);
+      setText('#run-status', count === 1 ? 'Running protocols and original-controller comparison…' : `Running seed ${config.seed + index} · ${index} of ${count} finished`);
       trials.push(await request('/api/simulate', {...config, seed: config.seed + index})); $('#run-progress').value = index + 1;
     }
     const group = {id: ++state.runID, trials}; state.history.unshift(group); state.history = state.history.slice(0, 5); useGroup(group);
-    const incomplete = trials.flatMap(trial => trial.results).filter(result => !result.integrity_verified).length;
-    setText('#run-status', incomplete ? `${incomplete} transfers incomplete. Reduce loss or file size and retry.` : `${count * 4} transfers verified.`);
+    const incomplete = trials.flatMap(trial => [...trial.results, ...(config.controller_policy === 'cost' ? [trial.legacy_result] : [])]).filter(result => !result.integrity_verified).length;
+    setText('#run-status', incomplete ? `${incomplete} transfers incomplete. Reduce loss or file size and retry.` : `${count * (config.controller_policy === 'cost' ? 5 : 4)} transfers verified.`);
     $('#run-status').classList.toggle('error', incomplete > 0);
   } catch (error) {
     $('#run-status').classList.add('error'); setText('#run-status', `${error.message}${state.group ? ' Previous results are still shown.' : ''}`);
@@ -158,6 +160,12 @@ function renderResults() {
   body.append(tr);
   const complete = trials.every(trial => trial.all_verified), ranked = schemes.map(scheme => ({scheme, ...summarize(trials, scheme, 'goodput_mbps')})).sort((a, b) => b.mean - a.mean);
   setText('#comparison-summary', complete ? `${names[ranked[0].scheme]} had the highest ${multiple ? 'mean ' : ''}goodput here (${format(ranked[0].mean)} Mbps). This ${multiple ? 'sample' : 'run'} does not establish a general ranking.` : 'At least one transfer is incomplete. Completion and goodput for those rows do not describe a finished file.');
+  const change = adaptiveComparison(trials), updated = trials[0].config.controller_policy === 'cost';
+  const measure = value => `${format(value.mean)}${multiple ? ` ± ${format(value.sd)}` : ''} Mbps`;
+  setText('#before-goodput', measure(change.baseline)); setText('#after-goodput', updated ? measure(change.current) : 'Not selected');
+  setText('#completion-change', updated && change.completionChange !== null ? `${format(Math.abs(change.completionChange) * 100, 1)}% ${change.completionChange <= 0 ? 'shorter' : 'longer'}` : '—');
+  setText('#improvement-result', !updated ? 'Original controller selected. Choose Cost + receiver feedback to compare the update.' : change.goodputChange === null ? 'At least one adaptive transfer is incomplete; no improvement ratio is reported.' : `${format(Math.abs(change.goodputChange) * 100, 1)}% ${change.goodputChange >= 0 ? 'higher' : 'lower'} ${multiple ? 'mean ' : ''}goodput than the original adaptive controller in this ${multiple ? 'seed group' : 'run'}.`);
+  setText('#improvement-note', 'Same file, channel, window, timeout rule, and seeds. Loss patterns differ with packet schedules; gains depend on the condition.');
 }
 function selectScheme(scheme, reset = true) {
   pause(false); state.scheme = scheme;
@@ -165,7 +173,7 @@ function selectScheme(scheme, reset = true) {
   state.time = Math.min(state.time, duration());
   for (const button of document.querySelectorAll('[data-scheme]')) { const selected = button.dataset.scheme === scheme; button.setAttribute('aria-selected', String(selected)); button.tabIndex = selected ? 0 : -1; }
   for (const cell of document.querySelectorAll('[data-column]')) cell.classList.toggle('selected-column', cell.dataset.column === scheme);
-  $('#journey-panel').setAttribute('aria-labelledby', `tab-${scheme}`); setText('#scheme-explanation', explanations[scheme]);
+  $('#journey-panel').setAttribute('aria-labelledby', `tab-${scheme}`); setText('#scheme-explanation', scheme === 'adaptive' && state.response?.config.controller_policy === 'cost' ? 'Prices extra parity against retry cost. Receiver block status triggers early retries; the timer remains as fallback.' : explanations[scheme]);
   buildPacketMap(); buildDeliveryChart(); state.inspectorKey = ''; draw(); renderController();
 }
 function pause(redraw = true) {
@@ -197,7 +205,7 @@ function drawWire(counts) {
   const lanes = {data: 40, parity: 92, ack: 143};
   for (const [kind, y] of Object.entries(lanes)) {
     line(from, y, to, y, colors.rule, kind === 'ack'); ctx.fillStyle = colors.muted; ctx.font = '12px Atkinson'; ctx.textAlign = 'center';
-    ctx.fillText(kind === 'data' ? 'DATA / RETRIES' : kind === 'parity' ? 'PARITY' : 'ACKS', (from + to) / 2, y - 17);
+    ctx.fillText(kind === 'data' ? 'DATA / RETRIES' : kind === 'parity' ? 'PARITY' : 'ACKS / FEEDBACK', (from + to) / 2, y - 17);
   }
   for (const [x, label, tint] of [[left, 'Sender', '#dae2e5'], [right, 'Receiver', '#d9e8df']]) {
     ctx.fillStyle = tint; ctx.strokeStyle = x === left ? colors.dataLine : colors.teal; ctx.lineWidth = 1; ctx.beginPath(); ctx.roundRect(x, 14, nodeWidth, 147, 8); ctx.fill(); ctx.stroke();
@@ -207,13 +215,13 @@ function drawWire(counts) {
   }
   let active = 0; const hold = Math.max(.04, Math.min(.12, duration() / 15));
   for (const event of row()?.transmissions || []) {
-    if (event.start_s > state.time) continue; const y = lanes[event.kind]; if (!y) continue;
+    if (event.start_s > state.time) continue; const y = lanes[event.kind === 'feedback' ? 'ack' : event.kind]; if (!y) continue;
     if (event.lost && state.time >= event.arrival_s && state.time <= event.arrival_s + hold) {
       const x = (from + to) / 2 + ((event.sequence ?? event.block_start ?? 0) % 5 - 2) * 5;
       ctx.strokeStyle = colors.orange; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x - 5, y - 5); ctx.lineTo(x + 5, y + 5); ctx.moveTo(x + 5, y - 5); ctx.lineTo(x - 5, y + 5); ctx.stroke(); continue;
     }
     if (event.arrival_s < state.time || event.arrival_s === event.start_s) continue; active++;
-    const progress = Math.min(1, Math.max(0, (state.time - event.start_s) / (event.arrival_s - event.start_s))), x = event.kind === 'ack' ? to - (to - from) * progress : from + (to - from) * progress;
+    const progress = Math.min(1, Math.max(0, (state.time - event.start_s) / (event.arrival_s - event.start_s))), x = ['ack', 'feedback'].includes(event.kind) ? to - (to - from) * progress : from + (to - from) * progress;
     const selected = event.kind === 'data' && event.sequence === state.packet;
     ctx.lineWidth = selected ? 2 : 1.2; ctx.strokeStyle = selected ? colors.ink : event.kind === 'data' ? event.attempt > 1 ? colors.orange : colors.dataLine : colors.teal;
     ctx.fillStyle = event.kind === 'data' ? colors.data : event.kind === 'parity' ? colors.teal : colors.panel; ctx.beginPath();
@@ -307,7 +315,11 @@ function renderController(forcedIndex = null) {
   let index = Number($('#controller-block').value) || 0;
   if (forcedIndex !== null) index = forcedIndex; else if (state.scheme === 'adaptive') { index = 0; for (let i = 0; i < trace.length; i++) if (trace[i].time_s <= state.time) index = i; }
   if (index === state.controllerIndex) return; state.controllerIndex = index; const decision = trace[index]; $('#controller-block').value = String(index);
-  setText('#protection-mode', modeName(decision.mode)); setText('#estimated-loss', `${format(decision.estimated_loss * 100, 1)}%`); setText('#predicted-risk', `${format(decision.predicted_failure * 100)}%`); setText('#target-met', decision.target_met ? 'Feasible in model' : 'No feasible layout'); $('#target-met').classList.toggle('unmet', !decision.target_met);
+  const cost = state.response.config.controller_policy === 'cost';
+  setText('#protection-mode', modeName(decision.mode)); setText('#estimated-loss', `${format(decision.estimated_loss * 100, 1)}%`); setText('#predicted-risk', `${format(decision.predicted_failure * 100)}%`);
+  setText('#decision-objective', cost ? 'Cost per data packet' : '1% model target');
+  setText('#target-met', cost ? `${format(decision.estimated_cost_per_packet_s * 1000)} ms` : decision.target_met ? 'Feasible in model' : 'No feasible layout'); $('#target-met').classList.toggle('unmet', !cost && !decision.target_met);
+  setText('#cost-detail', cost ? `Selected cost: ${format(decision.estimated_cost_per_packet_s * 1000)} ms per packet; without parity: ${format(decision.unprotected_cost_per_packet_s * 1000)} ms. Scores include serialization and one modeled timeout per unresolved block.` : 'Select the least parity meeting the modeled target, or the lowest predicted risk when infeasible.');
   for (const tr of $('#trace-body').children) tr.classList.toggle('current-decision', Number(tr.dataset.index) === index);
 }
 function seekDecision(index) {
@@ -320,7 +332,7 @@ function renderDetails() {
   for (const [index, decision] of trace.entries()) {
     const option = document.createElement('option'); option.value = String(index); option.textContent = `Packets ${decision.start_packet + 1}–${decision.start_packet + decision.data_packets} · ${format(decision.time_s, 3)} s · ${modeName(decision.mode)}`; $('#controller-block').append(option);
     const tr = document.createElement('tr'); tr.dataset.index = String(index); const time = document.createElement('td'), button = document.createElement('button'); button.type = 'button'; button.textContent = format(decision.time_s, 3); button.setAttribute('aria-label', `Replay decision for packet ${decision.start_packet + 1} at ${format(decision.time_s, 3)} seconds`); button.addEventListener('click', () => seekDecision(index)); time.append(button); tr.append(time);
-    for (const value of [modeName(decision.mode), `${format(decision.estimated_loss * 100, 1)}%`, `${format(decision.predicted_failure * 100)}%${decision.target_met ? '' : ' (infeasible)'}`]) { const td = document.createElement('td'); td.textContent = value; tr.append(td); } $('#trace-body').append(tr);
+    for (const value of [modeName(decision.mode), `${format(decision.estimated_loss * 100, 1)}%`, `${format(decision.predicted_failure * 100)}%${config.controller_policy === 'legacy' && !decision.target_met ? ' (infeasible)' : ''}`]) { const td = document.createElement('td'); td.textContent = value; tr.append(td); } $('#trace-body').append(tr);
   }
   $('#controller-block').disabled = !trace.length; setText('#trace-summary', `All decisions (${trace.length})`); state.controllerIndex = -1; renderController();
 }
@@ -351,7 +363,7 @@ function download(kind) {
   } else {
     saveFile(comparisonCSV(state.group.trials), 'text/csv;charset=utf-8', `paritylab-${config.scenario}-${state.group.trials.length}-seeds.csv`);
   }
-  setText('#export-status', `${kind.toUpperCase()} download started · ${state.group.trials.length * 4} measured transfers`);
+  setText('#export-status', `${kind.toUpperCase()} download started · ${state.group.trials.length * (config.controller_policy === 'cost' ? 5 : 4)} measured transfers`);
 }
 async function copyLink() {
   if (!state.group) return; const params = new URLSearchParams(); for (const key of Object.keys(fieldIDs)) params.set(key, state.group.trials[0].config[key]); params.set('seeds', state.group.trials.length); params.set('protocol', state.scheme);
@@ -374,6 +386,33 @@ function applySharedLink() {
   state.pendingLink = false; loadLink(); rangeLabels(); compare();
 }
 window.addEventListener('hashchange', applySharedLink);
+async function loadStudy() {
+  try {
+    const response = await fetch('/assets/controller-study.json');
+    if (!response.ok) throw new Error('Missing saved evaluation');
+    const study = await response.json(), manifest = study.manifest;
+    const labels = {'clean': 'Clean', 'random-2': 'Random 2%', 'random-5': 'Random 5%', 'random-10': 'Random 10%', 'random-20': 'Random 20%', 'slow-link': 'Slow link · 1 Mbps', 'fast-link': 'Fast link · 20 Mbps', 'short-delay': 'Short delay · 5 ms', 'long-delay': 'Long delay · 150 ms', burst: 'Burst · 10%', changing: 'Changing · short file', 'ack-loss': 'ACK loss · 5%'};
+    for (const comparison of manifest.comparisons) {
+      const condition = comparison.condition, rows = Object.fromEntries(study.summary.filter(item => item.condition === condition).map(item => [item.method, item]));
+      const tr = document.createElement('tr'), th = document.createElement('th'), button = document.createElement('button'); th.scope = 'row'; button.type = 'button'; button.textContent = labels[condition]; button.title = 'Run this condition with five seeds';
+      button.addEventListener('click', () => {
+        if (state.busy) return;
+        const config = {scenario: condition === 'burst' ? 'burst' : condition === 'changing' ? 'changing' : 'random', loss_percent: condition === 'clean' ? 0 : condition.startsWith('random-') ? Number(condition.split('-')[1]) : 10, delay_ms: condition === 'short-delay' ? 5 : condition === 'long-delay' ? 150 : 50, bandwidth_mbps: condition === 'slow-link' ? 1 : condition === 'fast-link' ? 20 : 5, file_kib: 64, window: 32, seed: 100, ack_loss_percent: condition === 'ack-loss' ? 5 : 0, controller_policy: 'cost'};
+        setControls(config); $('#trial-count').value = '5'; compare(); $('#experiment').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'});
+      });
+      th.append(button); tr.append(th);
+      const change = (comparison.goodput_ratio_to_legacy - 1) * 100;
+      for (const [index, value] of [rows.legacy, rows.cost, change, rows.fixed, rows.sr].entries()) {
+        const td = document.createElement('td');
+        td.textContent = index === 2 ? `${value >= 0 ? '+' : ''}${format(value, 1)}%` : `${format(value.goodput_mbps_mean)} ± ${format(value.goodput_mbps_std)}`;
+        if (index === 2) td.className = change >= 0 ? 'positive' : 'negative';
+        tr.append(td);
+      }
+      $('#study-body').append(tr);
+    }
+    setText('#study-status', `${manifest.runs.toLocaleString()} transfers · 20 unused seeds per condition · ${manifest.all_verified ? 'all files verified' : 'some failures'}. Across the 11 nonclean conditions, geometric mean goodput was ${format((manifest.geometric_goodput_ratio_to_legacy_nonclean - 1) * 100, 1)}% higher than the original controller.`);
+  } catch { setText('#study-status', 'Saved evaluation unavailable. Live comparisons still work.'); }
+}
 $('#settings').addEventListener('submit', compare); $('#settings').addEventListener('input', flagChangedSettings);
 $('#play').addEventListener('click', play); $('#restart').addEventListener('click', () => seek(0)); $('#scrubber').addEventListener('input', () => seek(Number($('#scrubber').value) / 10000 * duration())); $('#speed').addEventListener('change', () => { state.speed = Number($('#speed').value); });
 for (const kind of ['loss', 'retry', 'repair']) $(`#next-${kind}`).addEventListener('click', () => seekNext(kind));
@@ -406,4 +445,4 @@ document.addEventListener('keydown', event => {
   if (event.code === 'Space') { event.preventDefault(); play(); } else if (event.key.toLowerCase() === 'r') seek(0); else if (event.key.toLowerCase() === 'l') seekNext('loss');
 });
 new ResizeObserver(() => { buildDeliveryChart(); draw(); }).observe($('.journey')); document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); }); document.fonts.ready.then(draw);
-loadLink(); rangeLabels(); draw(); compare();
+loadLink(); rangeLabels(); draw(); compare(); loadStudy();

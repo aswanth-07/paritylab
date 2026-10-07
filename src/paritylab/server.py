@@ -37,6 +37,9 @@ def number(body, key, default, low, high, *, integer=False):
 
 
 def run_comparison(body):
+    policy = body.get("controller_policy", "cost")
+    if not isinstance(policy, str) or policy not in {"legacy", "cost"}:
+        raise ValueError("Choose the cost or legacy adaptive controller")
     loss = number(body, "loss_percent", 10, 0, 30) / 100
     delay = number(body, "delay_ms", 50, 0, 500)
     bandwidth = number(body, "bandwidth_mbps", 5, 0.25, 100)
@@ -55,17 +58,27 @@ def run_comparison(body):
     expected_digest = hashlib.sha256(payload).hexdigest()
     rows = []
     for scheme in SCHEMES:
-        config = SimulationConfig(scheme=scheme, channel=channel, seed=seed, window=window, max_events=80000)
+        config = SimulationConfig(scheme=scheme, channel=channel, seed=seed, window=window, max_events=80000,
+                                  controller_policy=policy if scheme == "adaptive" else "legacy",
+                                  recovery_feedback=scheme == "adaptive" and policy == "cost")
         row = simulate(payload, config, capture_transmissions=True).to_dict()
         row["integrity_verified"] = row["completed"] and row["sha256"] == expected_digest
         # Replay only transmissions starting before sender completion.
         row["transmissions"] = [event for event in row["transmissions"] if event["start_s"] <= row["sender_completion_time_s"]]
         rows.append(row)
+    baseline = (simulate(payload, SimulationConfig(scheme="adaptive", channel=channel, seed=seed,
+                         window=window, max_events=80000)).to_dict() if policy == "cost" else rows[-1].copy())
+    baseline["integrity_verified"] = baseline["completed"] and baseline["sha256"] == expected_digest
+    baseline["controller_policy"] = "legacy"
+    for row in rows:
+        row["controller_policy"] = policy if row["scheme"] == "adaptive" else "legacy"
     return {"config": {"loss_percent": loss * 100, "delay_ms": delay, "bandwidth_mbps": bandwidth,
                        "window": window, "file_kib": size // 1024, "seed": seed,
-                       "ack_loss_percent": ack_loss * 100, "scenario": scenario, "channel": asdict(channel)},
+                       "ack_loss_percent": ack_loss * 100, "scenario": scenario, "channel": asdict(channel),
+                       "controller_policy": policy},
             "results": rows, "expected_sha256": expected_digest,
-            "all_verified": all(row["integrity_verified"] for row in rows),
+            "legacy_result": baseline,
+            "all_verified": all(row["integrity_verified"] for row in rows) and baseline["integrity_verified"],
             "replay_note": "Actual recorded transmissions in virtual time; path positions are illustrative."}
 
 
@@ -79,6 +92,9 @@ def run_socket_check(body):
     ack_loss = number(body, "ack_loss_percent", 0, 0, 20) / 100
     scheme = body.get("scheme", "adaptive")
     scenario = body.get("scenario", "random")
+    policy = body.get("controller_policy", "cost")
+    if not isinstance(policy, str) or policy not in {"legacy", "cost"}:
+        raise ValueError("Choose the cost or legacy adaptive controller")
     if scheme not in SCHEMES or scenario not in {"random", "burst", "changing"}:
         raise ValueError("Choose a supported scheme and loss model")
     phases = ((.25, loss), (.75, .02), (1.2, loss)) if scenario == "changing" else ()
@@ -86,7 +102,9 @@ def run_socket_check(body):
                             ack_loss=ack_loss, phases=phases,
                             model="gilbert-elliott" if scenario == "burst" else "bernoulli")
     _, result = socket_transfer(sample_data(32768), SocketConfig(scheme=scheme, seed=seed,
-                                channel=channel, window=window, max_seconds=25))
+                                channel=channel, window=window, max_seconds=25,
+                                controller_policy=policy if scheme == "adaptive" else "legacy",
+                                recovery_feedback=scheme == "adaptive" and policy == "cost"))
     result["transport"] = "Three separate localhost UDP processes with sliding windows"
     return result
 

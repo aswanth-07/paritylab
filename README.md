@@ -4,6 +4,8 @@ ParityLab is a local testbed for packet recovery experiments. It compares Go-Bac
 
 The project includes a deterministic simulator, a three-process UDP transport, a browser interface, and reproducible studies. The core runs on Python 3.10 or newer with no third-party dependencies.
 
+The Review 2 demo adds a cost-based parity controller and receiver feedback for earlier retries. A frozen comparison of 1,440 transfers across 12 conditions and 20 held-out seeds found 26.4% higher geometric mean goodput than the original adaptive controller across the 11 nonclean conditions. Fixed XOR still wins in several conditions. The [review walkthrough](docs/review-2.md) explains the algorithm, its literature basis, the measured gains, and the presentation sequence. The [complete results](docs/review-2-results.md) include every condition and two component comparisons.
+
 The research manuscript, [Decoder risk and finite-transfer tradeoffs in adaptive packet parity](output/pdf/paritylab-paper.pdf), is an empirical study of the recorded experiments. It separates known-model decoder calibration, estimated protection targets, and useful throughput. It preserves cases where fewer retries accompany lower goodput and where matched-budget code rankings change under burst loss. The paper claims neither a new coding algorithm nor general superiority for adaptive parity.
 
 The [paper directory](paper/README.md) includes editable Markdown and standalone LaTeX, five figures, nine tables, a claim-to-evidence map, the literature search record, and an internal review. References are dated 2020-2026. Author declarations and a venue remain to be confirmed before submission.
@@ -43,13 +45,13 @@ Open [http://127.0.0.1:8770](http://127.0.0.1:8770). Keep the terminal open; Ctr
 
 ## Run a comparison
 
-Choose a preset or set the loss model, packet loss, delay, bandwidth, and file size, then select **Run comparison**. Choose **1 seed** for a single run per protocol or **5 seeds** for five sequential seeds. The five-seed table reports each metric as mean ± sample standard deviation and checks all 20 transfers. It does not perform a significance test.
+Choose a preset or set the loss model, packet loss, delay, bandwidth, and file size, then select **Run comparison**. Choose **1 seed** for a single run per protocol or **5 seeds** for five sequential seeds. The five-seed table reports mean ± sample standard deviation. The updated method also runs the original adaptive controller as a separate comparator, checking 25 transfers. It does not perform a significance test.
 
 Select a protocol tab and play or scrub its recorded transmissions. Data and retries, parity, and acknowledgments have separate lanes. **Next loss**, **Next retry**, and **Next repair** seek to recorded events. Select a receiver packet to inspect its attempts, acceptance, and application release. The packet map distinguishes a received packet from bytes available in order.
 
 Switch to **Delivery** to compare all four application-delivery curves for the replay seed. Selecting another replay seed changes the recording and controller decisions; the comparison table still summarizes the full seed group. **Present** hides the introduction and lower explanatory panels so the experiment can lead a presentation.
 
-The adaptive decisions panel shows the loss estimate, selected mode, predicted failure risk, and whether the model target was feasible. Select a decision to seek to that block. Recent runs retain the last five completed groups for the current page session. **Copy settings link** saves the completed group's settings, seed count, and selected protocol in a URL that reruns them on the same local server. Downloads also retain recorded settings after you change the controls: CSV includes every trial; JSON includes transmissions, receiver events, and controller decisions.
+The **Adaptive method** control switches between **Cost + receiver feedback** and **Original (1% risk target)**. The live before-and-after panel compares the same recorded seed group. The decisions panel shows the loss estimate, selected protection, decoder risk, and either the selection cost or target feasibility. Select a decision to seek to that block. **Measured evaluation** contains the frozen 20-seed results; selecting a condition reruns its first five seeds. Recent runs retain five groups. Settings links and exports preserve the recorded policy; CSV includes the original-controller comparison, and JSON includes its metrics alongside packet events and decisions.
 
 The **Real UDP transfer** panel sends a separate 32 KiB file through sender, impairment proxy, and receiver processes. It verifies the actual received file and records all three process IDs. This uses operating-system sockets and wall time; the replay uses simulated time. A completed receipt keeps its original settings and remains available if the next transfer fails.
 
@@ -64,11 +66,12 @@ See the [presentation walkthrough](docs/ui-demo.md) for clean, burst, and changi
 | Fixed XOR | Selective Repeat plus one XOR repair packet per block of up to eight data packets by default. |
 | Adaptive parity | Selective Repeat plus a choice of no parity, one XOR repair, or row/column XOR repairs for each block. |
 
-The adaptive controller chooses the lowest parity overhead among candidates whose predicted probability of unrepaired block data is at most 1%. It accounts for lost repair packets. If none meets the target, it records infeasibility and chooses the lowest predicted failure probability. Remaining losses are recovered by retransmission.
+The original adaptive controller chooses the lowest parity overhead meeting a 1% modeled unrepaired-block target, or the lowest failure risk when infeasible. The updated controller minimizes `(block serialization + block failure risk × retry timeout) / original packets`. It weights loss feedback by the number of symbols observed. A block-status report acknowledges received/repaired data and triggers one early retry of each unresolved original; timer recovery remains available when feedback or retries are lost. Neither controller knows future losses.
 
-Three policies are available through `--controller-policy`:
+Four policies are available through `--controller-policy`:
 
-- `legacy`: an exponentially weighted loss estimate under independent erasures; the UI and saved baseline use this policy.
+- `legacy`: the original risk-target policy; existing paper studies retain it.
+- `cost`: the new cost-based selection policy. The UI combines it with early recovery feedback by default; the CLI requires `--recovery-feedback` to enable that part.
 - `uncertainty`: approximate loss intervals and risk calculations for the actual partial-block size.
 - `burst`: fitted binary Markov transitions and a risk envelope when ordered observations provide enough information; otherwise an explicit independent-model fallback.
 
@@ -80,6 +83,13 @@ Compare all four protocols in simulated time:
 
 ```sh
 python -m paritylab simulate --scheme all --loss 0.10 --output output/comparison.json
+```
+
+Run the updated method and the three protocol baselines:
+
+```sh
+python -m paritylab simulate --scheme all --controller-policy cost --recovery-feedback --loss 0.10 --bandwidth-mbps 1 --output output/updated-comparison.json
+python -m paritylab socket-run --scheme adaptive --controller-policy cost --recovery-feedback --loss 0.10 --output output/socket-updated
 ```
 
 Test reliable metadata, acknowledgment loss, and reordering:
@@ -115,10 +125,23 @@ The socket transport uses sliding windows, CRC framing, repeated block descripto
 | Shared bottleneck | 70 runs / 140 flows | Compare finite-FIFO contention using a teaching AIMD controller. |
 | Risk calibration | 3,060,000 decoder trials | Check exact independent/Markov predictions against the byte decoder. |
 | Estimated policies | 225,000 trials | Evaluate fitted parameter intervals, risk envelopes, and fallback behavior. |
+| Updated controller | 1,440 final transfers | 12 conditions, 20 held-out seeds, six methods including two component comparisons. |
 
 These are separate experiments. The baseline and sensitivity tables report means and sample standard deviations, not confidence intervals. Matching seeds across protocols gives the same configured conditions; different send schedules consume random draws differently. Only the equal-budget codec study explicitly pairs identical erasure masks.
 
 Adaptive parity can reduce retries while consuming more bandwidth. It does not always maximize goodput, and fixed XOR can outperform it. Read the [experiment report](docs/project-report.md) for the measured comparisons and the [model definitions](docs/model.md) for metric boundaries.
+
+The updated controller results are a separate study; they do not replace the paper's historical results. Its 64 KiB changing-loss condition completes before the first scheduled change, so it does not test adaptation to a phase change. The UI's longer Changing loss preset remains useful for inspecting that behavior. Socket correctness is verified separately; the simulator's percentage gains are not claimed for real networks or UDP wall time.
+
+Reproduce the new comparison into a fresh directory and audit the saved final study:
+
+```sh
+python scripts/compare_controllers.py --split held-out --output output/controller-reproduction
+python scripts/audit_controller_comparison.py
+python scripts/build_review_figures.py
+```
+
+The declared [comparison contract](docs/controller-cost-contract.md), both development results, final raw runs, summaries, and source archives are retained under `output/studies/controller-cost/`. Existing directories are never overwritten. Reproduction does not spend another tuning attempt; the final method remains frozen.
 
 ## Reproduce and verify
 

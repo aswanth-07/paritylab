@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Add an optional parity cost policy and receiver block feedback for one early retry per missing original, with timeout recovery as fallback.
+- Make the updated method the browser default and retain the original adaptive method as a visible comparator.
+- Record all 1,440 held-out transfers across 12 conditions and six methods, including separate parity-selection and feedback comparisons. The geometric mean goodput ratio to original adaptive is 1.2641 across 11 nonclean conditions; fixed XOR remains faster in several cases.
+- Add the Review 2 walkthrough, complete result tables, plots, screenshots, and a byte-verified three-process UDP receipt.
+- Audit raw trial counts, byte hashes, controls, summaries, study assets, and preserved measured source in release checks.
 - Rework the local demo with plain labels, separate transmission lanes, packet inspection, event jumps, and in-order delivery curves.
 - Add five-seed comparisons, session run history, recorded-settings links, and presentation mode.
 - Record receiver acceptance and application release for replay without changing transport measurements.
