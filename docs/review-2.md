@@ -22,13 +22,15 @@ modification, not a claim to have invented forward error correction.
 
 | Reference | Implemented connection | Boundary |
 | --- | --- | --- |
+| Zheng and Liu, [FEC Extension for QUIC, March 2026 revision 02, section 5.3](https://www.ietf.org/archive/id/draft-zheng-quic-fec-extension-02.html) | Recovered-data reports help suppress unnecessary retransmission. | Expired September 17, 2026; not a standard. Local block status also requests unresolved originals; QUIC frames, RTT and congestion behavior are not implemented. |
+| Chen et al., [Reliable Transmission of LTP Using Reinforcement Learning-Based Adaptive FEC, 2025 preprint](https://arxiv.org/abs/2506.22470) | Matrix feedback and symbol-count weighting provide loss-estimation context. | Different LDPC/LTP stack and trained policy. The demo uses a local exponential weight and cost score; reinforcement learning is not implemented. |
+| Tsubaki et al., [Scheduler-Agnostic Adaptive-FEC for MPQUIC, 2026 preprint](https://arxiv.org/abs/2607.14482) | Current expected-loss adaptation and field-evaluation context. | RS codec, multiple paths and QUIC datagrams differ from this reliable single-path file transport; its performance is not a baseline here. |
 | Golaghazadeh, Coulombe, Robert, *Residual packet loss rate analysis of 2-D parity forward error correction*, 2022, [DOI](https://doi.org/10.1016/j.image.2021.116597) | XOR row/column parity, matrix-size choices, peeling repair, and residual decoder failures. | Small inspectable grids; not a full reproduction of Pro-MPEG configurations or the paper's experiment. |
 | Michel et al., *FlEC: Enhancing QUIC with application-tailored reliability mechanisms*, 2023 journal article; [2022 author manuscript](https://arxiv.org/abs/2208.07741) | Combine FEC with reliable retransmission and evaluate useful throughput/delivery tradeoffs. | Local simulator and UDP transport; not FlEC or QUIC. |
 | Moskvitin et al., *Adaptive Forward Erasure Correction for Delay-Sensitive QUIC Connections*, [2024 draft, sections 6 and 8](https://www.ietf.org/archive/id/draft-dmoskvitin-quic-adaptive-fec-00.html) | Loss-dependent redundancy and acknowledging FEC-recovered packets as received. | Work-in-progress draft; original risk-target policy follows this selection principle, while the updated cost score is a local adaptation. |
 | Iyengar and Swett, [RFC 9002, section 6.1](https://www.rfc-editor.org/rfc/rfc9002.html#section-6.1), 2021 | Receiver evidence can trigger recovery before a long retry timer. | Uses explicit block status with a reordering allowance, not QUIC's exact three-packet/time thresholds or congestion controller. |
 
-The comparison is against the project's implementations of existing methods,
-not against published numerical results from different systems or networks.
+The comparison is against the project's implementations of existing methods. All references fall within 2020–2026. The [recent literature review](recent-literature.md) also covers 2025 screen delivery and 2026 satellite loss modeling, with abstract-only access stated. It explains the replay decision and search limits. Published numerical results from other systems are not comparison data for this lab.
 
 ## Algorithm to describe
 

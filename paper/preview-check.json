@@ -1,0 +1,9 @@
+{
+  "checked_on": "2026-10-07",
+  "status": "unavailable",
+  "source_sha256": "ecc9566c08b27bad976612b0a67e0388d5ca537f35f484cfb86231c05623b3d6",
+  "stage": "preview preparation before source parsing",
+  "diagnostic": "Windows sandbox helper_unknown_error: setup refresh had errors",
+  "source_audit": "paper/verification.json",
+  "pdf_export": "paper/pdf-export.json"
+}

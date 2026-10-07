@@ -12,6 +12,7 @@ import statistics
 from pathlib import Path
 
 from build_paper import ROOT, PAPER, analyse, read_json, read_csv, to_tex
+from audit_references import audit as audit_references
 
 
 def digest(path):
@@ -31,15 +32,16 @@ def audit(render=False):
     manuscript = (PAPER / "manuscript.md").read_text(encoding="utf-8")
     tex = (PAPER / "main.tex").read_text(encoding="utf-8")
     references = read_json("paper/references.json")
-    require(len(references) == len({r["key"] for r in references}) == 10,
+    reference_audit = audit_references()
+    require(len(references) == len({r["key"] for r in references}),
             "Duplicate or missing references")
     for ref in references:
         require(2020 <= ref["year"] <= 2026, "Reference outside requested range")
-        require(ref["access"] == "full_text" and ref["locator"] and ref["status"],
+        require(ref["access"] in {"full_text", "abstract"} and ref["locator"] and ref["status"],
                 "Missing reading/status record")
     bibliography = (PAPER / "references.bib").read_text(encoding="utf-8")
     bib_records = re.split(r"(?=@(?:article|misc|techreport)\{)", bibliography)[1:]
-    require(len(bib_records) == 10, "BibTeX record count")
+    require(len(bib_records) == len(references), "BibTeX record count")
     for ref in references:
         record = next((r for r in bib_records if r.split("\n", 1)[0].endswith(ref["key"] + ",")), "")
         require(record and f"year = {{{ref['year']}}}" in record and ref["url"] in record,
@@ -128,6 +130,9 @@ def audit(render=False):
     # Inspect the actual export, independently of its LaTeX source.
     from pypdf import PdfReader
     pdf = ROOT / "output/pdf/paritylab-paper.pdf"
+    pdf_export = read_json("paper/pdf-export.json")
+    require(digest(pdf) == pdf_export["pdf_sha256"], "Unrecorded PDF export")
+    pdf_current = digest(PAPER / "main.tex") == pdf_export["source_sha256"]
     reader = PdfReader(pdf)
     page_text = [p.extract_text() or "" for p in reader.pages]
     require(all(len(s.strip()) > 30 for s in page_text), "Blank or unreadable PDF page")
@@ -145,7 +150,9 @@ def audit(render=False):
         log_text = log.read_text(encoding="utf-8", errors="replace")
         require(not re.search(r"^!|ignored error:|Overfull|undefined|LaTeX Warning:", log_text, re.M),
                 "Compiler diagnostics require review")
-        compile_check = "two-pass local compilation: no errors, overfull boxes, undefined citations or LaTeX warnings"
+        compile_check = "two-pass local compilation of the recorded PDF export: no errors, overfull boxes, undefined citations or LaTeX warnings"
+    if not pdf_current:
+        compile_check += "; retained PDF predates current source/reference update"
     if render:
         import pypdfium2 as pdfium
         from PIL import Image, ImageOps, ImageDraw
@@ -179,9 +186,12 @@ def audit(render=False):
         "table_count": len(tables), "figure_count": len(specs), "reference_count": len(references),
         "pdf_pages": len(reader.pages), "pdf_text_characters": sum(map(len, page_text)),
         "compile_check": compile_check,
+        "reference_audit": reference_audit,
+        "pdf_matches_current_source": pdf_current,
+        "pdf_reference_checked_date": pdf_export["reference_checked_date"],
         "selected_prose_statistics": verified_numbers,
         "inputs_sha256": {name: digest(ROOT / name) for name in
-                         ("scripts/audit_paper.py", "paper/manifest.json", "paper/references.bib",
+                         ("scripts/audit_paper.py", "paper/manifest.json", "paper/references.bib", "paper/pdf-export.json",
                           "output/pdf/paritylab-paper.pdf")},
         "visual_review": "Rendering is available with --render; automated extraction does not certify visual layout.",
         "submission_status": "author declarations, approval and venue requirements unconfirmed",

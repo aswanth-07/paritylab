@@ -12,7 +12,11 @@ Retransmission recovers lost packets but can increase delivery time, particularl
 
 ## Existing work
 
-RFC 8681 [1] specifies sliding-window random linear FEC codes, establishing a modern reference for the relationship between protection and decoding latency. Golaghazadeh, Coulombe, and Robert [2] analyze residual packet loss for two-dimensional row/column parity, including the effect of matrix dimensions. FlEC [3] studies application-aware reliability choices inside QUIC, including bulk transfer and file transfers with restricted buffers. RFC 9002 [4] provides contemporary context for acknowledgment-based loss detection, retransmission timing, and congestion control; it is not a specification of the textbook Go-Back-N or Selective Repeat baselines. RFC 9265 [5] explains the interaction between FEC and congestion signals. A 2024 Internet-Draft [6] proposes loss-dependent redundancy for delay-sensitive QUIC connections. A 2026 preprint by Tsubaki et al. [7] evaluates adaptive FEC for Multipath QUIC datagrams over cellular paths. These sources establish that adaptive FEC is an existing research area. The contribution here is a transparent lab implementation and controlled comparison of simple parity modes paired with reliable retransmission.
+Recent work studies adaptive FEC in different transport and application settings. Tsubaki et al. [7] evaluate Reed-Solomon protection for Multipath QUIC datagrams over commercial cellular paths. Chen et al. [9] combine matrix-status feedback and adaptive FEC with reinforcement learning in LTP. A March 2026 QUIC extension draft [10] separates recovered-packet reports from ordinary ACKs; it does not specify a redundancy controller and expired on September 17, 2026. These are context for feedback and adaptation, not implementations reproduced by this project.
+
+Eghbal and Lu [8] report partial-order screen delivery with QUIC FEC in a 2025 journal article. Its deposited abstract supports application-delivery context; full text was not accessed. Wang et al. [11] study measured satellite loss and richer loss models in a 2026 journal article. Its author-posted abstract motivates treating our independent and binary Markov loss models as simplifications. Neither paper's numerical results are used as a comparison baseline.
+
+The coding basis remains Golaghazadeh, Coulombe, and Robert's 2-D parity analysis [2]. FlEC [3], cited as its 2023 journal publication, evaluates application-aware reliability in QUIC. RFC 8681 [1] provides sliding-window coding context. RFC 9002 [4] explains acknowledgment-based loss detection; RFC 9265 [5] discusses preserving congestion signals. The expired 2024 adaptive-FEC draft [6] is retained as a versioned design reference. Adaptive FEC is established prior work. The contribution here is a transparent lab implementation and controlled comparison of parity with reliable retransmission.
 
 ## Gap identified
 
@@ -45,17 +49,24 @@ A Python implementation of the emulator and all four schemes; separate localhost
 
 ## References (2020-2026)
 
-[1] V. Roca and B. Teibi, "Sliding Window Random Linear Code (RLC) Forward Erasure Correction (FEC) Schemes for FECFRAME," IETF RFC 8681, January 2020. DOI: 10.17487/RFC8681. [RFC Editor](https://www.rfc-editor.org/rfc/rfc8681.html).
+[1] V. Roca and B. Teibi. Sliding Window Random Linear Code (RLC) Forward Erasure Correction (FEC) Schemes for FECFRAME. RFC 8681, January 2020. DOI: 10.17487/RFC8681. [Source](https://www.rfc-editor.org/rfc/rfc8681.html).
 
-[2] F. Golaghazadeh, S. Coulombe, and J. M. Robert, "Residual packet loss rate analysis of 2-D parity forward error correction," Signal Processing: Image Communication, vol. 102, article 116597, March 2022. DOI: 10.1016/j.image.2021.116597. [Publisher](https://doi.org/10.1016/j.image.2021.116597).
+[2] F. Golaghazadeh, S. Coulombe, and J.-M. Robert. Residual packet loss rate analysis of 2-D parity forward error correction. Signal Processing: Image Communication 102, 116597, March 2022. DOI: 10.1016/j.image.2021.116597. [Source](https://doi.org/10.1016/j.image.2021.116597).
 
-[3] F. Michel, A. Cohen, D. Malak, Q. De Coninck, M. Medard, and O. Bonaventure, "FlEC: Enhancing QUIC with application-tailored reliability mechanisms," arXiv:2208.07741, August 2022. DOI: 10.48550/arXiv.2208.07741. [Author preprint](https://arxiv.org/abs/2208.07741).
+[3] F. Michel, A. Cohen, D. Malak, Q. De Coninck, M. Medard, and O. Bonaventure. FlEC: Enhancing QUIC With Application-Tailored Reliability Mechanisms. IEEE/ACM Transactions on Networking 31(2), 606-619, April 2023. DOI: 10.1109/TNET.2022.3195611. Author manuscript: arXiv:2208.07741 (2022). [Source](https://doi.org/10.1109/TNET.2022.3195611).
 
-[4] J. Iyengar and I. Swett, Eds., "QUIC Loss Detection and Congestion Control," IETF RFC 9002, May 2021. DOI: 10.17487/RFC9002. [RFC Editor](https://www.rfc-editor.org/rfc/rfc9002.html).
+[4] J. Iyengar and I. Swett. QUIC Loss Detection and Congestion Control. RFC 9002, May 2021. DOI: 10.17487/RFC9002. [Source](https://www.rfc-editor.org/rfc/rfc9002.html).
 
-[5] N. Kuhn, E. Lochin, F. Michel, and M. Welzl, "Forward Erasure Correction (FEC) Coding and Congestion Control in Transport," IRTF RFC 9265, July 2022. DOI: 10.17487/RFC9265. [RFC Editor](https://www.rfc-editor.org/rfc/rfc9265.html).
+[5] N. Kuhn, E. Lochin, F. Michel, and M. Welzl. Forward Erasure Correction (FEC) Coding and Congestion Control in Transport. RFC 9265, July 2022. DOI: 10.17487/RFC9265. [Source](https://www.rfc-editor.org/rfc/rfc9265.html).
 
-[6] D. Moskvitin, E. Onegin, R. Huang, H. Luo, and Q. Chen, "Adaptive Forward Erasure Correction for Delay-Sensitive QUIC Connections," Internet-Draft draft-dmoskvitin-quic-adaptive-fec-00, May 6, 2024. Work in progress; this cited version expired November 7, 2024 and is not an adopted standard. [Versioned draft](https://www.ietf.org/archive/id/draft-dmoskvitin-quic-adaptive-fec-00.html).
+[6] D. Moskvitin, E. Onegin, R. Huang, H. Luo, and Q. Chen. Adaptive Forward Erasure Correction for Delay-Sensitive QUIC Connections. Internet-Draft draft-dmoskvitin-quic-adaptive-fec-00, May 6, 2024. This version expired November 7, 2024; work in progress, not an adopted standard. [Source](https://www.ietf.org/archive/id/draft-dmoskvitin-quic-adaptive-fec-00.html).
 
-[7] T. Tsubaki, S. Anno, S. Komatsu, T. Torii, and T. Tojo, "Scheduler-Agnostic Adaptive-FEC for MPQUIC: Field Evaluation over Commercial Cellular Paths," arXiv:2607.14482v1, July 16, 2026. DOI: 10.48550/arXiv.2607.14482. Cited as an author preprint. [Author preprint](https://arxiv.org/abs/2607.14482).
+[7] T. Tsubaki, S. Anno, S. Komatsu, T. Torii, and T. Tojo. Scheduler-Agnostic Adaptive-FEC for MPQUIC: Field Evaluation over Commercial Cellular Paths. arXiv:2607.14482v1, July 16, 2026. DOI: 10.48550/arXiv.2607.14482. [Source](https://arxiv.org/abs/2607.14482).
 
+[8] N. Eghbal and P. Lu. Lower-Latency Screen Updates over QUIC with Forward Error Correction. Future Internet 17(7), 297, June 30, 2025. DOI: 10.3390/fi17070297. [Source](https://doi.org/10.3390/fi17070297).
+
+[9] L. Chen, Y. Song, K. Zhao, J. A. Fraire, and W. Li. Reliable Transmission of LTP Using Reinforcement Learning-Based Adaptive FEC. arXiv:2506.22470v1, June 19, 2025. DOI: 10.48550/arXiv.2506.22470. Author preprint. [Source](https://arxiv.org/abs/2506.22470).
+
+[10] H. Zheng and Y. Liu. FEC Extension for QUIC. Internet-Draft draft-zheng-quic-fec-extension-02, March 16, 2026. Expired September 17, 2026; individual work in progress, not a standard. [Source](https://www.ietf.org/archive/id/draft-zheng-quic-fec-extension-02.html).
+
+[11] T. Wang, T. Liu, Y. Li, J. Zhao, R. Gao, S. Wu, and J. Pan. Packet Loss Modeling and Forward Erasure Correction for LEO Satellite Networks. IEEE Transactions on Communications 74, 3999-4013, 2026. DOI: 10.1109/TCOMM.2026.3658383. [Source](https://doi.org/10.1109/TCOMM.2026.3658383).

@@ -1,13 +1,131 @@
 {
-  "verified_on": "2026-10-02",
-  "publication_range": [2020, 2026],
+  "verified_on": "2026-10-07",
+  "publication_range": [
+    2020,
+    2026
+  ],
+  "search_record": "docs/recent-literature.md",
   "sources": [
-    {"id": 1, "year": 2020, "url": "https://www.rfc-editor.org/rfc/rfc8681.html", "access": "full text", "use": "sliding-window FEC and block-latency context", "status": "standards-track RFC"},
-    {"id": 2, "year": 2022, "url": "https://pure.etsmtl.ca/en/publications/residual-packet-loss-rate-analysis-of-2-d-parity-forward-error-co/", "access": "institutional metadata/abstract and publisher excerpt", "use": "2D parity prior work and matrix-dimension dependence", "status": "journal article, March 2022; DOI includes 2021"},
-    {"id": 3, "year": 2022, "url": "https://arxiv.org/html/2208.07741v1", "access": "full text", "use": "application-tailored FEC and retransmission choices", "status": "author preprint"},
-    {"id": 4, "year": 2021, "url": "https://www.rfc-editor.org/rfc/rfc9002.html", "access": "full text", "use": "modern loss-detection context; does not define the textbook baselines", "status": "standards-track RFC"},
-    {"id": 5, "year": 2022, "url": "https://www.rfc-editor.org/rfc/rfc9265.html", "access": "full text", "use": "preserve raw loss signals and scope congestion limitations", "status": "informational IRTF RFC"},
-    {"id": 6, "year": 2024, "url": "https://www.ietf.org/archive/id/draft-dmoskvitin-quic-adaptive-fec-00.html", "access": "full text", "use": "loss-based redundancy and distinct recovered-packet feedback", "status": "version 00 expired 2024-11-07; not an adopted standard"},
-    {"id": 7, "year": 2026, "url": "https://arxiv.org/html/2607.14482v1", "access": "full text", "use": "current adaptive-FEC field-evaluation context", "status": "author preprint submitted 2026-07-16; proceedings metadata not independently verified"}
+    {
+      "id": 1,
+      "key": "roca2020rlc",
+      "year": 2020,
+      "url": "https://www.rfc-editor.org/rfc/rfc8681.html",
+      "access": "full_text",
+      "locator": "Sections 1, 3 and 4",
+      "status": "Standards-track RFC",
+      "use": "sliding-window FEC and block-latency context"
+    },
+    {
+      "id": 2,
+      "key": "golaghazadeh2022parity",
+      "year": 2022,
+      "url": "https://doi.org/10.1016/j.image.2021.116597",
+      "read_url": "https://espace2.etsmtl.ca/id/eprint/23905/1/Coulombe-S-2022-23905_1.pdf",
+      "access": "full_text",
+      "locator": "Accepted manuscript, abstract; Sections 3-6, including burst analysis",
+      "status": "Journal article",
+      "use": "2D parity prior work and matrix-dimension dependence"
+    },
+    {
+      "id": 3,
+      "key": "michel2023flec",
+      "year": 2023,
+      "url": "https://doi.org/10.1109/TNET.2022.3195611",
+      "read_url": "https://arxiv.org/pdf/2208.07741",
+      "access": "full_text",
+      "locator": "Author manuscript, Sections IV-VIII and figures on bulk, buffer-limited and deadline traffic",
+      "status": "Journal article; full text read via author manuscript; print metadata checked against Crossref",
+      "use": "application-tailored FEC and retransmission choices"
+    },
+    {
+      "id": 4,
+      "key": "iyengar2021recovery",
+      "year": 2021,
+      "url": "https://www.rfc-editor.org/rfc/rfc9002.html",
+      "access": "full_text",
+      "locator": "Sections 6 and 7",
+      "status": "Standards-track RFC",
+      "use": "modern loss-detection context; does not define the textbook baselines"
+    },
+    {
+      "id": 5,
+      "key": "kuhn2022congestion",
+      "year": 2022,
+      "url": "https://www.rfc-editor.org/rfc/rfc9265.html",
+      "access": "full_text",
+      "locator": "Sections 3-5; research recommendations and congestion-signal discussion",
+      "status": "Informational IRTF RFC; not a transport standard",
+      "use": "preserve raw loss signals and scope congestion limitations"
+    },
+    {
+      "id": 6,
+      "key": "moskvitin2024adaptive",
+      "year": 2024,
+      "url": "https://www.ietf.org/archive/id/draft-dmoskvitin-quic-adaptive-fec-00.html",
+      "access": "full_text",
+      "locator": "Version 00: design and adaptive FEC discussion; status header",
+      "status": "Expired Internet-Draft",
+      "use": "loss-based redundancy and distinct recovered-packet feedback"
+    },
+    {
+      "id": 7,
+      "key": "tsubaki2026adaptive",
+      "year": 2026,
+      "url": "https://arxiv.org/abs/2607.14482",
+      "read_url": "https://arxiv.org/html/2607.14482v1",
+      "access": "full_text",
+      "locator": "Sections III-C, IV-C/IV-D, V-VI, reference list and arXiv comments; checked 2026-10-07",
+      "status": "Author preprint, version 1; authors report acceptance at IEEE VTC2026-Fall, but proceedings publication and DOI were not independently verified",
+      "use": "current adaptive-FEC field-evaluation context"
+    },
+    {
+      "id": 8,
+      "key": "eghbal2025screen",
+      "year": 2025,
+      "url": "https://doi.org/10.3390/fi17070297",
+      "read_url": "https://api.crossref.org/works/10.3390/fi17070297",
+      "access": "abstract",
+      "locator": "Publisher-deposited abstract and publication metadata through Crossref; publisher HTML/PDF requests returned HTTP 403/429",
+      "status": "Journal article; abstract-level context only, full text not accessed",
+      "checked_on": "2026-10-07",
+      "use": "Application-delivery context; partial-order screen delivery is not implemented"
+    },
+    {
+      "id": 9,
+      "key": "chen2025ltp",
+      "year": 2025,
+      "url": "https://arxiv.org/abs/2506.22470",
+      "read_url": "https://arxiv.org/html/2506.22470v1",
+      "access": "full_text",
+      "locator": "Sections II-C and III, adaptive algorithm and evaluation; symbol-count weighting, matrix-status feedback, LDPC/ECLSA and DQN",
+      "status": "Author preprint, version 1; journal or proceedings publication not asserted",
+      "checked_on": "2026-10-07",
+      "use": "Raw-loss feedback and symbol-count weighting context; LDPC and reinforcement learning are not implemented"
+    },
+    {
+      "id": 10,
+      "key": "zheng2026fec",
+      "year": 2026,
+      "url": "https://www.ietf.org/archive/id/draft-zheng-quic-fec-extension-02.html",
+      "status_url": "https://datatracker.ietf.org/doc/draft-zheng-quic-fec-extension/",
+      "access": "full_text",
+      "locator": "Sections 1, 2, 4 and 5.3; status verified in IETF Datatracker on 2026-10-07",
+      "status": "Expired individual Internet-Draft; not IETF-endorsed and not an adopted standard",
+      "checked_on": "2026-10-07",
+      "use": "Recovered-data reporting context; local block-status feedback is not QUIC Repair ACK"
+    },
+    {
+      "id": 11,
+      "key": "wang2026loss",
+      "year": 2026,
+      "url": "https://doi.org/10.1109/TCOMM.2026.3658383",
+      "read_url": "https://onlineacademiccommunity.uvic.ca/starlink/",
+      "access": "abstract",
+      "locator": "Author-posted abstract, publication entry 21 on Starlink@PanLab; Crossref title/author/year/volume/pages checked; publisher full text not accessed",
+      "status": "Journal article; abstract-level loss-model context only",
+      "checked_on": "2026-10-07",
+      "use": "Limits of synthetic independent/binary Markov loss; MAP fitting and satellite traces are not implemented"
+    }
   ]
 }

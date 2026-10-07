@@ -20,10 +20,26 @@
   },
   "table_count": 9,
   "figure_count": 5,
-  "reference_count": 10,
+  "reference_count": 14,
   "pdf_pages": 24,
   "pdf_text_characters": 64644,
-  "compile_check": "two-pass local compilation: no errors, overfull boxes, undefined citations or LaTeX warnings",
+  "compile_check": "two-pass local compilation of the recorded PDF export: no errors, overfull boxes, undefined citations or LaTeX warnings; retained PDF predates current source/reference update",
+  "reference_audit": {
+    "status": "passed",
+    "checked_on": "2026-10-07",
+    "publication_range": [
+      2020,
+      2026
+    ],
+    "proposal_references": 11,
+    "paper_references": 14,
+    "paper_reading_depth": {
+      "full_text": 12,
+      "abstract": 2
+    }
+  },
+  "pdf_matches_current_source": false,
+  "pdf_reference_checked_date": "2026-10-05",
   "selected_prose_statistics": {
     "10/fixed/goodput_mbps": "1.247 +/- 0.279",
     "10/fixed/retransmissions": "9.6 +/- 3.9",
@@ -39,9 +55,10 @@
     "20/adaptive/parity_overhead_ratio": "0.606 +/- 0.124"
   },
   "inputs_sha256": {
-    "scripts/audit_paper.py": "1eacb44b94fb6e06dead3263c4ca2840449517863399d12c9875d9740ce2d4c8",
-    "paper/manifest.json": "892f66bc5859c36f5073898dda4889ea15b1d64c4409c40a52803de7f5dbe47c",
-    "paper/references.bib": "b49bce6fe18f46706d5084cf0caf0e0065d375362a55a9b51e6b5b8ff808ed4a",
+    "scripts/audit_paper.py": "fc8133a6a9547ad2324556ac0165a4d838d840455062a46842804b1064604fa3",
+    "paper/manifest.json": "c73fca2b041d0c5ccc47a4195dd97dd7b47937445a72081e9ef0b618fbcfa28b",
+    "paper/references.bib": "d43857bbe63be9d76d8da1116e56f9c12e9283899afe0216cc3f1c57779d56ab",
+    "paper/pdf-export.json": "b9b2d1256164e1582f504b2f88124b919e25975db0806a4d459b0f982f2ef146",
     "output/pdf/paritylab-paper.pdf": "964eebe9f1ea6a822e222dd5965a022d36bfdab56497c3efd19aa45ce02cd2db"
   },
   "visual_review": "Rendering is available with --render; automated extraction does not certify visual layout.",

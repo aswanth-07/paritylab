@@ -10,6 +10,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from audit_measurements import audit
 from audit_controller_comparison import audit as audit_controllers
+from audit_references import audit as audit_references
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -25,8 +26,12 @@ def main(*, write_receipt=True):
     transcript = run.stdout + run.stderr
     if write_receipt:
         (output / "tests.txt").write_text(transcript, encoding="utf-8")
-    reference_audit = json.loads((ROOT / "docs/reference-audit.json").read_text(encoding="utf-8"))
-    reference_check = all(2020 <= item["year"] <= 2026 for item in reference_audit["sources"]) and len(reference_audit["sources"]) == 7
+    try:
+        reference_audit = audit_references()
+        reference_check = True
+    except (ValueError, KeyError, OSError) as error:
+        reference_audit = {"status": "failed", "error": str(error)}
+        reference_check = False
     experiment_path = ROOT / "output/experiments/runs.json"
     experiment_check = None
     if experiment_path.exists():
@@ -40,6 +45,7 @@ def main(*, write_receipt=True):
     receipt = {"recorded_at_utc": datetime.now(timezone.utc).isoformat(), "python": platform.python_version(),
                "command": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
                "exit_code": run.returncode, "references_in_range": reference_check,
+               "reference_audit": reference_audit,
                "experiment_integrity": experiment_check, "source_sha256": fingerprints}
     try:
         receipt["measurements"] = audit()

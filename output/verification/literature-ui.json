@@ -1,0 +1,39 @@
+{
+  "checked_on": "2026-10-07",
+  "passed": true,
+  "scope": "Updated literature panel, desktop/mobile wrapping, settled five-seed comparison and unchanged interaction-source lineage",
+  "demo_url": "http://127.0.0.1:8771/",
+  "verified_live_transfers": 25,
+  "viewports": [
+    {
+      "width": 1280,
+      "height": 900
+    },
+    {
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "horizontal_page_overflow": false,
+  "browser_errors": [],
+  "reference_links": [
+    "https://arxiv.org/abs/2607.14482",
+    "https://www.ietf.org/archive/id/draft-zheng-quic-fec-extension-02.html",
+    "https://arxiv.org/abs/2506.22470",
+    "https://github.com/aswanth-07/paritylab/blob/main/docs/recent-literature.md"
+  ],
+  "prior_interaction_receipt": "output/verification/review-2-ui.json",
+  "unchanged_interaction_sources_sha256": {
+    "web/app.js": "0b1b38d523c0fda9b3b0f5c533cc2e2e4e3f0a742c60250e271e4b574b672b0f",
+    "web/replay.mjs": "0fa18879415797497f2af2b70cec79c63afd23bdd63581cc9ddfa2cfba84e917",
+    "web/styles.css": "298378ccd70f83c637ecc0f45692f3717b81705fa25ad7bf462aa01e4db888a6",
+    "src/paritylab/server.py": "a8e0aaa2673abf27fb6f7616031ba8d76c011c261b84f96a429565cbb7100aa6"
+  },
+  "inputs_sha256": {
+    "web/index.html": "322c9ef8c02498d4752ee816727ba70c4f476a84d62710f91e6cc02871245f62",
+    "output/verification/review-2-ui.json": "67b9bb724c17279663ca3654fa13781f7291dde3f274e1c14849f3fd04d6cc1c",
+    "docs/review-2-screenshots/literature-desktop.jpg": "5b452145b53ec79df33563a2706e972693fecfa37bf80c898acbee59a6da2f64",
+    "docs/review-2-screenshots/literature-mobile.jpg": "e8a35d1fe9abd614e42108bb175f5949f8d63a0408cf900cd62376c8d6bde79b"
+  },
+  "notes": "Prior full interaction checks remain separate; the October 7 check changes reference copy only. Screenshots are unedited. Viewport restored."
+}

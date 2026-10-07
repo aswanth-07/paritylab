@@ -1,5 +1,5 @@
 {
-  "recorded_at_utc": "2026-10-07T17:42:13.146390+00:00",
+  "recorded_at_utc": "2026-10-07T18:22:05.827830+00:00",
   "python": "3.10.11",
   "command": [
     "python",
@@ -12,6 +12,20 @@
   ],
   "exit_code": 0,
   "references_in_range": true,
+  "reference_audit": {
+    "status": "passed",
+    "checked_on": "2026-10-07",
+    "publication_range": [
+      2020,
+      2026
+    ],
+    "proposal_references": 11,
+    "paper_references": 14,
+    "paper_reading_depth": {
+      "full_text": 12,
+      "abstract": 2
+    }
+  },
   "experiment_integrity": true,
   "source_sha256": {
     "src/paritylab/__init__.py": "9d968a9d1fb03a3b7053e6a689f46b5cb35cda2c84f46f4f318db7ef69d80516",
@@ -36,7 +50,7 @@
     "tests/test_cost_recovery.py": "68ffa7a19ef6d5f3c7e28d429300107ae71c66b64ba22bd4aa34c3a5b6e87033",
     "tests/test_evaluation.py": "dd28c017e898661c52eb5254cbe26b09e8b32ba11434c2a1608a88ec686e38f0",
     "tests/test_fec.py": "02c9118211ebb8824f13ab5fd9d2b8e4cb322b80c98fe65ff803a5fdc28f69ea",
-    "tests/test_provenance.py": "43c2f4051a1852ada8fcb9e13229ff318adf6b4f9f5db51cb048e72da3b99661",
+    "tests/test_provenance.py": "af3dc6eda148442d1226067f9d1eac0ae6d0394b849fd7bfe186d64ad36e1e50",
     "tests/test_server.py": "88a68353ef25f394883e088ed6e22effa5eea7f52ba0a8b32716064bcf3e2655",
     "tests/test_simulation.py": "308229b8e3fa776d0c43ab6718589b4cc28a8b8af4527050fc2a86d09a607579",
     "tests/test_socket_transport.py": "3d02573bbcdd8628d16e27484ad6c46fd84bf68df72b03b3a8a57ee3e6d02d14",

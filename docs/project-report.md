@@ -6,9 +6,9 @@ Local experimental evaluation, October 2026
 
 ## Outcome
 
-The project implements Go-Back-N, Selective Repeat, fixed XOR parity, and adaptive parity over actual byte payloads. It includes a deterministic event-driven emulator, a three-process localhost UDP transport, a responsive presentation interface with recorded replay, and reproducible raw experiments. The bibliography contains seven sources published within 2020-2026.
+The project implements Go-Back-N, Selective Repeat, fixed XOR parity, and adaptive parity over actual byte payloads. It includes a deterministic event-driven emulator, a three-process localhost UDP transport, a responsive presentation interface with recorded replay, and reproducible raw experiments. The bibliography contains 11 sources dated 2020-2026, checked on 2026-10-07. Recent journal articles, preprints and expired drafts are labeled separately.
 
-The current suite passes 78 tests. Saved evidence covers 260 baseline transfers, 370 one-factor sensitivity transfers, 70 shared-bottleneck runs (140 flow transfers), 36 three-process socket transfers, 160,000 equal-overhead codec trials, 3,060,000 calibration decoder trials, and 225,000 estimated-policy trials. Completed transport outputs are checked against the input bytes and digest. These counts describe separate experiments, not one pooled sample.
+The current suite passes 90 tests. Saved evidence covers 260 baseline transfers, 370 one-factor sensitivity transfers, 70 shared-bottleneck runs (140 flow transfers), 36 three-process socket transfers, 160,000 equal-overhead codec trials, 3,060,000 calibration decoder trials, and 225,000 estimated-policy trials. Completed transport outputs are checked against the input bytes and digest. These counts describe separate experiments, not one pooled sample.
 
 The current correctness tests cover this release. Some saved studies describe an earlier measured revision preserved in output/measured-source/. Verification checks the archived source bytes and each recorded artifact. These historical measurements are not new measurements of this release.
 
@@ -98,6 +98,14 @@ The congestion evaluator is a teaching model with ACK-clocked growth and timeout
 
 ![Congestion window and useful release rate: AIMD versus uncontrolled](../output/congestion/competing-flows.png)
 
+## Review 2 update and recent literature
+
+A separate frozen evaluation compares cost-based parity selection plus early receiver feedback with the original risk-target method, fixed XOR, Selective Repeat, and two component comparisons. It contains 1,440 byte-verified transfers: twelve conditions, twenty held-out seeds and six methods. The geometric mean ratio of condition-mean goodput across eleven nonclean conditions is 1.264 (+26.4%) against original adaptive. On the 1 Mbps condition the increase is 64.5% against original adaptive and 17.6% against fixed XOR. These are simulator results, not real UDP or Internet speed claims. Fixed XOR wins several other conditions; the short changing-loss case finishes before a change. Review 2 results and the complete study retain those limits.
+
+The new method prices parity serialization against modeled retry cost and uses receiver block status to retry unresolved originals before a timer when possible. The codecs remain XOR and row/column parity; the cost score and exponential symbol-count weight are local adaptations. Historical tables above retain their original risk-target controller and measured source.
+
+Recent context includes Tsubaki et al. (2026) on RS-protected multipath QUIC, Zheng and Liu (2026) on recovered-packet reports, Chen et al. (2025) on adaptive FEC and matrix feedback in LTP, Eghbal and Lu (2025) on partial-order screen delivery, and Wang et al. (2026) on measured satellite loss models. The latter two are used only at abstract level. The LTP trained policy, QUIC frames, RS codec, partial-order delivery and satellite model are not implemented here. The lab comparison is between this project's methods, not those papers' numerical results.
+
 ## Requirement-to-evidence matrix
 
 | Deliverable | Implementation | Verification artifact |
@@ -130,16 +138,24 @@ The project makes the parity/retransmission tradeoff inspectable: a presenter ca
 
 ## References (2020-2026)
 
-[1] V. Roca and B. Teibi, "Sliding Window Random Linear Code (RLC) Forward Erasure Correction (FEC) Schemes for FECFRAME," IETF RFC 8681, January 2020. DOI: 10.17487/RFC8681. [RFC Editor](https://www.rfc-editor.org/rfc/rfc8681.html).
+[1] V. Roca and B. Teibi. Sliding Window Random Linear Code (RLC) Forward Erasure Correction (FEC) Schemes for FECFRAME. RFC 8681, January 2020. DOI: 10.17487/RFC8681. [Source](https://www.rfc-editor.org/rfc/rfc8681.html).
 
-[2] F. Golaghazadeh, S. Coulombe, and J. M. Robert, "Residual packet loss rate analysis of 2-D parity forward error correction," Signal Processing: Image Communication, vol. 102, article 116597, March 2022. DOI: 10.1016/j.image.2021.116597. [Publisher](https://doi.org/10.1016/j.image.2021.116597).
+[2] F. Golaghazadeh, S. Coulombe, and J.-M. Robert. Residual packet loss rate analysis of 2-D parity forward error correction. Signal Processing: Image Communication 102, 116597, March 2022. DOI: 10.1016/j.image.2021.116597. [Source](https://doi.org/10.1016/j.image.2021.116597).
 
-[3] F. Michel, A. Cohen, D. Malak, Q. De Coninck, M. Medard, and O. Bonaventure, "FlEC: Enhancing QUIC with application-tailored reliability mechanisms," arXiv:2208.07741, August 2022. DOI: 10.48550/arXiv.2208.07741. [Author preprint](https://arxiv.org/abs/2208.07741).
+[3] F. Michel, A. Cohen, D. Malak, Q. De Coninck, M. Medard, and O. Bonaventure. FlEC: Enhancing QUIC With Application-Tailored Reliability Mechanisms. IEEE/ACM Transactions on Networking 31(2), 606-619, April 2023. DOI: 10.1109/TNET.2022.3195611. Author manuscript: arXiv:2208.07741 (2022). [Source](https://doi.org/10.1109/TNET.2022.3195611).
 
-[4] J. Iyengar and I. Swett, Eds., "QUIC Loss Detection and Congestion Control," IETF RFC 9002, May 2021. DOI: 10.17487/RFC9002. [RFC Editor](https://www.rfc-editor.org/rfc/rfc9002.html).
+[4] J. Iyengar and I. Swett. QUIC Loss Detection and Congestion Control. RFC 9002, May 2021. DOI: 10.17487/RFC9002. [Source](https://www.rfc-editor.org/rfc/rfc9002.html).
 
-[5] N. Kuhn, E. Lochin, F. Michel, and M. Welzl, "Forward Erasure Correction (FEC) Coding and Congestion Control in Transport," IRTF RFC 9265, July 2022. DOI: 10.17487/RFC9265. [RFC Editor](https://www.rfc-editor.org/rfc/rfc9265.html).
+[5] N. Kuhn, E. Lochin, F. Michel, and M. Welzl. Forward Erasure Correction (FEC) Coding and Congestion Control in Transport. RFC 9265, July 2022. DOI: 10.17487/RFC9265. [Source](https://www.rfc-editor.org/rfc/rfc9265.html).
 
-[6] D. Moskvitin, E. Onegin, R. Huang, H. Luo, and Q. Chen, "Adaptive Forward Erasure Correction for Delay-Sensitive QUIC Connections," Internet-Draft draft-dmoskvitin-quic-adaptive-fec-00, May 6, 2024. Work in progress; this cited version expired November 7, 2024 and is not an adopted standard. [Versioned draft](https://www.ietf.org/archive/id/draft-dmoskvitin-quic-adaptive-fec-00.html).
+[6] D. Moskvitin, E. Onegin, R. Huang, H. Luo, and Q. Chen. Adaptive Forward Erasure Correction for Delay-Sensitive QUIC Connections. Internet-Draft draft-dmoskvitin-quic-adaptive-fec-00, May 6, 2024. This version expired November 7, 2024; work in progress, not an adopted standard. [Source](https://www.ietf.org/archive/id/draft-dmoskvitin-quic-adaptive-fec-00.html).
 
-[7] T. Tsubaki, S. Anno, S. Komatsu, T. Torii, and T. Tojo, "Scheduler-Agnostic Adaptive-FEC for MPQUIC: Field Evaluation over Commercial Cellular Paths," arXiv:2607.14482v1, July 16, 2026. DOI: 10.48550/arXiv.2607.14482. Cited as an author preprint. [Author preprint](https://arxiv.org/abs/2607.14482).
+[7] T. Tsubaki, S. Anno, S. Komatsu, T. Torii, and T. Tojo. Scheduler-Agnostic Adaptive-FEC for MPQUIC: Field Evaluation over Commercial Cellular Paths. arXiv:2607.14482v1, July 16, 2026. DOI: 10.48550/arXiv.2607.14482. [Source](https://arxiv.org/abs/2607.14482).
+
+[8] N. Eghbal and P. Lu. Lower-Latency Screen Updates over QUIC with Forward Error Correction. Future Internet 17(7), 297, June 30, 2025. DOI: 10.3390/fi17070297. [Source](https://doi.org/10.3390/fi17070297).
+
+[9] L. Chen, Y. Song, K. Zhao, J. A. Fraire, and W. Li. Reliable Transmission of LTP Using Reinforcement Learning-Based Adaptive FEC. arXiv:2506.22470v1, June 19, 2025. DOI: 10.48550/arXiv.2506.22470. Author preprint. [Source](https://arxiv.org/abs/2506.22470).
+
+[10] H. Zheng and Y. Liu. FEC Extension for QUIC. Internet-Draft draft-zheng-quic-fec-extension-02, March 16, 2026. Expired September 17, 2026; individual work in progress, not a standard. [Source](https://www.ietf.org/archive/id/draft-zheng-quic-fec-extension-02.html).
+
+[11] T. Wang, T. Liu, Y. Li, J. Zhao, R. Gao, S. Wu, and J. Pan. Packet Loss Modeling and Forward Erasure Correction for LEO Satellite Networks. IEEE Transactions on Communications 74, 3999-4013, 2026. DOI: 10.1109/TCOMM.2026.3658383. [Source](https://doi.org/10.1109/TCOMM.2026.3658383).

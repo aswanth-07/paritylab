@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "checked_on": "2026-10-07",
+  "publication_range": [
+    2020,
+    2026
+  ],
+  "proposal_references": 11,
+  "paper_references": 14,
+  "paper_reading_depth": {
+    "full_text": 12,
+    "abstract": 2
+  },
+  "rejected_mutations": [
+    "future_year",
+    "duplicate_identity",
+    "missing_reading_location",
+    "inconsistent_primary_link"
+  ],
+  "inputs_sha256": {
+    "docs/reference-audit.json": "8f214e6b4f01a4d658f02a64c4824499e9fabaeec4af885daf046c73f7da515e",
+    "docs/references.bib": "91fc4b9d201dfe205259fa56d8a193206b0ad710369f5efe70a64ce2031c7f31",
+    "docs/proposal.md": "59ea8ba05709474165750f402fbdd6e30f78d192b25017740aef501d6c4c6e24",
+    "paper/references.json": "b644b4dddfa7ee5e7eed6026d895a1c2889f32f48e2117f5f3d095f7f2b7e458",
+    "paper/references.bib": "d43857bbe63be9d76d8da1116e56f9c12e9283899afe0216cc3f1c57779d56ab",
+    "scripts/audit_references.py": "5b99ca3b96b0cd057c32a65ba7e4320e0367b7998b9fbcbc1d306401c2549987"
+  }
+}

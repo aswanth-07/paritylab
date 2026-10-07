@@ -20,7 +20,9 @@ def main():
         if not all(text.strip() for text in texts):
             raise RuntimeError(f"Blank PDF page: {name}")
         text = "\n".join(texts)
-        for required in ("References (2020-2026)", "2607.14482", "2024", "2020"):
+        for required in ("References (2020-2026)", "2607.14482", "2506.22470",
+                         "fi17070297", "3658383", "draft-zheng-quic-fec-extension-02",
+                         "TNET.2022.3195611", "2024", "2020"):
             if required not in text:
                 raise RuntimeError(f"Missing PDF content in {name}: {required}")
         document = pdfium.PdfDocument(str(source))

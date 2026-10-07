@@ -371,12 +371,19 @@ def to_tex(markdown,specs,references):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--figure",choices=["loss-sweep","calibration","risk-mismatch","paired-codecs","congestion"])
+    parser.add_argument("--text-only",action="store_true",help="Rebuild text/references while preserving figures from identical saved analysis and plot data")
     parser.add_argument("--pdf",action="store_true",help="Export with an existing pdflatex after the native-editor compile check")
     args=parser.parse_args()
     tables,metrics,specs=analyse()
+    if args.text_only:
+        if args.figure or metrics != read_json("paper/analysis.json") or specs != read_json("paper/plot-data.json"):
+            raise ValueError("Text-only build requires unchanged analysis and plot data")
     figures=PAPER/"figures";figures.mkdir(parents=True,exist_ok=True)
+    if args.text_only and any(not (figures/(name+suffix)).is_file()
+                             for name in specs for suffix in (".png", ".svg")):
+        raise ValueError("Text-only build requires the saved figures")
     for name,spec in specs.items():
-        if args.figure is None or args.figure==name:plot(spec,figures/name)
+        if not args.text_only and (args.figure is None or args.figure==name):plot(spec,figures/name)
     if args.figure is not None:return
     references=read_json("paper/references.json")
     assert all(2020<=r["year"]<=2026 and r["access"] in {"abstract","full_text"} for r in references)
@@ -395,9 +402,9 @@ def main():
     (PAPER/"plot-data.json").write_text(json.dumps(specs,indent=2)+"\n",encoding="utf-8")
     # Manifest excludes itself and PDF exports, whose bytes depend on the compiler.
     sources=[p for pattern in ("output/*/manifest.json","output/studies/*/manifest.json") for p in ROOT.glob(pattern)]
-    sources += [ROOT/"scripts/build_paper.py",PAPER/"manuscript-template.md",PAPER/"references.json"]
+    sources += [ROOT/"scripts/build_paper.py",PAPER/"manuscript-template.md",PAPER/"references.json",ROOT/"docs/reference-audit.json"]
     manifest={"analysis_kind":"retrospective descriptive reconstruction; no new experimental runs", "python":platform.python_version(),
-              "measured_revision":"1ee75227af7288491722a42813203a136ed37948", "reference_checked_date":"2026-10-05",
+              "measured_revision":"1ee75227af7288491722a42813203a136ed37948", "reference_checked_date":read_json("docs/reference-audit.json")["verified_on"],
               "inputs_sha256":{str(p.relative_to(ROOT)).replace("\\","/"):hashlib.sha256(p.read_bytes()).hexdigest() for p in sources},
               "outputs_sha256":{str(p.relative_to(ROOT)).replace("\\","/"):hashlib.sha256(p.read_bytes()).hexdigest() for p in [PAPER/"analysis.json",PAPER/"plot-data.json",PAPER/"manuscript.md",PAPER/"main.tex"]+sorted(figures.glob("*.png"))+sorted(figures.glob("*.svg"))},
               "figure_processing":"All configured points; no clipped observations; sample SD across seeds on transport and paired-contrast plots; exact risk scatter is 153 case aggregates with n=20000 each. SVG and embedded LaTeX vectors use the same plot-data.json."}
@@ -411,6 +418,12 @@ def main():
         destination=ROOT/"output/pdf/paritylab-paper.pdf"
         destination.parent.mkdir(parents=True,exist_ok=True)
         destination.write_bytes((output/"main.pdf").read_bytes())
+        (PAPER/"pdf-export.json").write_text(json.dumps({
+            "source_sha256":hashlib.sha256((PAPER/"main.tex").read_bytes()).hexdigest(),
+            "pdf_sha256":hashlib.sha256(destination.read_bytes()).hexdigest(),
+            "reference_checked_date":manifest["reference_checked_date"],
+            "scope":"Two-pass pdflatex export of the recorded standalone source"
+        },indent=2)+"\n",encoding="utf-8")
     print(json.dumps({"counts":{k:v for k,v in metrics.items() if isinstance(v,int)},"calibration_max_error":metrics["calibration_max_error"],"figures":len(specs),"references":len(references)},indent=2))
 
 

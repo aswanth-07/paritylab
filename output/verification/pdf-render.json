@@ -1,37 +1,37 @@
 {
   "proposal-2020-2026.pdf": {
     "pages": 3,
-    "sha256": "fe3d4c98a53680538e1ffca45fe489a0892dc41b255f4602478bec4f63415e10",
+    "sha256": "227df3545035f9349f217f74d3ad8786e4743e662fb55d9ce084f90665ee69ca",
     "nonblank_pages": true,
     "required_reference_text": true,
     "renders": [
       {
         "page": 1,
-        "sha256": "f797c1a2f854cea84970cfd8003d5e7f453b057ad690302cdb49fe673bf32a3a"
+        "sha256": "c189fd0f7f6d370a5a38986a91fabd5c3c44a680209dc2b9834d02b4396f34b4"
       },
       {
         "page": 2,
-        "sha256": "9731c8a93ec866e571ff279648d6956c8c934005635b1c8aa7b98ad6ed88a682"
+        "sha256": "d513eb12636090cf84cd5fa8f4fffd83e39481ac27b982920cf29945e6391488"
       },
       {
         "page": 3,
-        "sha256": "573ca72670c5cc338f1b439edf9d1ec3de1741d6caffe83dd8c835bd392e1c90"
+        "sha256": "73e2213e3dbbdab240d9b10508f6eef58c3fe14af79beed41de8fef735ae165b"
       }
     ]
   },
   "project-report.pdf": {
     "pages": 10,
-    "sha256": "8bcaa3b9c54b7f099cf21de85928d9a0dcf205bb9481c2f9e46579588dd1eb26",
+    "sha256": "e2b82743d57f810d1affece240fc495b8ba9ea9529f6cef169d9f599f4c91de1",
     "nonblank_pages": true,
     "required_reference_text": true,
     "renders": [
       {
         "page": 1,
-        "sha256": "c9c92127d0b661e74150c5fa2082fe8dad9d27d23a4c06d1dc949943bac17a1c"
+        "sha256": "389e1000f91fe71dac4ba83615b18fd5a3d1c0e3ede0fa828a10436e03904764"
       },
       {
         "page": 2,
-        "sha256": "d34dc99a7676beda308971f8e7325627322751ee80cadfc40e0c885006becc12"
+        "sha256": "6fad160904d0a743fdac930e8217fe16b2e78c572fbfeb0914a8a19face745fe"
       },
       {
         "page": 3,
@@ -55,7 +55,7 @@
       },
       {
         "page": 8,
-        "sha256": "873aa39eba4cbd2f9291b945d75981f1718a8e053e4a91f86ab79c722a586d51"
+        "sha256": "1f7a5e41e7e1ba622c56901f0a698271e942372ac6bf866941a5695d51bd3712"
       },
       {
         "page": 9,
@@ -63,7 +63,7 @@
       },
       {
         "page": 10,
-        "sha256": "3983afd07792dd477f7035d025d119bd9ea423822fa97a98d0c5b7a291b41593"
+        "sha256": "a7c2b6108b06622638cdd7f05e727df94fb3af8ce03721143e304df93b98e1be"
       }
     ]
   }

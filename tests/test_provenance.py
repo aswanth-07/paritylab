@@ -93,6 +93,8 @@ class ReportEvidenceTests(unittest.TestCase):
         files = {"output/verification/receipt.json": json.dumps(self.receipt),
                  "output/verification/tests.txt": "Ran 78 tests\nOK\n",
                  "output/experiments/summary.csv": "scenario,scheme\n",
+                 "docs/reference-audit.json": json.dumps({"verified_on": "2026-10-07",
+                     "sources": [{"id": 1}, {"id": 2}, {"id": 3}]}),
                  "output/calibration/manifest.json": json.dumps({"decoder_trials": 3060000,
                      "policy_test_trials": 225000, "maximum_exact_absolute_error": .001,
                      "maximum_wrong_iid_stationary_burst_error": .1, "maximum_wrong_iid_burst_error": .2}),
@@ -103,5 +105,6 @@ class ReportEvidenceTests(unittest.TestCase):
             target.write_text(contents, encoding="utf-8")
         text = report_module.report_text()
         self.assertIn("The current suite passes 78 tests", text)
+        self.assertIn("bibliography contains 3 sources dated 2020-2026, checked on 2026-10-07", text)
         self.assertIn("These historical measurements are not new measurements of this release.", text)
         self.assertIn("--require-current", text)

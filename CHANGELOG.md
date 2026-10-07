@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Update the proposal, report, manuscript and demo with four verified 2025–2026 sources; correct FlEC to its 2023 journal citation and label expired drafts and preprints.
+- Record literature searches, reading depth and implementation boundaries while preserving the frozen controller and measurements.
+- Check bibliography identities and source metadata without fixed reference counts, and record whether a retained paper PDF matches the current source.
 - Add an optional parity cost policy and receiver block feedback for one early retry per missing original, with timeout recovery as fallback.
 - Make the updated method the browser default and retain the original adaptive method as a visible comparator.
 - Record all 1,440 held-out transfers across 12 conditions and six methods, including separate parity-selection and feedback comparisons. The geometric mean goodput ratio to original adaptive is 1.2641 across 11 nonclean conditions; fixed XOR remains faster in several cases.
