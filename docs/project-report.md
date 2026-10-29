@@ -2,8 +2,6 @@
 
 Author: A Aswanth Raj
 
-Source code, raw records and scripts: [github.com/aswanth-07/paritylab](https://github.com/aswanth-07/paritylab)
-
 Local experimental evaluation, October 2026
 
 ## Outcome
@@ -126,7 +124,7 @@ Recent context includes Tsubaki et al. (2026) on RS-protected multipath QUIC, Zh
 
 ## Running and reproducing
 
-Install Python 3.10 or newer. Clone [github.com/aswanth-07/paritylab](https://github.com/aswanth-07/paritylab) or unpack the source bundle, run python -m pip install -e . and python -m paritylab demo, then open http://127.0.0.1:8770. The wheel includes the same UI, local fonts, proposal, and report. No frontend build, account, or online asset is needed after installation. The UI socket button selects any of the four protocols and downloads its actual receipt. Emulator replay stays paused until requested.
+Install Python 3.10 or newer. From the source bundle, run python -m pip install -e . and python -m paritylab demo, then open http://127.0.0.1:8770. The wheel includes the same UI, local fonts, proposal, and report. No frontend build, account, or online asset is needed after installation. The UI socket button selects any of the four protocols and downloads its actual receipt. Emulator replay stays paused until requested.
 
 On Windows, .\scripts\ready.ps1 checks the saved evidence, runs the current suite, rebuilds PDFs, and makes a verified release. Add -Reproduce to rerun baseline, sensitivity, paired-codec, congestion, and socket experiments. Add -Calibration to regenerate the full calibration too. Equivalent portable Python commands are in README.md. The measurement audit accepts current source bytes or a checksum-verified archive of the measured revision and reports which was used. Use python scripts/audit_measurements.py --require-current to require fresh measurements of the checkout; historical matches fail that check. Regenerate the relevant measurements rather than relabeling old hashes.
 

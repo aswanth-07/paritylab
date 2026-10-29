@@ -21,13 +21,13 @@
   },
   "project-report.pdf": {
     "pages": 10,
-    "sha256": "cf8e5bc77b3149216f66cf3245e1784e9fadf433c097d35ab719fa96da8d2c5e",
+    "sha256": "e2b82743d57f810d1affece240fc495b8ba9ea9529f6cef169d9f599f4c91de1",
     "nonblank_pages": true,
     "required_reference_text": true,
     "renders": [
       {
         "page": 1,
-        "sha256": "2b363121d08b900c6d22a9bf5fdd570ccdab823625fcecfcc9d5a1aebd4d21e3"
+        "sha256": "389e1000f91fe71dac4ba83615b18fd5a3d1c0e3ede0fa828a10436e03904764"
       },
       {
         "page": 2,
@@ -59,11 +59,11 @@
       },
       {
         "page": 9,
-        "sha256": "429ffa445e7b5c8d75007ee0f01937e3b49f6c53888dd4441fa180dc1f7c9762"
+        "sha256": "3ad214e9d82477bb0e957b7ba15d5d0c291da20e7c85fedd33f2905d200e26bf"
       },
       {
         "page": 10,
-        "sha256": "13681b7d0b21bed66016ac7707ba96f7d01214fa658eee5b51e700343398f3c7"
+        "sha256": "a7c2b6108b06622638cdd7f05e727df94fb3af8ce03721143e304df93b98e1be"
       }
     ]
   }
